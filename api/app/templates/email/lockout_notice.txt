@@ -1,0 +1,7 @@
+Hi {{ name }},
+
+There were several failed attempts to sign in to your Buzz Crew admin account, so sign-in is blocked for 15 minutes.
+
+If this wasn't you, consider resetting your password: {{ web_url }}/admin/forgot-password
+
+— The Buzz Crew

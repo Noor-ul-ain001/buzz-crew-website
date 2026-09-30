@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: The Buzz Crew API — Service FAQs & discovery call webhook (006)
+  version: 1.0.0
+  description: >
+    FAQ admin endpoints follow the feature 004 pattern at `/api/v1/admin/content/faqs`
+    (CRUD, publish, unpublish, order; role admin|editor). Service pages themselves are
+    static web routes and have no API.
+paths:
+  /api/v1/public/faqs:
+    get:
+      operationId: listPublicFaqs
+      parameters:
+        - { name: service, in: query, schema: { type: string, enum: [social_media, seo, web_software, ui_ux_design, meta_ads] } }
+        - { name: industry, in: query, schema: { type: string } }
+        - { name: topic, in: query, schema: { type: string, enum: [working_with_us, pricing_approach, timelines, process, services] } }
+      responses:
+        '200':
+          description: Published FAQs, ordered by topic then sort_order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required: [id, question, answer_md, topic]
+                  properties:
+                    id: { type: string, format: uuid }
+                    question: { type: string }
+                    answer_md: { type: string }
+                    topic: { type: string }
+                    services: { type: array, items: { type: string } }
+                    industries: { type: array, items: { type: string } }
+  /api/v1/webhooks/cal:
+    post:
+      operationId: calWebhook
+      summary: Cal.com booking lifecycle webhook
+      parameters:
+        - { name: X-Cal-Signature-256, in: header, required: true, schema: { type: string }, description: 'hex HMAC-SHA256 of the raw body with CAL_WEBHOOK_SECRET' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [triggerEvent, payload]
+              properties:
+                triggerEvent: { type: string, enum: [BOOKING_CREATED, BOOKING_RESCHEDULED, BOOKING_CANCELLED] }
+                payload:
+                  type: object
+                  required: [uid, startTime, endTime, attendees, responses]
+                  properties:
+                    uid: { type: string }
+                    rescheduleUid: { type: [string, 'null'] }
+                    startTime: { type: string, format: date-time }
+                    endTime: { type: string, format: date-time }
+                    attendees: { type: array, items: { type: object, properties: { name: { type: string }, email: { type: string }, timeZone: { type: string } } } }
+                    responses: { type: object, description: 'Booking question answers: name, email, country, notes, phone?, business?' }
+                    metadata: { type: object, properties: { source_page: { type: string }, inquiry_id: { type: string, format: uuid } } }
+      responses:
+        '204': { description: Processed (or already processed — idempotent on uid) }
+        '401': { description: Invalid signature }
+        '422': { description: Payload failed validation (logged without PII) }

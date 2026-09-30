@@ -1,0 +1,16 @@
+New project inquiry from {{ lead.name }}
+
+Name: {{ lead.name }}
+Email: {{ lead.email }}
+Phone: {{ lead.phone or "—" }}
+Business: {{ lead.business or "—" }}
+Country: {{ country }}
+Services: {{ services }}
+Monthly budget: {{ budget }}
+Sent from: {{ lead.source_page }}
+Received: {{ received }}
+
+Message:
+{{ lead.message }}
+
+Reply to this email to answer {{ lead.name }} directly.

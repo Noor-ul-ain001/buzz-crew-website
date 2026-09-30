@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: The Buzz Crew API — Website audit (009)
+  version: 1.0.0
+paths:
+  /api/v1/audits:
+    post:
+      operationId: startAudit
+      parameters: [{ name: X-Visitor-Id, in: header, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url, turnstile_token]
+              properties:
+                url: { type: string, minLength: 3, maxLength: 500 }
+                turnstile_token: { type: string }
+      responses:
+        '200': { description: 'text/event-stream (DEPLOYMENT D4): events step {step}, done {AuditStatus with summary}, failed {failure_reason, failure_message}. The audit runs inside this request (≤ 90 s). For a reused report the stream immediately emits done with reused=true.', content: { text/event-stream: { schema: { type: string } } } }
+        '400': { description: 'invalid_url | blocked_address | bot_check_failed — plain-language message' }
+        '429': { description: 'audit_limit_reached — { reset_at }' }
+  /api/v1/audits/{id}:
+    get:
+      operationId: getAuditStatus
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        '200': { description: 'Current status/result (for page reloads; no polling needed during the audit)', content: { application/json: { schema: { $ref: '#/components/schemas/AuditStatus' } } } }
+        '404': { description: Unknown }
+  /api/v1/audits/{id}/report-request:
+    post:
+      operationId: requestFullReport
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, turnstile_token]
+              properties:
+                name: { type: string, minLength: 1, maxLength: 100 }
+                email: { type: string, format: email }
+                business: { type: [string, 'null'], maxLength: 150 }
+                newsletter_opt_in: { type: boolean, default: false }
+                turnstile_token: { type: string }
+      responses:
+        '201': { description: 'Lead created/merged; email queued; returns { report_url }' }
+        '409': { description: 'audit_not_completed' }
+        '422': { description: Validation errors }
+  /api/v1/reports/{token}:
+    get:
+      operationId: getReportByToken
+      parameters: [{ name: token, in: path, required: true, schema: { type: string, minLength: 43, maxLength: 43 } }]
+      responses:
+        '200': { description: Full report, content: { application/json: { schema: { $ref: '#/components/schemas/FullReport' } } } }
+        '404': { description: Unknown or expired }
+  /api/v1/admin/audit-reports/{id}:
+    get: { operationId: getAuditReportAdmin, x-required-role: admin, responses: { '200': { description: Full report for lead follow-up }, '403': { description: Editors refused } } }
+components:
+  schemas:
+    CheckStatus: { type: string, enum: [passed, needs_work, failed, not_applicable] }
+    Check:
+      type: object
+      required: [id, status, summary, measured]
+      properties:
+        id: { type: string, enum: [title, meta_description, headings, image_alt, mobile, speed] }
+        status: { $ref: '#/components/schemas/CheckStatus' }
+        summary: { type: string }
+        measured: { type: object, additionalProperties: true }
+    Fix:
+      type: object
+      required: [check_id, what_is_wrong, why_it_matters, first_step]
+      properties:
+        check_id: { type: string }
+        what_is_wrong: { type: string }
+        why_it_matters: { type: string }
+        first_step: { type: string }
+    Summary:
+      type: object
+      required: [audited_url, audited_at, performance_score, seo_score, score_labels, top_issues, checks, explanation, explanation_ai_generated]
+      properties:
+        audited_url: { type: string }
+        audited_at: { type: string, format: date-time }
+        performance_score: { type: integer, minimum: 0, maximum: 100 }
+        seo_score: { type: integer, minimum: 0, maximum: 100 }
+        score_labels: { type: object, properties: { performance: { type: string, enum: [good, needs_work, poor] }, seo: { type: string, enum: [good, needs_work, poor] } } }
+        top_issues: { type: array, maxItems: 5, items: { type: string } }
+        checks: { type: array, items: { $ref: '#/components/schemas/Check' } }
+        explanation: { type: object, properties: { fixes: { type: array, maxItems: 5, items: { $ref: '#/components/schemas/Fix' } }, working_well: { type: [string, 'null'] } } }
+        explanation_ai_generated: { type: boolean }
+    AuditStatus:
+      type: object
+      required: [id, status]
+      properties:
+        id: { type: string, format: uuid }
+        status: { type: string, enum: [queued, running, completed, failed] }
+        step: { type: [string, 'null'], enum: [fetching, checking_seo, measuring_speed, explaining, null] }
+        failure_reason: { type: [string, 'null'] }
+        failure_message: { type: [string, 'null'], description: Plain-language explanation + suggestion }
+        reused: { type: boolean }
+        summary: { oneOf: [{ $ref: '#/components/schemas/Summary' }, { type: 'null' }], description: Only when completed }
+        remaining_today: { type: integer }
+    FullReport:
+      allOf:
+        - $ref: '#/components/schemas/Summary'
+        - type: object
+          properties:
+            details: { type: object, description: 'Per-check affected items and step-by-step fixes, plus "How we check" thresholds' }

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <body style="margin:0;padding:24px;background:#f6f6f7;font-family:Arial,Helvetica,sans-serif;color:#0b0c1e;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;">
+      <tr>
+        <td style="padding:24px;">
+          <h1 style="margin:0 0 12px;font-size:20px;">Thanks, {{ lead.name }}. We've got your inquiry.</h1>
+          <p style="margin:0 0 16px;font-size:15px;">The crew will reply <strong>within 24 hours</strong>.</p>
+          <h2 style="margin:0 0 8px;font-size:16px;">What you sent us</h2>
+          <table role="presentation" cellpadding="6" cellspacing="0" style="font-size:14px;">
+            <tr><td><strong>Services</strong></td><td>{{ services }}</td></tr>
+            <tr><td><strong>Monthly budget</strong></td><td>{{ budget }}</td></tr>
+            <tr><td><strong>Country</strong></td><td>{{ country }}</td></tr>
+          </table>
+          <p style="margin:12px 0 0;font-size:14px;white-space:pre-wrap;">{{ lead.message }}</p>
+          <p style="margin:24px 0 0;font-size:14px;">
+            Prefer to chat sooner?
+            <a href="{{ whatsapp_url }}" style="color:#0b0c1e;font-weight:bold;">Message us on WhatsApp</a>.
+          </p>
+          <p style="margin:24px 0 0;font-size:13px;color:#555;">— The Buzz Crew · We tell your stories.</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

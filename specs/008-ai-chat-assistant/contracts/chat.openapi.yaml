@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: The Buzz Crew API — AI chat assistant (008)
+  version: 1.0.0
+  description: >
+    Public chat endpoints identify the visitor with header `X-Visitor-Id` (random id from
+    localStorage). Admin endpoints are admin-only (feature 003). Knowledge entries use the
+    feature 004 content pattern at `/api/v1/admin/content/assistant-knowledge` (admin only).
+paths:
+  /api/v1/chat/config:
+    get:
+      operationId: chatConfig
+      responses:
+        '200':
+          description: Public chat configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  welcome_message: { type: string }
+                  suggested_questions: { type: array, maxItems: 3, items: { type: string } }
+                  available: { type: boolean, description: false when the site-wide cap is reached }
+  /api/v1/chat/messages:
+    post:
+      operationId: sendChatMessage
+      parameters: [{ name: X-Visitor-Id, in: header, schema: { type: string, format: uuid } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message, page]
+              properties:
+                conversation_id: { type: [string, 'null'], format: uuid, description: null starts a new conversation }
+                message: { type: string, minLength: 1, maxLength: 500 }
+                page: { type: string, maxLength: 200 }
+                turnstile_token: { type: string, description: Required when conversation_id is null }
+      responses:
+        '200':
+          description: >
+            text/event-stream. Events (JSON data):
+            meta {conversation_id, remaining_today};
+            delta {text};
+            replace {text} — price guard replaced the answer;
+            done {links: [{title, url}] (≤3), declined: bool, remaining_today, message_id};
+            error {code: limit_reached|unavailable|timeout|refused, reset_at?}.
+            Answers come from Groq (openai/gpt-oss-120b); reasoning text is never streamed.
+          content: { text/event-stream: { schema: { type: string } } }
+        '400': { description: 'bot_check_failed | message_too_long' }
+        '429': { description: 'limit_reached — { reset_at, contact options shown by client }' }
+        '503': { description: 'unavailable — provider down or site-wide cap reached' }
+  /api/v1/chat/conversations/{id}:
+    get:
+      operationId: getConversation
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: X-Visitor-Id, in: header, required: true, schema: { type: string } }
+      responses:
+        '200': { description: 'Messages for this visitor''s conversation (≤24 h old); used to restore across pages' }
+        '404': { description: Not this visitor's, or expired }
+  /api/v1/chat/conversations/{id}/handoff:
+    post:
+      operationId: handoffConversation
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: X-Visitor-Id, in: header, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [channel], properties: { channel: { type: string, enum: [inquiry, whatsapp] } } } } } }
+      responses:
+        '200':
+          description: Prefill data (AI summary or fallback)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message, services, whatsapp_text, ai_generated]
+                properties:
+                  message: { type: string, maxLength: 2000, description: Editable inquiry message }
+                  services: { type: array, items: { type: string, enum: [social_media, seo, web_software, ui_ux_design, meta_ads] } }
+                  whatsapp_text: { type: string, maxLength: 400 }
+                  ai_generated: { type: boolean, description: false when the fallback question list was used }
+  /api/v1/chat/messages/{message_id}/feedback:
+    post:
+      operationId: rateAnswer
+      parameters: [{ name: message_id, in: path, required: true, schema: { type: integer } }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [rating], properties: { rating: { type: string, enum: [helpful, not_helpful] } } } } } }
+      responses: { '204': { description: Recorded } }
+  /api/v1/leads:
+    post:
+      description: >
+        Feature 001 endpoint — extended: optional `chat_conversation_id` (uuid) in LeadCreate plus
+        header X-Visitor-Id. When valid, the lead's source becomes `chat_assistant` and the
+        conversation is linked.
+  /api/v1/admin/assistant/settings:
+    get: { operationId: getAssistantSettings, x-required-role: admin, responses: { '200': { description: Settings } } }
+    put: { operationId: updateAssistantSettings, x-required-role: admin, responses: { '200': { description: Updated } } }
+  /api/v1/admin/assistant/sources:
+    get: { operationId: listAssistantSources, x-required-role: admin, responses: { '200': { description: '[{source_type, chunk_count, last_updated_at}] from knowledge_chunks' } } }
+  /api/v1/admin/assistant/reindex:
+    post: { operationId: reindexKnowledge, x-required-role: admin, responses: { '202': { description: Full rebuild of knowledge_chunks scheduled } } }
+  /api/v1/admin/assistant/test:
+    post: { operationId: testAssistant, x-required-role: admin, description: Same SSE contract as /chat/messages; is_test=true; no visitor limits, excluded from stats, responses: { '200': { description: text/event-stream } } }
+  /api/v1/admin/assistant/conversations:
+    get:
+      operationId: listConvertedConversations
+      x-required-role: admin
+      parameters:
+        - { name: period, in: query, schema: { type: integer, enum: [7, 30, 90], default: 30 } }
+      responses:
+        '200': { description: 'Conversations with lead_id (date, lead name/link, summary, start_page, message_count) + totals {chats_started, inquiry_handoffs, whatsapp_handoffs, declined, fallbacks, helpful, not_helpful}' }
+  /api/v1/admin/assistant/conversations/{id}:
+    get: { operationId: getConversationAdmin, x-required-role: admin, responses: { '200': { description: Full (masked) transcript with links } } }

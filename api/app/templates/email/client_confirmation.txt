@@ -1,0 +1,17 @@
+Hi {{ lead.name }},
+
+Thanks for getting in touch with The Buzz Crew. We've received your inquiry and the crew will reply within 24 hours.
+
+Here's what you sent us:
+
+Services: {{ services }}
+Monthly budget: {{ budget }}
+Country: {{ country }}
+
+Your message:
+{{ lead.message }}
+
+Prefer to chat sooner? Message us on WhatsApp: {{ whatsapp_url }}
+
+— The Buzz Crew
+We tell your stories.

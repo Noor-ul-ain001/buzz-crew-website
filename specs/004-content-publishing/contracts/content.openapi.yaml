@@ -1,0 +1,174 @@
+openapi: 3.1.0
+info:
+  title: The Buzz Crew API — Content publishing (004)
+  version: 1.0.0
+  description: >
+    `{type}` ∈ testimonials | client-logos | team-members. Admin endpoints require the
+    bc_session cookie with role admin or editor (feature 003). Public endpoints return
+    only status=published AND not deleted, ordered by sort_order.
+paths:
+  /api/v1/uploads/signature:
+    post:
+      operationId: createUploadSignature
+      description: >
+        DEPLOYMENT D6: Vercel limits request bodies to 4.5 MB, so files go straight from the
+        browser to Cloudinary (tmp folder) using this short-lived signature, then are verified
+        by /uploads/finalize. usage=photo|logo requires admin|editor; usage=cv (feature 007)
+        requires a Turnstile token and is per-visitor rate-limited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [usage]
+              properties:
+                usage: { type: string, enum: [photo, logo, cv] }
+                turnstile_token: { type: string, description: Required for usage=cv }
+      responses:
+        '200':
+          description: 'Cloudinary signed-upload parameters { upload_url, api_key, timestamp, signature, folder, public_id, allowed_formats, resource_type, type }'
+        '401': { description: Not signed in (photo/logo) }
+        '429': { description: rate_limited (cv) }
+  /api/v1/uploads/finalize:
+    post:
+      operationId: finalizeUpload
+      description: >
+        Downloads the temporary upload server-side and applies the unchanged rules — ≤ 5 MB,
+        real type sniffed from content (JPEG/PNG/WebP, or PDF for cv), dimension warnings,
+        EXIF/GPS stripped by re-encoding — then stores the cleaned file in its final folder and
+        deletes the temporary one. Rejected files are deleted immediately.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [public_id, usage]
+              properties:
+                public_id: { type: string }
+                usage: { type: string, enum: [photo, logo, cv] }
+                alt_text: { type: string, maxLength: 150 }
+      responses:
+        '201': { description: 'Stored (photo/logo → Media; cv → { cv_upload_id })', content: { application/json: { schema: { $ref: '#/components/schemas/Media' } } } }
+        '413': { description: 'file_too_large — detail includes size_bytes and limit_bytes' }
+        '415': { description: 'unsupported_type — "Please choose a JPEG, PNG or WebP image" (or "needs to be a PDF" for cv)' }
+  /api/v1/admin/media/{id}:
+    patch:
+      operationId: updateMediaAlt
+      x-required-role: [admin, editor]
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [alt_text], properties: { alt_text: { type: string, maxLength: 150 } } } } } }
+      responses: { '200': { description: Updated, content: { application/json: { schema: { $ref: '#/components/schemas/Media' } } } } }
+  /api/v1/admin/content/{type}:
+    parameters: [{ $ref: '#/components/parameters/Type' }]
+    get:
+      operationId: listContent
+      x-required-role: [admin, editor]
+      parameters: [{ name: status, in: query, schema: { $ref: '#/components/schemas/PublishStatus' } }]
+      responses: { '200': { description: 'Items incl. thumbnail, status, updated_by name, updated_at' } }
+    post:
+      operationId: createContent
+      x-required-role: [admin, editor]
+      description: Always creates a draft (no publish checks).
+      responses: { '201': { description: Created draft } }
+  /api/v1/admin/content/{type}/{id}:
+    parameters: [{ $ref: '#/components/parameters/Type' }, { $ref: '#/components/parameters/Id' }]
+    get: { operationId: getContent, x-required-role: [admin, editor], responses: { '200': { description: Item } } }
+    patch:
+      operationId: updateContent
+      x-required-role: [admin, editor]
+      description: Body must include `version`. If the item is published, publish checks apply.
+      responses:
+        '200': { description: Updated; revalidation triggered if published }
+        '409': { description: 'version_conflict — returns current item' }
+        '422': { description: 'publish_requirements_not_met (published items only) — field errors' }
+    delete:
+      operationId: deleteContent
+      x-required-role: [admin, editor]
+      responses: { '204': { description: Soft-deleted, images purged, revalidation triggered } }
+  /api/v1/admin/content/{type}/{id}/publish:
+    parameters: [{ $ref: '#/components/parameters/Type' }, { $ref: '#/components/parameters/Id' }]
+    post:
+      operationId: publishContent
+      x-required-role: [admin, editor]
+      responses:
+        '200': { description: Published; revalidation triggered }
+        '422':
+          description: publish_requirements_not_met
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PublishErrors' }
+  /api/v1/admin/content/{type}/{id}/unpublish:
+    parameters: [{ $ref: '#/components/parameters/Type' }, { $ref: '#/components/parameters/Id' }]
+    post: { operationId: unpublishContent, x-required-role: [admin, editor], responses: { '200': { description: Now draft; revalidation triggered } } }
+  /api/v1/admin/content/{type}/order:
+    parameters: [{ $ref: '#/components/parameters/Type' }]
+    put:
+      operationId: reorderContent
+      x-required-role: [admin, editor]
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [ids], properties: { ids: { type: array, items: { type: string, format: uuid } } } } } } }
+      responses: { '204': { description: Reordered; revalidation triggered } }
+  /api/v1/public/testimonials:
+    get: { operationId: publicTestimonials, responses: { '200': { description: Published testimonials, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/PublicTestimonial' } } } } } } }
+  /api/v1/public/client-logos:
+    get: { operationId: publicClientLogos, responses: { '200': { description: Published logos, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/PublicClientLogo' } } } } } } }
+  /api/v1/public/team-members:
+    get: { operationId: publicTeamMembers, responses: { '200': { description: Published team members, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/PublicTeamMember' } } } } } } }
+components:
+  parameters:
+    Type: { name: type, in: path, required: true, schema: { type: string, enum: [testimonials, client-logos, team-members] } }
+    Id: { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+  schemas:
+    PublishStatus: { type: string, enum: [draft, published] }
+    Media:
+      type: object
+      required: [id, url, width, height]
+      properties:
+        id: { type: string, format: uuid }
+        url: { type: string }
+        alt_text: { type: [string, 'null'] }
+        width: { type: integer }
+        height: { type: integer }
+        warnings: { type: array, items: { type: string, enum: [below_min_size] } }
+    PublicImage:
+      type: object
+      required: [url, alt, width, height]
+      properties: { url: { type: string }, alt: { type: string }, width: { type: integer }, height: { type: integer } }
+    PublicTestimonial:
+      type: object
+      required: [id, name, role, company, country, quote]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        role: { type: string }
+        company: { type: string }
+        country: { type: string, enum: [pakistan, uae, uk, other] }
+        quote: { type: string }
+        photo: { oneOf: [{ $ref: '#/components/schemas/PublicImage' }, { type: 'null' }] }
+        video_url: { type: [string, 'null'] }
+    PublicClientLogo:
+      type: object
+      required: [id, name, logo]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        logo: { $ref: '#/components/schemas/PublicImage' }
+        website_url: { type: [string, 'null'] }
+    PublicTeamMember:
+      type: object
+      required: [id, name, role, bio, photo]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        role: { type: string }
+        bio: { type: string }
+        photo: { $ref: '#/components/schemas/PublicImage' }
+    PublishErrors:
+      type: object
+      properties:
+        detail:
+          type: object
+          properties:
+            code: { const: publish_requirements_not_met }
+            fields: { type: object, additionalProperties: { type: string }, example: { quote: 'Quote must be at least 20 characters', 'photo.alt_text': 'Describe what the image shows' } }

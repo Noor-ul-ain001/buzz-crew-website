@@ -1,0 +1,131 @@
+openapi: 3.1.0
+info:
+  title: The Buzz Crew API — Case studies (005)
+  version: 1.0.0
+  description: >
+    Admin endpoints follow the feature 004 pattern (`/api/v1/admin/content/case-studies`,
+    `/{id}`, `/{id}/publish`, `/{id}/unpublish`, `/order`) with role admin|editor and the
+    same 409/422 shapes. Only the public endpoints and the case-study-specific publish
+    errors are listed here.
+paths:
+  /api/v1/public/case-studies:
+    get:
+      operationId: listPublicCaseStudies
+      parameters:
+        - { name: industry, in: query, schema: { $ref: '#/components/schemas/Industry' } }
+        - { name: service, in: query, schema: { $ref: '#/components/schemas/Service' } }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: page_size, in: query, schema: { type: integer, enum: [3, 12], default: 12 } }
+      responses:
+        '200':
+          description: Published case studies in editor order, with facet counts
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total, page, facets]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/CaseStudyCard' } }
+                  total: { type: integer }
+                  page: { type: integer }
+                  facets:
+                    type: object
+                    properties:
+                      industries: { type: array, items: { type: object, properties: { value: { $ref: '#/components/schemas/Industry' }, count: { type: integer } } } }
+                      services: { type: array, items: { type: object, properties: { value: { $ref: '#/components/schemas/Service' }, count: { type: integer } } } }
+  /api/v1/public/case-studies/{slug}:
+    get:
+      operationId: getPublicCaseStudy
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200':
+          description: Published case study, or a redirect hint for a historical slug
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/CaseStudyDetail'
+                  - { type: object, required: [redirect_to], properties: { redirect_to: { type: string } } }
+        '404': { description: Not found, draft or deleted (indistinguishable) }
+  /api/v1/public/case-studies/slugs:
+    get:
+      operationId: listPublishedSlugs
+      responses: { '200': { description: 'For generateStaticParams and sitemap: [{slug, updated_at}]' } }
+components:
+  schemas:
+    Industry: { type: string, enum: [food_beverages, farmhouses, healthcare_dental, education, ecommerce, other] }
+    Service: { type: string, enum: [social_media, seo, web_software, ui_ux_design, meta_ads] }
+    Image:
+      type: object
+      required: [url, alt, width, height]
+      properties: { url: { type: string }, alt: { type: string }, width: { type: integer }, height: { type: integer } }
+    Metric:
+      type: object
+      required: [value, label, period, is_headline]
+      properties:
+        value: { type: string }
+        label: { type: string }
+        period: { type: string }
+        starting_value: { type: [string, 'null'] }
+        is_headline: { type: boolean }
+    CaseStudyCard:
+      type: object
+      required: [slug, client_name, title, industry, country, headline_metrics, cover]
+      properties:
+        slug: { type: string }
+        client_name: { type: string }
+        title: { type: string }
+        summary: { type: string }
+        industry: { $ref: '#/components/schemas/Industry' }
+        country: { type: string, enum: [pakistan, uae, uk, other] }
+        services: { type: array, items: { $ref: '#/components/schemas/Service' } }
+        headline_metrics: { type: array, maxItems: 3, items: { $ref: '#/components/schemas/Metric' } }
+        cover: { $ref: '#/components/schemas/Image' }
+    CaseStudyDetail:
+      allOf:
+        - $ref: '#/components/schemas/CaseStudyCard'
+        - type: object
+          required: [challenge_md, strategy_md, execution_md, results, media, related, seo_title, seo_description, published_at, updated_at]
+          properties:
+            challenge_md: { type: string }
+            strategy_md: { type: string }
+            execution_md: { type: string }
+            project_period: { type: [string, 'null'] }
+            results: { type: array, minItems: 1, maxItems: 6, items: { $ref: '#/components/schemas/Metric' } }
+            media:
+              type: array
+              items:
+                type: object
+                required: [kind, image]
+                properties:
+                  kind: { type: string, enum: [image, reel] }
+                  image: { $ref: '#/components/schemas/Image' }
+                  video_url: { type: [string, 'null'] }
+                  description: { type: [string, 'null'] }
+            before_after:
+              oneOf:
+                - type: object
+                  required: [before, after, before_label, after_label]
+                  properties:
+                    before: { $ref: '#/components/schemas/Image' }
+                    after: { $ref: '#/components/schemas/Image' }
+                    before_label: { type: string }
+                    after_label: { type: string }
+                - { type: 'null' }
+            testimonial:
+              oneOf:
+                - type: object
+                  properties: { name: { type: string }, role: { type: string }, company: { type: string }, quote: { type: string } }
+                - { type: 'null' }
+            related: { type: array, maxItems: 3, items: { $ref: '#/components/schemas/CaseStudyCard' } }
+            seo_title: { type: string }
+            seo_description: { type: string }
+            published_at: { type: string, format: date-time }
+            updated_at: { type: string, format: date-time }
+    PublishErrorFields:
+      description: Field keys returned in 422 publish_requirements_not_met for case studies
+      type: string
+      enum: [client_name, title, summary, industry, country, services, challenge_md, strategy_md, execution_md,
+             cover, 'cover.alt_text', results, 'results.headline', 'media[].alt_text', 'media[].description',
+             before_after, slug]
+      example: 'results → "Add at least one result before publishing"'

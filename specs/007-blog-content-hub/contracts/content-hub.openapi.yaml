@@ -1,0 +1,138 @@
+openapi: 3.1.0
+info:
+  title: The Buzz Crew API — Blog, industry pages, newsletter, careers (007)
+  version: 1.0.0
+  description: >
+    Admin CRUD for posts, industry pages and roles follows the feature 004 pattern
+    (`/api/v1/admin/content/{posts|industry-pages|roles}` + publish/unpublish/order;
+    role admin|editor; roles also support POST /{id}/close). Applications and subscribers
+    admin endpoints are admin-only. FAQ endpoints are defined in feature 006.
+paths:
+  /api/v1/public/posts:
+    get:
+      operationId: listPosts
+      parameters:
+        - { name: category, in: query, schema: { $ref: '#/components/schemas/Category' } }
+        - { name: tag, in: query, schema: { type: string } }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+      responses:
+        '200':
+          description: Published posts, newest first, 12 per page
+          content: { application/json: { schema: { type: object, required: [items, total, page, page_count], properties: { items: { type: array, items: { $ref: '#/components/schemas/PostCard' } }, total: { type: integer }, page: { type: integer }, page_count: { type: integer } } } } }
+  /api/v1/public/posts/{slug}:
+    get:
+      operationId: getPost
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: 'PostDetail, or { redirect_to } for a historical slug', content: { application/json: { schema: { oneOf: [{ $ref: '#/components/schemas/PostDetail' }, { type: object, required: [redirect_to], properties: { redirect_to: { type: string } } }] } } } }
+        '404': { description: Not found / draft / deleted }
+  /api/v1/public/tags:
+    get: { operationId: listTags, responses: { '200': { description: 'Tags with published post counts [{slug,name,count}] (sitemap uses count ≥ 2)' } } }
+  /api/v1/public/industry-pages/{slug}:
+    get:
+      operationId: getIndustryPage
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: 'Industry page with services, case_studies (≤6 cards from feature 005 schema) and seo fields' }
+        '404': { description: Not found / draft }
+  /api/v1/public/roles:
+    get: { operationId: listOpenRoles, responses: { '200': { description: 'Open roles only [{slug,title,employment_type,work_arrangement,closing_date}]' } } }
+  /api/v1/public/roles/{slug}:
+    get:
+      operationId: getRole
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: 'Open role detail, or { is_open: false } for closed/expired published roles (page shows "no longer open")' }
+        '404': { description: Draft or never existed }
+  /api/v1/roles/{slug}/applications:
+    post:
+      operationId: applyForRole
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, phone, cv_upload_id, turnstile_token]
+              properties:
+                name: { type: string, maxLength: 100 }
+                email: { type: string, format: email }
+                phone: { type: string, pattern: '^\+?[\d\s()-]{7,20}$' }
+                cv_upload_id: { type: string, description: 'From feature 004 /uploads/finalize with usage=cv (PDF only, ≤ 5 MB, content-checked; DEPLOYMENT D6)' }
+                cover_note: { type: string, maxLength: 1500 }
+                portfolio_url: { type: string, format: uri }
+                turnstile_token: { type: string }
+      responses:
+        '201': { description: Application stored; confirmation email sent }
+        '400': { description: bot_check_failed }
+        '409': { description: 'already_applied | role_closed' }
+        '413': { description: 'cv_too_large — "Your CV is larger than 5 MB…"' }
+        '415': { description: 'cv_not_pdf — "Your CV needs to be a PDF…"' }
+        '422': { description: Validation errors }
+        '429': { description: rate_limited }
+  /api/v1/subscribers:
+    post:
+      operationId: subscribe
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [email, source_page, turnstile_token], properties: { email: { type: string, format: email }, source_page: { type: string, maxLength: 200 }, turnstile_token: { type: string } } } } } }
+      responses:
+        '202': { description: 'Always { message: "Check your inbox to confirm your subscription" } regardless of email state' }
+        '400': { description: bot_check_failed }
+        '429': { description: rate_limited }
+  /api/v1/subscribers/confirm:
+    post:
+      operationId: confirmSubscription
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [token], properties: { token: { type: string } } } } } }
+      responses:
+        '200': { description: Confirmed (idempotent) }
+        '410': { description: 'confirmation_expired — offer to subscribe again' }
+  /api/v1/subscribers/unsubscribe:
+    post:
+      operationId: unsubscribe
+      description: Also accepts RFC 8058 one-click (List-Unsubscribe=One-Click form body).
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [token], properties: { token: { type: string } } } } } }
+      responses: { '200': { description: Unsubscribed (idempotent) } }
+  /api/v1/admin/applications:
+    get: { operationId: listApplications, x-required-role: admin, responses: { '200': { description: Applications (no CV URLs) }, '403': { description: Editors refused } } }
+  /api/v1/admin/applications/{id}/cv:
+    get:
+      operationId: getApplicationCvUrl
+      x-required-role: admin
+      parameters: [{ name: id, in: path, required: true, schema: { type: string, format: uuid } }]
+      responses: { '200': { description: '{ url, expires_at } — signed, 60 s' }, '403': { description: Editors refused } }
+  /api/v1/admin/subscribers:
+    get: { operationId: listSubscribers, x-required-role: admin, responses: { '200': { description: 'Subscribers with status, source_page, dates' } } }
+components:
+  schemas:
+    Category: { type: string, enum: [social_media, seo, web_software, ui_ux_design, meta_ads, agency_news] }
+    Image:
+      type: object
+      properties: { url: { type: string }, alt: { type: string }, width: { type: integer }, height: { type: integer } }
+    Author:
+      type: object
+      required: [name, role]
+      properties: { name: { type: string }, role: { type: string }, photo: { oneOf: [{ $ref: '#/components/schemas/Image' }, { type: 'null' }] }, is_published: { type: boolean } }
+    PostCard:
+      type: object
+      required: [slug, title, excerpt, category, published_at, reading_minutes, cover]
+      properties:
+        slug: { type: string }
+        title: { type: string }
+        excerpt: { type: string }
+        category: { $ref: '#/components/schemas/Category' }
+        published_at: { type: string, format: date-time }
+        reading_minutes: { type: integer }
+        cover: { $ref: '#/components/schemas/Image' }
+    PostDetail:
+      allOf:
+        - $ref: '#/components/schemas/PostCard'
+        - type: object
+          required: [body_md, author, tags, related, seo_title, seo_description]
+          properties:
+            body_md: { type: string }
+            content_updated_at: { type: [string, 'null'], format: date-time }
+            author: { $ref: '#/components/schemas/Author' }
+            tags: { type: array, items: { type: object, properties: { slug: { type: string }, name: { type: string } } } }
+            related: { type: array, maxItems: 3, items: { $ref: '#/components/schemas/PostCard' } }
+            seo_title: { type: string }
+            seo_description: { type: string }

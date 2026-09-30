@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <body style="margin:0;padding:24px;background:#f6f6f7;font-family:Arial,Helvetica,sans-serif;color:#0b0c1e;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;">
+      <tr>
+        <td style="padding:24px;">
+          <h1 style="margin:0 0 16px;font-size:20px;">New project inquiry from {{ lead.name }}</h1>
+          <table role="presentation" cellpadding="6" cellspacing="0" style="font-size:14px;">
+            <tr><td><strong>Name</strong></td><td>{{ lead.name }}</td></tr>
+            <tr><td><strong>Email</strong></td><td>{{ lead.email }}</td></tr>
+            <tr><td><strong>Phone</strong></td><td>{{ lead.phone or "—" }}</td></tr>
+            <tr><td><strong>Business</strong></td><td>{{ lead.business or "—" }}</td></tr>
+            <tr><td><strong>Country</strong></td><td>{{ country }}</td></tr>
+            <tr><td><strong>Services</strong></td><td>{{ services }}</td></tr>
+            <tr><td><strong>Monthly budget</strong></td><td>{{ budget }}</td></tr>
+            <tr><td><strong>Sent from</strong></td><td>{{ lead.source_page }}</td></tr>
+            <tr><td><strong>Received</strong></td><td>{{ received }}</td></tr>
+          </table>
+          <h2 style="margin:20px 0 8px;font-size:16px;">Message</h2>
+          <p style="margin:0;font-size:14px;white-space:pre-wrap;">{{ lead.message }}</p>
+          <p style="margin:24px 0 0;font-size:13px;color:#555;">Reply to this email to answer {{ lead.name }} directly.</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

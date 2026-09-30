@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420" font-family="Arial, sans-serif">
+<rect width="800" height="420" rx="24" fill="#f4f4f5"/>
+<g font-size="22" font-weight="700" text-anchor="middle">
+<path d="M120 50h560l-60 90H180z" fill="#171717"/><text x="400" y="104" fill="#fff">Reach: 120,000 people</text>
+<path d="M190 150h420l-60 90H250z" fill="#52525b"/><text x="400" y="204" fill="#fff">Clicks: 2,400</text>
+<path d="M260 250h280l-60 90H320z" fill="#facc15"/><text x="400" y="304" fill="#111">Leads: 180</text>
+</g>
+<text x="400" y="385" font-size="18" fill="#52525b" text-anchor="middle">Cost per lead = monthly budget ÷ leads</text>
+</svg>
