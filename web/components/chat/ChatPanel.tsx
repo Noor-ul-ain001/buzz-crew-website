@@ -184,8 +184,7 @@ export default function ChatPanel({ id, open, onClose }: { id: string; open: boo
       <header className="border-b border-border">
         <div className="flex items-center justify-between gap-3 px-4 pt-[calc(0.75rem+env(safe-area-inset-top))] pb-3 sm:pt-3">
           <h2 id={titleId} className="flex items-center gap-2 font-semibold">
-            Buzz Crew AI assistant
-            <span className="rounded-md bg-accent px-1.5 py-0.5 text-xs font-bold text-accent-foreground">AI</span>
+            Buzz Crew assistant
           </h2>
           <button
             type="button"
@@ -204,7 +203,7 @@ export default function ChatPanel({ id, open, onClose }: { id: string; open: boo
       <div ref={listRef} className="flex flex-1 flex-col gap-4 overflow-y-auto overscroll-contain px-4 py-5">
         <Bubble role="assistant">
           <p>
-            Hi! I&apos;m the Buzz Crew&apos;s AI assistant. I can answer questions about our services, the industries we
+            Hi! I&apos;m the Buzz Crew&apos;s assistant. I can answer questions about our services, the industries we
             work with and how to get started. I can make mistakes, so for quotes please talk to the team.
           </p>
         </Bubble>
@@ -337,7 +336,7 @@ export default function ChatPanel({ id, open, onClose }: { id: string; open: boo
           </button>
         </div>
         <p id={`${inputId}-hint`} className="mt-2 text-xs text-muted">
-          Enter to send, Shift+Enter for a new line. AI answers can be wrong.{" "}
+          Enter to send, Shift+Enter for a new line.{" "}
           <button type="button" onClick={(event) => openInquiry(event.currentTarget)} className="font-medium text-foreground underline underline-offset-2">
             Talk to the team
           </button>

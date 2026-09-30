@@ -45,7 +45,7 @@ export default function ChatLauncher() {
         // Bottom-right corner; smaller and tucked in on very narrow screens.
         className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 inline-flex size-14 max-[359px]:right-2 max-[359px]:bottom-2 max-[359px]:size-10 max-[359px]:[&_svg]:size-5 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-lg transition-transform motion-safe:hover:scale-105 sm:right-6 sm:bottom-6"
       >
-        <span className="sr-only">{open ? "Close" : "Open"} the Buzz Crew AI assistant</span>
+        <span className="sr-only">{open ? "Close" : "Open"} the Buzz Crew assistant</span>
         <svg aria-hidden="true" viewBox="0 0 24 24" className="size-7" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" />
           <path d="M12 8.5l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z" fill="currentColor" />
