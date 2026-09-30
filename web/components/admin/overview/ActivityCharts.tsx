@@ -50,14 +50,14 @@ function MiniChart({ days, metric }: { days: Day[]; metric: (typeof METRICS)[num
         <BarChart
           responsive
           data={data}
-          margin={{ top: 4, right: 4, bottom: 0, left: -28 }}
+          margin={{ top: 4, right: 4, bottom: 0, left: 0 }}
           style={{ width: "100%", height: 120 }}
           accessibilityLayer={false}
           barCategoryGap={2}
         >
           <CartesianGrid vertical={false} stroke="var(--border)" />
           <XAxis dataKey="label" tickLine={false} axisLine={false} interval="preserveStartEnd" minTickGap={40} tick={{ fill: "var(--muted)", fontSize: 11 }} />
-          <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={40} tick={{ fill: "var(--muted)", fontSize: 11 }} />
+          <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={24} tick={{ fill: "var(--muted)", fontSize: 11 }} />
           <Tooltip
             cursor={{ fill: "var(--surface)" }}
             formatter={(value) => [plural(Number(value), metric.noun), ""]}
