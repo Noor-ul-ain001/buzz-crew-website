@@ -32,9 +32,8 @@ export const BRAND_COLORS = {
 export const CONTACT_EMAIL = "buzzcrewofficial@gmail.com";
 
 // International format, digits only (no "+", spaces or dashes), as wa.me requires.
-// Set NEXT_PUBLIC_WHATSAPP_NUMBER to the real WhatsApp Business number; the fallback is a
-// placeholder for local development only.
-export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923000000000";
+// The agency's WhatsApp (0314 7971082); NEXT_PUBLIC_WHATSAPP_NUMBER can override it.
+export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923147971082";
 
 export const WHATSAPP_MESSAGE =
   "Hi Buzz Crew! I found you on your website and I'd like to talk about a project.";

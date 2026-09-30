@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     # "fake" skips the provider entirely (local development and end-to-end tests).
     email_provider: Literal["resend", "fake"] = "resend"
     # International format, digits only, as wa.me requires.
-    whatsapp_number: str = "923000000000"
+    whatsapp_number: str = "923147971082"
 
     ip_hash_salt: str = Field(min_length=8)
     cron_secret: str | None = None
