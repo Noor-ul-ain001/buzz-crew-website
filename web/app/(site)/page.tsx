@@ -7,6 +7,7 @@ import ClientLogoMarquee from "@/components/home/ClientLogoMarquee";
 import TestimonialsCarousel from "@/components/home/TestimonialsCarousel";
 import StartProjectButton from "@/components/inquiry/StartProjectButton";
 import { getPublishedClientLogos, getPublishedTestimonials } from "@/lib/content/public";
+import { SERVICE_DETAILS } from "@/lib/services";
 import { CONTACT_EMAIL, INSTAGRAM_URL, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
 
 // Content from the agency brochure (ABOUT BUZZ CREW.pdf) and intro deck
@@ -37,71 +38,29 @@ const STATS = [
 const PILLARS = [
   { title: "Mission", body: "To give every client, local or international, agency-level marketing without juggling multiple vendors." },
   { title: "Vision", body: "To become a leading name in digital marketing, known for creativity, consistency and measurable growth." },
-  { title: "Approach", body: "One crew, five disciplines: social, search, development, design and paid ads, under one roof." },
+  { title: "Approach", body: "Strategy first: every campaign and platform we build serves clear business objectives, not trends alone." },
 ];
-
-const SERVICES = [
-  {
-    name: "Social Media",
-    image: "/home/camera.webp",
-    alt: "Filming a band on a camera monitor",
-    body: "Social platforms turned into growth channels, with real conversation around your business.",
-    points: ["Content strategy", "Community management", "Creative production", "Analytics and reporting"],
-  },
-  {
-    name: "SEO",
-    image: "/home/automation.webp",
-    alt: "Diagram of an automated process: robotic, process, automation",
-    body: "Technical fixes, content and authority that grow organic visibility over time.",
-    points: ["Keyword research", "On-page optimisation", "Technical SEO", "Performance reporting"],
-  },
-  {
-    name: "Web & Software",
-    image: "/home/code.webp",
-    alt: "Code on a laptop screen next to a mug that says Make it happen",
-    body: "Marketing websites and custom software that are fast, reliable and built to scale.",
-    points: ["Website design and build", "Custom software", "E-commerce", "Maintenance and support"],
-  },
-  {
-    name: "UI/UX Design",
-    image: "/home/tablet.webp",
-    alt: "Designer sketching app screens on a tablet",
-    body: "Interfaces that feel intuitive, look on-brand and make it easy to take action.",
-    points: ["User research", "Wireframes and prototypes", "Visual design systems", "Usability testing"],
-  },
-  {
-    name: "Meta Ads",
-    image: "/home/magazines.webp",
-    alt: "Hands leafing through magazines on a desk",
-    body: "Paid campaigns that reach the right audience at the right moment, and report what they return.",
-    points: ["Campaign strategy", "Audience targeting", "Ad creative and copy", "Performance tracking"],
-  },
-];
-
-const ALSO = ["Video and content production", "Branding", "Copywriting", "Public relations", "AI and automation", "IoT and smart digital solutions"];
 
 const PROCESS = [
-  { title: "Discovery and audit", body: "We map the brand, the competition and every gap in the current marketing." },
+  { title: "Discovery & Audit", body: "We map the brand, the competition, and every gap in the current marketing." },
   { title: "Strategy", body: "A content and channel plan built around real goals, not vanity metrics." },
-  { title: "Execution and creative", body: "Scripting, shooting, designing and building, in-house and on schedule." },
-  { title: "Reporting and growth", body: "Clear numbers each cycle, and a plan for what scales next." },
+  { title: "Execution & Creative", body: "Scripting, shooting, designing, and building, in-house, on schedule." },
+  { title: "Reporting & Growth", body: "Clear numbers each cycle, and a plan for what scales next." },
 ];
 
 const INDUSTRIES = [
-  { name: "Media and news", detail: "News brands, including pages followed by more than 100K people", href: "/work?industry=media-news" },
-  { name: "Retail", detail: "Launch campaigns for Apple's authorised distributor", href: "/work?industry=retail" },
-  { name: "Food and beverages", detail: "Restaurants, catering, cafés and home kitchens", href: "/industries/restaurant-marketing-karachi" },
-  { name: "Farmhouses", detail: "Event and picnic venues" },
-  { name: "Healthcare and dental", detail: "Automation systems for clinics and hospitals" },
-  { name: "Education", detail: "Enrolment-focused marketing for schools and institutes" },
-  { name: "E-commerce", detail: "Customised e-commerce brand development" },
+  { name: "Food & beverages", detail: "Restaurants, catering, cafés and home kitchens", href: "/industries/food-and-beverages" },
+  { name: "Farmhouses", detail: "Event and picnic venues", href: "/industries/farmhouses" },
+  { name: "Healthcare & dental", detail: "Automation systems for clinics and hospitals", href: "/industries/healthcare-and-dental" },
+  { name: "Education", detail: "Enrolment-focused marketing for schools and institutes", href: "/industries/education" },
+  { name: "E-commerce", detail: "Customised e-commerce brand development", href: "/industries/e-commerce" },
 ];
 
 const JOURNEY = [
   { year: "2022", title: "The crew is born", body: "The Buzz Crew starts out in Karachi." },
   { year: "2023", title: "First clients on board", body: "Local businesses trust the crew with their digital growth." },
   { year: "2024", title: "Going international", body: "Services expand to clients in the UAE, the UK and beyond." },
-  { year: "2026", title: "Full-service crew", body: "Five disciplines, one integrated agency." },
+  { year: "2026", title: "Full-service crew", body: "Ten disciplines, one integrated agency." },
 ];
 
 const TOOLS = [
@@ -122,7 +81,7 @@ function SectionHeading({ id, children, className = "" }: { id: string; children
   );
 }
 
-const DISCIPLINES = ["Social media", "SEO", "Web & software", "UI/UX design", "Meta Ads", "Branding", "Video"];
+const DISCIPLINES = SERVICE_DETAILS.map((service) => service.name);
 
 export default async function Home() {
   const [testimonials, logos] = await Promise.all([getPublishedTestimonials(), getPublishedClientLogos()]);
@@ -209,7 +168,7 @@ export default async function Home() {
                   sizes="(min-width: 1024px) 200px, 0px"
                   className="float absolute inset-0 m-auto w-1/2 drop-shadow-[0_0_40px_color-mix(in_oklab,var(--accent)_35%,transparent)]"
                 />
-                {["Social", "SEO", "Web", "Design", "Ads"].map((label, index) => (
+                {["Marketing", "Design", "Web", "Video", "AI"].map((label, index) => (
                   <span
                     key={label}
                     className="float absolute rounded-full border border-border bg-surface/80 px-3 py-1 text-xs font-semibold backdrop-blur-md"
@@ -251,7 +210,7 @@ export default async function Home() {
         <div aria-hidden="true" className="overflow-hidden border-y border-border py-6 select-none">
           <div className="flex w-max motion-safe:animate-marquee [--marquee-duration:70s]">
             {[0, 1].map((copy) => (
-              <p key={copy} className="flex shrink-0 items-center text-5xl font-bold tracking-tight uppercase sm:text-7xl">
+              <p key={copy} className="flex shrink-0 items-center font-display text-5xl font-bold tracking-tight uppercase sm:text-7xl">
                 {DISCIPLINES.map((discipline) => (
                   <span key={discipline} className="flex items-center">
                     <span className="text-outline px-8">{discipline}</span>
@@ -314,57 +273,34 @@ export default async function Home() {
               <div>
                 <Eyebrow>What we do</Eyebrow>
                 <SectionHeading id="services-heading">
-                  Five disciplines. <em className="text-accent-strong">One</em> integrated crew.
+                  Ten disciplines. <em className="text-accent-strong">One</em> integrated crew.
                 </SectionHeading>
               </div>
               <Link href="/services" className="link-sweep shrink-0 self-start pb-1 font-semibold md:self-auto">
                 All services →
               </Link>
             </div>
-            {/* An index rather than a card grid: each row brings its photo to full colour on hover. */}
-            <ol className="mt-14 border-t border-border">
-              {SERVICES.map((service, index) => (
-                <li
-                  key={service.name}
-                  className="reveal group grid gap-5 border-b border-border py-8 md:grid-cols-[3.5rem_1fr_1.3fr_11rem] md:items-center md:gap-8"
-                >
-                  <span className="text-sm font-semibold tracking-[0.2em] text-accent-strong tabular-nums">0{index + 1}</span>
-                  <h3 className="font-display text-4xl font-semibold tracking-tight transition-transform duration-500 ease-out motion-safe:group-hover:translate-x-2">
-                    {service.name}
-                  </h3>
-                  <div>
-                    <p className="text-muted">{service.body}</p>
-                    <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                      {service.points.map((point) => (
-                        <li key={point} className="flex items-center gap-2">
-                          <span aria-hidden="true" className="size-1 rounded-full bg-flame" />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
-                    <Image
-                      src={service.image}
-                      alt={service.alt}
-                      fill
-                      sizes="(min-width: 768px) 176px, 100vw"
-                      className="object-cover grayscale-[60%] transition duration-700 ease-out group-hover:grayscale-0 motion-safe:group-hover:scale-105"
-                    />
-                  </div>
+            {/* The brochure's ten services as a two-column index; each row opens its section on /services. */}
+            <ol className="reveal-stagger mt-14 grid border-t border-border md:grid-cols-2 md:gap-x-12">
+              {SERVICE_DETAILS.map((service, index) => (
+                <li key={service.id} className="border-b border-border">
+                  <Link href={`/services#${service.id}`} className="group flex items-start gap-5 py-6">
+                    <span className="mt-2 text-xs font-semibold tracking-[0.2em] text-accent-strong tabular-nums">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex-1">
+                      <span className="block font-display text-2xl transition-transform duration-500 ease-out motion-safe:group-hover:translate-x-1.5 sm:text-3xl">
+                        {service.name}
+                      </span>
+                      <span className="mt-1.5 block text-sm text-muted">{service.summary}</span>
+                    </span>
+                    <span aria-hidden="true" className="mt-2 text-xl text-muted transition duration-300 group-hover:translate-x-1 group-hover:text-accent-strong">
+                      →
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ol>
-            <div className="reveal mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <p className="shrink-0 text-sm font-semibold tracking-[0.2em] text-muted uppercase">Also</p>
-              <ul className="flex flex-wrap gap-2">
-                {ALSO.map((item) => (
-                  <li key={item} className="rounded-full border border-border px-3.5 py-1.5 text-sm transition-colors hover:border-accent hover:text-accent-strong">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </section>
 
@@ -419,7 +355,7 @@ export default async function Home() {
                   key={industry.name}
                   className={`group relative flex min-h-44 flex-col justify-between gap-6 rounded-3xl border border-border bg-background p-6 ${
                     industry.href ? "lift hover:border-accent/60" : ""
-                  } ${index === 0 || index === INDUSTRIES.length - 1 ? "lg:col-span-2" : ""}`}
+                  } ${index === 0 ? "lg:col-span-2" : ""}`}
                 >
                   <span className="text-xs font-semibold tracking-[0.2em] text-accent-strong tabular-nums">0{index + 1}</span>
                   <div className="flex items-end justify-between gap-4">

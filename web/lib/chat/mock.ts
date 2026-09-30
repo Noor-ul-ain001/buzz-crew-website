@@ -1,4 +1,4 @@
-// Mock chat assistant: no AI calls. Replies are canned answers picked by keyword and
+// Chat assistant without AI calls: replies are canned answers picked by keyword and
 // streamed word by word, so the UI behaves as it will with a real streaming API.
 //
 // To preview the error states, send a message containing:
@@ -22,49 +22,65 @@ const USAGE_KEY = "buzz-crew-chat-usage";
 
 type Canned = { keywords: string[]; text: string; links?: ChatLink[] };
 
+// Every answer sticks to facts from the brochure (ABOUT BUZZ CREW.pdf) and the site.
 const ANSWERS: Canned[] = [
   {
     keywords: ["service", "offer", "do you do", "what do you"],
-    text: "We're a full-service digital agency. We run social media (content, Reels and community), SEO and local SEO, websites and web apps, UI/UX design, and Meta Ads, for brands in Pakistan, the UAE and the UK. Most clients start with one or two services and add more as results come in.",
+    text: "We're a full-service digital agency founded in Karachi in 2022. Our services: digital marketing, creative and graphic design, web and software development, UI/UX design, video and content production, public relations, branding, copywriting, AI and automation, and IoT and smart digital solutions.",
     links: [
-      { label: "Frequently asked questions", href: "/faq" },
+      { label: "All services", href: "/services" },
       { label: "Contact the team", href: "/contact" },
     ],
   },
   {
-    keywords: ["restaurant", "café", "cafe", "food", "bakery"],
-    text: "Yes, restaurants and cafés are one of our biggest sectors. We help them fill quiet weeknights with Instagram content and local Meta Ads, and get into Google's map results. Chai Khana Co. doubled calls from Google Maps in four months.",
-    links: [
-      { label: "Restaurant marketing in Karachi", href: "/industries/restaurant-marketing-karachi" },
-      { label: "Case study: Instagram for restaurants", href: "/blog/instagram-lessons-restaurants" },
-    ],
+    keywords: ["industr", "sector", "niche"],
+    text: "We bring cross-industry experience, not a one-vertical playbook: food and beverages, farmhouses and event venues, healthcare and dental, education and e-commerce.",
+    links: [{ label: "Where we've worked", href: "/#industries-heading" }],
+  },
+  {
+    keywords: ["restaurant", "café", "cafe", "food", "bakery", "catering", "kitchen"],
+    text: "Yes, food and beverages is one of our main industries: restaurants, catering, cafés and home kitchens. Clients include Farzana's Kitchen, Halki Aanch by Ayesha, Mr. Bawarchi and Nawab's Dynasty.",
+    links: [{ label: "Food and beverage marketing", href: "/industries/food-and-beverages" }],
+  },
+  {
+    keywords: ["farm", "venue", "event", "picnic"],
+    text: "We work with farmhouses and event and picnic venues, including Black Gold Farm and The Farm Villa, on content, social media and bookings.",
+    links: [{ label: "Farmhouses", href: "/industries/farmhouses" }],
+  },
+  {
+    keywords: ["clinic", "dental", "hospital", "health"],
+    text: "For healthcare and dental, we build automation systems for clinics and hospitals, alongside websites and patient-friendly content.",
+    links: [{ label: "Healthcare and dental", href: "/industries/healthcare-and-dental" }],
+  },
+  {
+    keywords: ["school", "education", "institute", "university", "enrol"],
+    text: "For schools and institutes we run enrolment-focused marketing, timed around the admissions calendar.",
+    links: [{ label: "Education", href: "/industries/education" }],
   },
   {
     keywords: ["price", "pricing", "cost", "budget", "how much", "fee", "get started", "start a project"],
     text: "Every project is quoted on its scope. After a short call the team sends a fixed quote, so the best first step is to tell us what you need.",
-    links: [
-      { label: "Start a project", href: "/contact" },
-    ],
+    links: [{ label: "Start a project", href: "/contact" }],
   },
   {
-    keywords: ["seo", "google", "rank", "search"],
-    text: "For SEO we start with your Google Business Profile and local pages, then fix technical issues and build content around what your customers search for. Local SEO often shows movement within two to three months.",
-    links: [{ label: "Local SEO checklist", href: "/blog/local-seo-karachi-checklist" }],
+    keywords: ["how do you work", "process", "approach"],
+    text: "A repeatable process behind every account: discovery and audit, strategy, execution and creative, then reporting and growth, with clear numbers each cycle.",
+    links: [{ label: "How we work", href: "/services" }],
   },
   {
-    keywords: ["real estate", "property", "dubai", "uae"],
-    text: "We work with agencies and developers in Dubai on lead generation, project landing pages and bilingual English and Arabic SEO.",
-    links: [{ label: "Real estate marketing in Dubai", href: "/industries/real-estate-marketing-dubai" }],
+    keywords: ["where", "based", "location", "uae", "uk", "dubai", "international"],
+    text: "We're based in Karachi and work with clients in Pakistan, the UAE, the UK and beyond, with more than 12 international clients so far. We're available for worldwide collaborations.",
+    links: [{ label: "About us", href: "/about" }],
   },
   {
-    keywords: ["clinic", "dental", "physio", "uk", "london"],
-    text: "Yes. We help private clinics in the UK with local SEO, fast websites with online booking, and calm, rules-aware social media.",
-    links: [{ label: "Marketing for UK clinics", href: "/industries/clinic-marketing-uk" }],
+    keywords: ["website", "web", "site", "app", "develop", "software", "e-commerce", "ecommerce", "store"],
+    text: "We build websites, online stores and custom software, including a tailored CRM system for Discovery Homes in Dubai.",
+    links: [{ label: "Web and software development", href: "/services#web-software" }],
   },
   {
-    keywords: ["website", "web", "site", "app", "develop"],
-    text: "We build fast, accessible websites and web apps with Next.js, including bilingual sites and online booking. A typical business website takes four to six weeks.",
-    links: [{ label: "Why websites are slow on 4G", href: "/blog/website-speed-4g-pakistan" }],
+    keywords: ["work", "portfolio", "example", "case study", "clients"],
+    text: "We've completed more than 90 projects. Our work includes Instagram for Islamabad Now (156K followers), AwamiWeb (102K) and Mercantile Pakistan (101K).",
+    links: [{ label: "See our work", href: "/work" }],
   },
   {
     keywords: ["hello", "hi", "salam", "hey"],

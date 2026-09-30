@@ -1,0 +1,239 @@
+{
+  "faqs": [
+    {
+      "group": "Working with us",
+      "question": "Where are you based, and who do you work with?",
+      "answer": "We're based in Karachi and work with brands across Pakistan, the UAE and the UK. Most of our work is remote, with in-person shoots and meetings in Karachi."
+    },
+    {
+      "group": "Working with us",
+      "question": "How quickly can you start?",
+      "answer": "Most projects start within one to two weeks of signing. Urgent launches, such as a new branch opening, can often start sooner."
+    },
+    {
+      "group": "Working with us",
+      "question": "Who will I be working with day to day?",
+      "answer": "Every client has one account lead who knows your business and pulls in designers, developers and ad specialists as needed."
+    },
+    {
+      "group": "Working with us",
+      "question": "How do we communicate?",
+      "answer": "Usually a shared WhatsApp group for quick questions, plus a monthly call to review results. We reply within one working day."
+    },
+    {
+      "group": "Pricing and contracts",
+      "question": "How much do your services cost?",
+      "answer": "Every project is quoted on its scope. After a short call we'll send a fixed quote."
+    },
+    {
+      "group": "Pricing and contracts",
+      "question": "Do you have minimum contract lengths?",
+      "answer": "Monthly retainers have a three-month minimum, because social media and SEO take time to show results. After that, it's a rolling month."
+    },
+    {
+      "group": "Pricing and contracts",
+      "question": "Can you invoice in AED or GBP?",
+      "answer": "Yes. We invoice clients in the UAE in AED and clients in the UK in GBP."
+    },
+    {
+      "group": "Pricing and contracts",
+      "question": "Is ad spend included in your fee?",
+      "answer": "No. Ad spend is paid directly to Meta or Google from your own account, so you always keep full control and visibility of it."
+    },
+    {
+      "group": "Social media and ads",
+      "question": "Do you create the content or do we?",
+      "answer": "We plan, shoot and edit content for you. If you have your own photos or videos, we'll use them too."
+    },
+    {
+      "group": "Social media and ads",
+      "question": "How soon will Meta Ads bring in leads?",
+      "answer": "Most campaigns bring in their first leads within a week. It usually takes three to four weeks to find the best-performing audiences and ads."
+    },
+    {
+      "group": "Social media and ads",
+      "question": "Can you manage our TikTok as well?",
+      "answer": "Yes, as part of a social media retainer. We'll recommend the platforms that suit your audience best."
+    },
+    {
+      "group": "Social media and ads",
+      "question": "Who owns the ad accounts and pages?",
+      "answer": "You do. We work inside your accounts with partner access, so you keep everything if we stop working together."
+    },
+    {
+      "group": "Websites and SEO",
+      "question": "How long does a new website take?",
+      "answer": "A typical business website takes four to six weeks from kick-off to launch. Larger sites or online stores take longer."
+    },
+    {
+      "group": "Websites and SEO",
+      "question": "Will I be able to update the website myself?",
+      "answer": "Yes. We build on a content management system and show you how to edit pages, blog posts and images."
+    },
+    {
+      "group": "Websites and SEO",
+      "question": "How long does SEO take to work?",
+      "answer": "You'll usually see early movement in two to three months and stronger results in six. Local SEO can be faster."
+    },
+    {
+      "group": "Websites and SEO",
+      "question": "Do you build websites in Arabic?",
+      "answer": "Yes. We build bilingual English and Arabic websites with proper right-to-left layouts and Arabic SEO."
+    }
+  ],
+  "posts": [
+    {
+      "slug": "local-seo-karachi-checklist",
+      "title": "Local SEO for Karachi businesses: a 2026 checklist",
+      "excerpt": "Most local customers never scroll past the map. Here's the checklist we use to get cafés, clinics and shops into Google's top three in Karachi.",
+      "body_md": "When someone in Clifton searches for \"bakery near me\", Google shows a map with three businesses before any normal results. That box, the **local pack**, is where most local enquiries come from. This checklist is what we run through for every new local client.\n\n![Diagram of a Google search for \"bakery near me\" showing a map and three listed businesses, with yours at the top](/images/blog/local-pack-diagram.svg \"The local pack sits above the normal results.\")\n\n## 1. Get your Google Business Profile right\n\nYour profile matters more than your website for local searches. Start here:\n\n- Choose the **most specific primary category** (for example \"Pakistani restaurant\", not just \"Restaurant\").\n- Use your real business name. Adding keywords like \"Best Bakery Karachi\" breaks Google's guidelines and can get the profile suspended.\n- Add opening hours, including Ramadan and Eid hours when they change.\n- Upload at least ten recent photos: storefront, interior, team and products.\n\n### Your address has to match everywhere\n\nGoogle cross-checks your name, address and phone number (NAP) across the web. \"Shop 4, Block 5, Clifton\" on Google and \"Plot 4-C, Clifton Block 5\" on Facebook look like two different places. Pick one format and use it everywhere.\n\n## 2. Reviews: ask every happy customer\n\nReview count and recency are two of the strongest local ranking signals we see.\n\n1. Create a short review link from your profile.\n2. Put it on a QR code at the counter and in your WhatsApp follow-ups.\n3. Reply to every review, good or bad, within a few days.\n\n> \"We went from 23 to 140 reviews in four months just by asking at the till. Calls from Google Maps doubled.\"\n> — Bilal Ahmed, Chai Khana Co.\n\n## 3. Give Google a page for every location\n\nIf you have branches in DHA and Gulshan, each one needs its own page on your website with its address, map, opening hours and photos. One \"Locations\" page listing everything isn't enough.\n\n## 4. Add LocalBusiness structured data\n\nStructured data tells Google exactly what your business is. Add this to each location page, with your own details:\n\n~~~json\n{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Bakery\",\n  \"name\": \"Your Bakery\",\n  \"address\": {\n    \"@type\": \"PostalAddress\",\n    \"streetAddress\": \"Shop 4, Block 5, Clifton\",\n    \"addressLocality\": \"Karachi\",\n    \"addressCountry\": \"PK\"\n  },\n  \"telephone\": \"+92 21 1234567\",\n  \"openingHours\": \"Mo-Su 09:00-23:00\"\n}\n~~~\n\n## 5. Track what matters\n\nRankings move every day. Instead, watch these monthly in your profile's Performance tab:\n\n- calls from the profile,\n- direction requests,\n- website clicks.\n\nIf those are growing, your local SEO is working.\n",
+      "author_name": "Hamza Qureshi",
+      "author_role": "Founder & Creative Director",
+      "category": "seo",
+      "tags": [
+        "Local SEO",
+        "Google Business Profile",
+        "Karachi"
+      ],
+      "reading_minutes": 7,
+      "seo_title": "Local SEO checklist for Karachi businesses (2026)",
+      "seo_description": "A practical local SEO checklist for Karachi businesses: Google Business Profile, reviews, local pages and schema, from The Buzz Crew."
+    },
+    {
+      "slug": "instagram-lessons-restaurants",
+      "title": "What we learned running Instagram for Pakistani restaurants",
+      "excerpt": "Food looks good on Instagram, but likes don't fill tables. The content, timing and captions that actually brought diners in.",
+      "body_md": "We've run Instagram for restaurants from small home kitchens to multi-branch cafés. Some posts got thousands of likes and no bookings; some plain-looking stories filled a Tuesday night. Here's what we learned.\n\n## People follow for food, but book for reasons\n\nBeautiful plates get likes. What gets bookings is a **reason to come this week**:\n\n- a new dish that's only available for a limited time,\n- a deal on a quiet night,\n- an event, like live qawwali or a football screening.\n\n## Post when people decide where to eat\n\nOur best-performing slots across Karachi and Lahore were:\n\n| Day | Time | Why |\n| --- | --- | --- |\n| Thursday | 6–8 pm | Weekend plans are being made |\n| Friday | 12–1 pm | After Jummah, deciding on lunch |\n| Sunday | 5–7 pm | Family dinner decisions |\n\n## Stories do the selling\n\nGrid posts build the brand; stories drive action. Use the link sticker for your menu and booking link every time, and keep a \"Menu\" highlight up to date.\n\n> Treat your highlights like a mini website: Menu, Deals, Location, Reviews.\n\n## Captions: say what, where and when\n\nA caption like \"Tag someone you'd share this with 😍\" does nothing for footfall. Compare:\n\n> **New: Smoked Beef Nihari.** Only at our DHA branch, weekends till Eid. Book a table from the link in our bio.\n\nThe second one tells people what it is, where to get it and when. That's the one that worked.\n\n## What we'd tell every restaurant owner\n\n1. Film short clips in the kitchen during service. Real beats staged.\n2. Reply to every comment and DM within the hour during dinner time.\n3. Repost diners' stories. It's free, trusted content.\n",
+      "author_name": "Sana Malik",
+      "author_role": "Head of Social",
+      "category": "social-media",
+      "tags": [
+        "Instagram",
+        "Restaurants",
+        "Content strategy"
+      ],
+      "reading_minutes": 6,
+      "seo_title": "",
+      "seo_description": ""
+    },
+    {
+      "slug": "meta-ads-budget-pkr",
+      "title": "Meta Ads budgets in PKR: how much should a small business spend?",
+      "excerpt": "PKR 20,000 a month or PKR 200,000? A simple way to set your Meta Ads budget from the number of customers you actually need.",
+      "body_md": "\"How much should we spend on ads?\" is the first question every new client asks. The honest answer is: work backwards from the customers you need.\n\n## Start from the customers, not the budget\n\nYou need three numbers:\n\n1. **How many new customers** you want each month.\n2. **Your close rate**: out of 10 enquiries, how many buy?\n3. **Your likely cost per lead** in your industry.\n\n![Funnel diagram: 120,000 people reached, 2,400 clicks, 180 leads](/images/blog/ads-funnel-diagram.svg \"A typical lead generation funnel for a local service business.\")\n\n### A worked example\n\nA salon in Lahore wants **20 new bridal clients** a month. It closes 1 in 4 enquiries, so it needs about 80 leads. If leads cost around PKR 450:\n\n~~~text\n80 leads × PKR 450 = PKR 36,000 a month\n~~~\n\nThat's the starting budget. Not a round number someone guessed.\n\n## Typical cost per lead in Pakistan (2026)\n\nThese are ranges we've seen across our own campaigns. Yours will vary:\n\n- **Restaurants and cafés:** PKR 150–400 per message or booking\n- **Salons and clinics:** PKR 300–700 per lead\n- **Real estate:** PKR 800–2,500 per qualified lead\n- **B2B services:** PKR 1,500+ per lead\n\n## Give it enough time to learn\n\nMeta's delivery system needs about **50 results a week** per ad set to optimise well. If your budget can only buy 10 leads a week, run fewer ad sets rather than splitting the money thinly.\n\n> Spend enough to learn, then scale what works. Don't spread PKR 20,000 across six campaigns.\n\n## When to increase the budget\n\nRaise spend by 20–30% at a time when:\n\n- cost per lead has been stable for two weeks,\n- your team is keeping up with follow-ups,\n- leads are turning into customers.\n\nIf your sales team can't call leads back within an hour, more budget just means more wasted leads.\n",
+      "author_name": "Danish Ali",
+      "author_role": "Performance Marketer",
+      "category": "meta-ads",
+      "tags": [
+        "Budgeting",
+        "Lead generation",
+        "Small business"
+      ],
+      "reading_minutes": 8,
+      "seo_title": "",
+      "seo_description": ""
+    },
+    {
+      "slug": "website-speed-4g-pakistan",
+      "title": "Why your website is slow on 4G in Pakistan (and how to fix it)",
+      "excerpt": "Most of your visitors are on mid-range Android phones and patchy 4G. Four fixes that make the biggest difference to load times.",
+      "body_md": "Your website probably feels fast on office Wi-Fi. Your customers are on a three-year-old Android phone on 4G in a busy market. Here's what slows it down for them.\n\n## 1. Images are almost always the problem\n\nA single 4 MB hero photo takes several seconds on a weak connection. Fix it by:\n\n- serving **WebP or AVIF** instead of JPEG or PNG,\n- sizing images for the screen they're shown on,\n- lazy-loading anything below the first screen.\n\nIn Next.js, the Image component does most of this for you:\n\n~~~tsx\nimport Image from \"next/image\";\n\nexport function Hero() {\n  return (\n    <Image\n      src=\"/images/storefront.jpg\"\n      alt=\"Our Clifton storefront at night\"\n      width={1200}\n      height={630}\n      priority\n      sizes=\"100vw\"\n    />\n  );\n}\n~~~\n\n## 2. Too many third-party scripts\n\nChat widgets, several analytics tools, heatmaps, pop-ups: each one adds weight. We regularly find sites loading **five tracking scripts** that nobody looks at. Remove what you don't use, and load the rest only after consent.\n\n## 3. Web fonts that block the page\n\nLoading four weights of two fonts can delay text from appearing. Use one family, two weights, and let the browser show a fallback font while it loads.\n\n## 4. Cheap hosting far away\n\nA server in the US adds noticeable delay for visitors in Pakistan. A CDN with edge locations nearer your customers makes every page faster.\n\n> Test on a real mid-range phone over mobile data, not just in your browser's developer tools.\n\n## How to check your site\n\nRun it through PageSpeed Insights and look at the **mobile** tab. Aim for:\n\n| Metric | Good |\n| --- | --- |\n| Largest Contentful Paint | under 2.5 s |\n| Interaction to Next Paint | under 200 ms |\n| Cumulative Layout Shift | under 0.1 |\n",
+      "author_name": "Omar Farooq",
+      "author_role": "Web Lead",
+      "category": "web-development",
+      "tags": [
+        "Performance",
+        "Core Web Vitals",
+        "Next.js"
+      ],
+      "reading_minutes": 7,
+      "seo_title": "",
+      "seo_description": ""
+    },
+    {
+      "slug": "bilingual-seo-uae",
+      "title": "Bilingual SEO in the UAE: ranking in English and Arabic",
+      "excerpt": "Half your UAE customers may search in Arabic. How to structure a bilingual site so both languages rank, without duplicate content problems.",
+      "body_md": "A clinic in Abu Dhabi told us their English site ranked well, but Arabic searches for the same services showed only competitors. The fix wasn't more content. It was structure.\n\n## Give each language its own URL\n\nDon't switch language with a cookie or a script. Search engines need a separate, crawlable URL for each version:\n\n- example.ae/en/dental-implants\n- example.ae/ar/زراعة-الأسنان\n\n## Tell Google which pages are translations\n\nUse hreflang tags so Google shows the right language to the right searcher:\n\n~~~html\n<link rel=\"alternate\" hreflang=\"en-AE\" href=\"https://example.ae/en/dental-implants\" />\n<link rel=\"alternate\" hreflang=\"ar-AE\" href=\"https://example.ae/ar/dental-implants\" />\n<link rel=\"alternate\" hreflang=\"x-default\" href=\"https://example.ae/en/dental-implants\" />\n~~~\n\n## Translate for search, not word for word\n\nPeople don't search in Arabic the way a translation tool writes it. Research Arabic keywords separately. The most common phrasing is often more colloquial than you'd expect.\n\n> A direct translation of your English page is a starting point, not a finished Arabic page.\n\n## Right-to-left needs real design work\n\nAn Arabic page needs a mirrored layout: navigation, icons with direction, and forms. A left-to-right layout with Arabic text feels broken and hurts engagement.\n\n## Checklist\n\n1. Separate URLs per language.\n2. hreflang on every translated page.\n3. Arabic keyword research.\n4. A proper right-to-left layout.\n5. Google Business Profile details in both languages.\n",
+      "author_name": "Hamza Qureshi",
+      "author_role": "Founder & Creative Director",
+      "category": "seo",
+      "tags": [
+        "UAE",
+        "Arabic",
+        "hreflang"
+      ],
+      "reading_minutes": 6,
+      "seo_title": "",
+      "seo_description": ""
+    },
+    {
+      "slug": "reels-vs-carousels",
+      "title": "Reels vs carousels: what actually drives enquiries",
+      "excerpt": "Reels win reach, carousels win saves. We compared six months of client posts to see which format brings in messages and leads.",
+      "body_md": "Every few months someone declares that \"only Reels work now\". We looked at six months of posts across our clients to see what actually leads to enquiries.\n\n## What we compared\n\nWe tracked reach, saves, profile visits and **DMs or leads** for every Reel and carousel across twelve accounts.\n\n## The short version\n\n- **Reels** reached about three times more people, most of them new.\n- **Carousels** got twice as many saves and more profile visits per view.\n- **Enquiries** came from both, but carousels converted better for services with a considered purchase, like clinics and interiors.\n\n## When to use Reels\n\nUse Reels to get discovered: behind the scenes, transformations and quick tips. Keep the first two seconds strong and add captions, since most people watch without sound.\n\n## When to use carousels\n\nUse carousels to explain and persuade: price guides, before-and-after steps, FAQs. End with a clear call to action slide.\n\n> Reels bring people to your profile. Carousels convince them to message you.\n\n## Our recommended mix\n\nFor most service businesses we now plan each week like this:\n\n1. Two Reels for reach.\n2. One carousel that answers a buying question.\n3. Daily stories with a clear link or reply prompt.\n",
+      "author_name": "Sana Malik",
+      "author_role": "Head of Social",
+      "category": "social-media",
+      "tags": [
+        "Instagram",
+        "Reels",
+        "Content strategy"
+      ],
+      "reading_minutes": 5,
+      "seo_title": "",
+      "seo_description": ""
+    },
+    {
+      "slug": "meta-lead-ads-quality",
+      "title": "Lead ads that don't waste your sales team's time",
+      "excerpt": "Cheap leads are easy to get and hard to close. The form settings and follow-up habits that improve lead quality from Meta lead ads.",
+      "body_md": "Meta lead ads can produce leads for a few hundred rupees each. The catch: many of them never pick up the phone. Here's how we fix lead quality without doubling the cost.\n\n## Switch to \"Higher intent\" forms\n\nThe default form auto-fills details and submits in one tap, which makes accidental leads easy. The **Higher intent** form type adds a review step before submitting. Expect fewer leads, but more real ones.\n\n## Ask one qualifying question\n\nA single multiple-choice question filters out a lot of noise:\n\n- \"When are you planning to buy?\" (This month / In 3 months / Just browsing)\n- \"What's your budget?\" with realistic ranges\n\n## Call back within five minutes\n\nSpeed matters more than anything else. Leads called within five minutes are far more likely to answer than leads called the next day.\n\n> Connect your lead forms to WhatsApp or your CRM so no one has to download a spreadsheet.\n\n## Send lead quality back to Meta\n\nMark which leads became customers and send that back to Meta with the Conversions API. The system then optimises for people like your customers, not just people who fill in forms.\n",
+      "author_name": "Danish Ali",
+      "author_role": "Performance Marketer",
+      "category": "meta-ads",
+      "tags": [
+        "Lead generation",
+        "Forms",
+        "CRM"
+      ],
+      "reading_minutes": 6,
+      "seo_title": "",
+      "seo_description": ""
+    },
+    {
+      "slug": "contact-forms-that-convert",
+      "title": "Contact forms that people actually finish",
+      "excerpt": "Every extra field costs you enquiries. How to design a contact form that's short, clear and accessible, with examples from our own site.",
+      "body_md": "Your contact form is the last step between a visitor and a lead. Small details decide whether people finish it.\n\n## Ask only what you need\n\nFor a first enquiry, you rarely need more than:\n\n- name,\n- email or phone,\n- a short message.\n\nEverything else (budget, services, company) should be optional or asked later.\n\n## Labels, not placeholders\n\nPlaceholder text disappears as soon as someone types, and it's often too faint to read. Always use a visible label above each field.\n\n## Errors that help\n\n\"Invalid input\" doesn't tell anyone what to do. Say what's wrong and how to fix it:\n\n> Please enter a valid email address, e.g. name@company.com.\n\nShow errors next to the field, and move focus to the first one when the form is submitted.\n\n## Make it work with a keyboard and screen reader\n\n- Every field needs a label connected to it.\n- Required fields should say so in text, not only with a red asterisk.\n- The success message should be announced, not just shown.\n\n## Offer a faster route\n\nSome people don't want to fill in a form at all. A WhatsApp button next to the form catches them.\n",
+      "author_name": "Omar Farooq",
+      "author_role": "Web Lead",
+      "category": "web-development",
+      "tags": [
+        "Forms",
+        "Accessibility",
+        "Conversion"
+      ],
+      "reading_minutes": 5,
+      "seo_title": "",
+      "seo_description": ""
+    },
+    {
+      "slug": "google-business-profile-uk-clinics",
+      "title": "Google Business Profile for UK clinics: a practical setup guide",
+      "excerpt": "Physios, dentists and aesthetics clinics live or die by the map pack. A step-by-step setup that respects healthcare advertising rules.",
+      "body_md": "For a private clinic in the UK, the Google Business Profile is often the first thing a new patient sees. Here's how we set them up.\n\n## Choose categories carefully\n\nPick the most specific primary category, like \"Physiotherapist\" or \"Cosmetic dentist\", then add secondary categories for other services you actually offer.\n\n## Services and booking\n\n- List each treatment as a service with a short, factual description.\n- Add your online booking link so patients can book straight from Google.\n- Keep prices accurate if you show them.\n\n## Reviews and healthcare rules\n\nAsk patients for reviews after their appointment, but never offer discounts in return. Keep replies general: don't confirm someone is a patient or mention their treatment.\n\n> In healthcare, a reply that says \"thanks for choosing us for your knee treatment\" can itself be a privacy problem.\n\n## Photos patients want to see\n\nReal photos of your reception, treatment rooms and team help nervous patients feel comfortable. Avoid before-and-after images unless you're sure they comply with advertising rules for your profession.\n\n## Keep it updated\n\nPost updates monthly (new clinicians, seasonal clinics, opening hours) and answer questions in the Q&A section before others answer for you.\n",
+      "author_name": "Hamza Qureshi",
+      "author_role": "Founder & Creative Director",
+      "category": "seo",
+      "tags": [
+        "Google Business Profile",
+        "Local SEO",
+        "Healthcare"
+      ],
+      "reading_minutes": 6,
+      "seo_title": "",
+      "seo_description": ""
+    }
+  ]
+}

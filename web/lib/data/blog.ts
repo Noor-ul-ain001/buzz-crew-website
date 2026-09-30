@@ -1,14 +1,14 @@
 import { tagSlug } from "@/lib/blog/utils";
 import { BLOG_CATEGORIES, type BlogCategorySlug, type BlogPost } from "@/lib/content/types";
-import { getPublishedContent } from "@/lib/data/content";
+import { getPublishedPostsFromApi } from "@/lib/content/public";
 
-// Blog queries for the public site, built on the shared mock content API.
+// Blog queries for the public site, over the published posts from the API.
 
 export const POSTS_PER_PAGE = 6;
 
 /** Published posts, newest first. */
 export async function getPublishedPosts(): Promise<BlogPost[]> {
-  const posts = await getPublishedContent("posts");
+  const posts = await getPublishedPostsFromApi();
   return posts.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 

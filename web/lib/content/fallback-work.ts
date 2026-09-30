@@ -21,7 +21,7 @@ const PROJECTS: Project[] = [
     summary: "Daily Islamabad news on Instagram, grown into a verified account followed by 156K people.",
     industry: "media_news",
     country: "pakistan",
-    services: ["social_media"],
+    services: ["digital_marketing"],
     challenge_md:
       "Islamabad Now covers everything happening in the capital. Breaking news moves fast, so every post has to be accurate, on-brand and out quickly.",
     strategy_md:
@@ -44,7 +44,7 @@ const PROJECTS: Project[] = [
     summary: "A national news page with more than 6,000 posts and 102K followers on Instagram.",
     industry: "media_news",
     country: "pakistan",
-    services: ["social_media"],
+    services: ["digital_marketing"],
     challenge_md:
       "AwamiWeb has published news since 2010. Its Instagram needed to keep pace with the website and stand out in a crowded news feed.",
     strategy_md:
@@ -67,7 +67,7 @@ const PROJECTS: Project[] = [
     summary: "Product launches, customer stories and raffles for Mercantile Pakistan, followed by 101K people.",
     industry: "retail",
     country: "pakistan",
-    services: ["social_media"],
+    services: ["digital_marketing"],
     challenge_md:
       "Mercantile is Apple's authorised distributor and service provider in Pakistan. Each launch needs clear, official messaging that still feels exciting.",
     strategy_md:
@@ -90,7 +90,7 @@ const PROJECTS: Project[] = [
     summary: "A new digital news creator, set up with a strong visual identity from day one.",
     industry: "media_news",
     country: "pakistan",
-    services: ["social_media"],
+    services: ["digital_marketing"],
     challenge_md: "Mera Pakistan started from zero and needed to look credible next to established news pages straight away.",
     strategy_md:
       "- A distinctive green and white news template\n- Urdu headlines designed for the feed\n- Consistent posting to build an audience from scratch",

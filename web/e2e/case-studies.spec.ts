@@ -40,8 +40,8 @@ test("a case study page leads with results and offers a similar project", async 
   await page.getByRole("button", { name: "Start a similar project" }).first().click();
   const dialog = page.getByRole("dialog", { name: "Start a project" });
   await expect(dialog).toBeVisible({ timeout: 15_000 });
-  await expect(dialog.getByRole("checkbox", { name: "Social Media" })).toBeChecked();
-  await expect(dialog.getByRole("checkbox", { name: "SEO" })).not.toBeChecked();
+  await expect(dialog.getByRole("checkbox", { name: "Digital Marketing" })).toBeChecked();
+  await expect(dialog.getByRole("checkbox", { name: "Branding" })).not.toBeChecked();
 });
 
 test("share copies the link on desktop", async ({ browser }) => {

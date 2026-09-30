@@ -52,7 +52,7 @@ paths:
 components:
   schemas:
     Country: { type: string, enum: [pakistan, uae, uk, other] }
-    Service: { type: string, enum: [social_media, seo, web_software, ui_ux_design, meta_ads] }
+    Service: { type: string, enum: [digital_marketing, creative_design, web_software, ui_ux_design, video_content, public_relations, branding, copywriting, ai_automation, iot_smart] }
     BudgetRange: { type: string, enum: [under_50k, 50k_150k, 150k_plus, not_sure] }
     LeadCreate:
       type: object

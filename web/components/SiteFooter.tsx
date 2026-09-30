@@ -4,16 +4,11 @@ import CookieSettingsButton from "@/components/consent/CookieSettingsButton";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import { getIndustries } from "@/lib/data/industries";
 import { CONTACT_EMAIL, INSTAGRAM_URL, NAV_LINKS, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
-import { SERVICES } from "@/lib/validation/inquiry";
+import { SERVICE_DETAILS } from "@/lib/services";
 
 const headingClass = "text-xs font-semibold uppercase tracking-[0.2em] text-accent-strong";
 // Muted links brighten and draw an underline on hover (see .link-sweep in globals.css).
 const linkClass = "link-sweep pb-0.5 text-muted transition-colors duration-200 hover:text-foreground";
-
-// Matches the section ids on the services page, e.g. "Web & Software" -> "web-and-software".
-function serviceAnchor(name: string) {
-  return name.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-");
-}
 
 const TOOLS = [
   { href: "/tools/seo-audit", label: "Free SEO audit" },
@@ -85,10 +80,10 @@ export default async function SiteFooter() {
             Services
           </h2>
           <ul className="mt-4 flex flex-col gap-2.5">
-            {SERVICES.map((service) => (
-              <li key={service}>
-                <Link href={`/services#${serviceAnchor(service)}`} className={linkClass}>
-                  {service}
+            {SERVICE_DETAILS.map((service) => (
+              <li key={service.id}>
+                <Link href={`/services#${service.id}`} className={linkClass}>
+                  {service.name}
                 </Link>
               </li>
             ))}
@@ -110,7 +105,7 @@ export default async function SiteFooter() {
             {industries.map((industry) => (
               <li key={industry.slug}>
                 <Link href={`/industries/${industry.slug}`} className={linkClass}>
-                  {industry.title}
+                  {industry.name}
                 </Link>
               </li>
             ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useAdminUser } from "@/components/admin/AdminUserProvider";
 import MarkdownEditor from "@/components/admin/content/MarkdownEditor";
 import CopyButton from "@/components/ui/CopyButton";
 import Modal from "@/components/ui/Modal";
@@ -9,9 +10,10 @@ import { downloadFile } from "@/lib/download";
 import { generateProposalDraft } from "@/lib/leads/proposal";
 import type { Lead } from "@/lib/leads/types";
 
-// "Generate proposal draft": a loading state, then an editor with live preview. The draft
-// lives on this page only until the proposals API exists.
+// "Generate proposal draft": an editor with live preview, signed by the admin who made it.
+// The draft isn't stored; copy or download it to send.
 export default function ProposalDraft({ lead }: { lead: Lead }) {
+  const { name } = useAdminUser();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [draft, setDraft] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
@@ -20,7 +22,7 @@ export default function ProposalDraft({ lead }: { lead: Lead }) {
   async function generate() {
     setStatus("loading");
     try {
-      setDraft(await generateProposalDraft(lead));
+      setDraft(await generateProposalDraft(lead, name));
       setStatus("idle");
       setOpen(true);
     } catch {

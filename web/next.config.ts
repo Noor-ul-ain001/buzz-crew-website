@@ -22,6 +22,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    // Earlier industry pages, replaced by the brochure's industries.
+    return [
+      { source: "/industries/restaurant-marketing-karachi", destination: "/industries/food-and-beverages", permanent: true },
+      { source: "/industries/clinic-marketing-uk", destination: "/industries/healthcare-and-dental", permanent: true },
+      { source: "/industries/real-estate-marketing-dubai", destination: "/work", permanent: true },
+    ];
+  },
   async rewrites() {
     return [{ source: "/api/v1/:path*", destination: `${apiOrigin}/api/v1/:path*` }];
   },

@@ -1,15 +1,13 @@
-import { CURRENT_ADMIN } from "@/lib/data/mock-leads";
 import type { Lead } from "@/lib/leads/types";
 
-// Mock proposal draft: no AI calls. A Markdown template filled from the lead, standing in
-// for a model-written draft. [Square brackets] mark what the team must fill in.
+// Proposal draft: a Markdown template filled from the lead and shaped by the agency's
+// process from the brochure. [Square brackets] mark what the team must fill in.
 
-export async function generateProposalDraft(lead: Lead): Promise<string> {
-  await new Promise((resolve) => setTimeout(resolve, 1800));
+export async function generateProposalDraft(lead: Lead, author: string): Promise<string> {
   const first = lead.name.split(" ")[0];
   const client = lead.business || lead.name;
 
-  const services = lead.services.length > 0 ? lead.services : (["Social Media"] as const);
+  const services = lead.services.length > 0 ? lead.services : (["Digital Marketing"] as const);
 
   return `# Proposal for ${client}
 
@@ -31,11 +29,12 @@ ${services.map((service) => `### ${service}\n\n[Describe the scope and deliverab
 
 [Add the quote after the discovery call.]
 
-## Timeline
+## How we'll work
 
-1. **Week 1:** kick-off call, access to accounts, and a plan for the first month.
-2. **Weeks 2–4:** first content, campaigns or pages go live.
-3. **Monthly:** a short report on results and what we'll try next.
+1. **Discovery & audit:** we map your brand, the competition and every gap in your current marketing.
+2. **Strategy:** a content and channel plan built around real goals, not vanity metrics.
+3. **Execution & creative:** scripting, shooting, designing and building, in-house and on schedule.
+4. **Reporting & growth:** clear numbers each cycle, and a plan for what scales next.
 
 ## Next steps
 
@@ -45,7 +44,7 @@ ${services.map((service) => `### ${service}\n\n[Describe the scope and deliverab
 
 Thanks again,
 
-${CURRENT_ADMIN}
+${author}
 The Buzz Crew
 `;
 }

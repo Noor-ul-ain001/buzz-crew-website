@@ -10,11 +10,16 @@ COUNTRY_LABELS: dict[Country, str] = {
 }
 
 SERVICE_LABELS: dict[Service, str] = {
-    Service.SOCIAL_MEDIA: "Social Media",
-    Service.SEO: "SEO",
-    Service.WEB_SOFTWARE: "Web & Software",
+    Service.DIGITAL_MARKETING: "Digital Marketing",
+    Service.CREATIVE_DESIGN: "Creative & Graphic Design",
+    Service.WEB_SOFTWARE: "Web / Software Development",
     Service.UI_UX_DESIGN: "UI/UX Design",
-    Service.META_ADS: "Meta Ads",
+    Service.VIDEO_CONTENT: "Video & Content Production",
+    Service.PUBLIC_RELATIONS: "Public Relations",
+    Service.BRANDING: "Branding",
+    Service.COPYWRITING: "Copywriting",
+    Service.AI_AUTOMATION: "AI & Automation",
+    Service.IOT_SMART: "IoT & Smart Digital Solutions",
 }
 
 BUDGET_LABELS: dict[BudgetRange, str] = {

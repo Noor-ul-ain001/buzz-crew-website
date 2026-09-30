@@ -1,11 +1,11 @@
 import uuid
 from datetime import UTC, datetime
 from enum import StrEnum
-from typing import Annotated
+from typing import Annotated, Any
 
 from pydantic import BaseModel, ConfigDict, EmailStr, StringConstraints, field_validator
 from pydantic import Field as PydanticField
-from sqlalchemy import CHAR, Column, DateTime, String, Text, func
+from sqlalchemy import CHAR, Column, DateTime, ForeignKey, String, Text, func
 from sqlalchemy import Enum as SAEnum
 from sqlalchemy.dialects.postgresql import ARRAY, UUID
 from sqlmodel import Field, SQLModel
@@ -19,11 +19,18 @@ class Country(StrEnum):
 
 
 class Service(StrEnum):
-    SOCIAL_MEDIA = "social_media"
-    SEO = "seo"
+    """The agency's services, as listed in the brochure (ABOUT BUZZ CREW.pdf)."""
+
+    DIGITAL_MARKETING = "digital_marketing"
+    CREATIVE_DESIGN = "creative_design"
     WEB_SOFTWARE = "web_software"
     UI_UX_DESIGN = "ui_ux_design"
-    META_ADS = "meta_ads"
+    VIDEO_CONTENT = "video_content"
+    PUBLIC_RELATIONS = "public_relations"
+    BRANDING = "branding"
+    COPYWRITING = "copywriting"
+    AI_AUTOMATION = "ai_automation"
+    IOT_SMART = "iot_smart"
 
 
 class BudgetRange(StrEnum):
@@ -93,6 +100,53 @@ class Lead(SQLModel, table=True):
     )
     deleted_at: datetime | None = Field(
         default=None, sa_column=Column(DateTime(timezone=True), nullable=True)
+    )
+
+
+def _lead_fk() -> Any:
+    return Column(
+        UUID(as_uuid=True), ForeignKey("leads.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+
+
+class LeadNote(SQLModel, table=True):
+    """An internal note on a lead, visible to admins only."""
+
+    __tablename__ = "lead_notes"  # pyright: ignore[reportAssignmentType]
+
+    id: uuid.UUID = Field(
+        default_factory=uuid.uuid4, sa_column=Column(UUID(as_uuid=True), primary_key=True)
+    )
+    lead_id: uuid.UUID = Field(sa_column=_lead_fk())
+    author_id: uuid.UUID | None = Field(default=None, foreign_key="users.id", nullable=True)
+    # Kept as text so the note still reads correctly if the author's account goes.
+    author_name: str = Field(sa_column=Column(String(100), nullable=False))
+    body: str = Field(sa_column=Column(Text, nullable=False))
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(UTC),
+        sa_column=Column(DateTime(timezone=True), nullable=False, server_default=func.now()),
+    )
+
+
+class LeadEvent(SQLModel, table=True):
+    """A status change. `from_status` is null for the event that created the lead."""
+
+    __tablename__ = "lead_events"  # pyright: ignore[reportAssignmentType]
+
+    id: uuid.UUID = Field(
+        default_factory=uuid.uuid4, sa_column=Column(UUID(as_uuid=True), primary_key=True)
+    )
+    lead_id: uuid.UUID = Field(sa_column=_lead_fk())
+    from_status: LeadStatus | None = Field(
+        default=None, sa_column=Column(pg_enum(LeadStatus, "lead_status"), nullable=True)
+    )
+    to_status: LeadStatus = Field(
+        sa_column=Column(pg_enum(LeadStatus, "lead_status"), nullable=False)
+    )
+    actor_name: str = Field(sa_column=Column(String(100), nullable=False))
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(UTC),
+        sa_column=Column(DateTime(timezone=True), nullable=False, server_default=func.now()),
     )
 
 

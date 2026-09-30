@@ -5,7 +5,16 @@ from fastapi.responses import JSONResponse
 
 from app.core.config import get_settings
 from app.core.logging import RequestIdMiddleware, configure_logging
-from app.routers import admin_leads, auth, health, leads, public_case_studies, uploads, users
+from app.routers import (
+    admin_leads,
+    auth,
+    health,
+    leads,
+    newsletter,
+    public_case_studies,
+    uploads,
+    users,
+)
 from app.routers.content_factory import build_content_routers
 from app.services.case_study_service import CASE_STUDIES
 from app.services.content_types import CONTENT_TYPES
@@ -42,6 +51,8 @@ def create_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(leads.router)
     app.include_router(admin_leads.router)
+    app.include_router(newsletter.public)
+    app.include_router(newsletter.admin)
     app.include_router(auth.router)
     app.include_router(users.router)
     app.include_router(uploads.router)

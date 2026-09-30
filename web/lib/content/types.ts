@@ -19,7 +19,7 @@ type ContentBase = {
   id: string;
   status: PublishStatus;
   updatedAt: string;
-  /** Optimistic-lock version from the API; absent for mock content. */
+  /** Optimistic-lock version from the API; absent on public (read-only) items. */
   version?: number;
   updatedByName?: string | null;
   thumbnailUrl?: string | null;
@@ -79,6 +79,9 @@ export type BlogPost = ContentBase & {
   /** Empty fields fall back to the title and excerpt. */
   seo: { metaTitle: string; metaDescription: string };
 };
+
+/** The FAQ page's sections, in order. FAQs in any other group are listed after these. */
+export const FAQ_GROUPS = ["Working with us", "Pricing and contracts", "Social media and ads", "Websites and SEO"] as const;
 
 export type FaqItem = ContentBase & {
   group: string;

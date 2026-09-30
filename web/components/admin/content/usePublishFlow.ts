@@ -5,10 +5,10 @@ import { useRef, useState } from "react";
 import { useContent } from "@/components/admin/content/ContentProvider";
 import type { PublishAction } from "@/components/admin/content/PublishActions";
 import { useToast } from "@/components/ui/Toast";
-import { ContentApiError, VersionConflictError, isApiKind, saveContent } from "@/lib/content/admin-api";
+import { ContentApiError, VersionConflictError, saveContent } from "@/lib/content/admin-api";
 import type { ContentCollections } from "@/lib/content/types";
 
-type EditableKind = "testimonials" | "team" | "posts";
+type EditableKind = "testimonials" | "team" | "posts" | "faqs";
 type Item<K extends EditableKind> = ContentCollections[K];
 type Fields<K extends EditableKind> = Omit<Item<K>, "id" | "status" | "updatedAt" | "version" | "updatedByName" | "thumbnailUrl">;
 
@@ -20,15 +20,15 @@ const SUCCESS: Record<PublishAction, string> = {
 
 export type Conflict<K extends EditableKind> = { current: Item<K>; changedBy: string };
 
-// Shared Save draft / Publish / Unpublish handling for the testimonial, team and post forms.
-// Testimonials and team members go to the API (004); posts stay on mock data until 007.
+// Shared Save draft / Publish / Unpublish handling for the testimonial, team, post and FAQ
+// forms. Everything is saved through the API.
 export function usePublishFlow<K extends EditableKind>(
   kind: K,
   existing: Item<K> | undefined,
   listHref: string,
   onFieldErrors: (fields: Record<string, string>) => void,
 ) {
-  const { save, upsert } = useContent(kind);
+  const { upsert } = useContent(kind);
   const router = useRouter();
   const toast = useToast();
   const [pending, setPending] = useState<PublishAction | null>(null);
@@ -39,18 +39,9 @@ export function usePublishFlow<K extends EditableKind>(
   async function run(action: PublishAction, fields: Fields<K>, version?: number) {
     setPending(action);
     try {
-      if (isApiKind(kind)) {
-        const base = saved.current && version !== undefined ? { ...saved.current, version } : saved.current;
-        const item = (await saveContent(kind, base, fields as never, action)) as Item<K>;
-        upsert(item);
-      } else {
-        await save({
-          ...fields,
-          id: existing?.id ?? `${kind}-${crypto.randomUUID()}`,
-          status: action === "publish" ? "Published" : "Draft",
-          updatedAt: existing?.updatedAt ?? new Date().toISOString(),
-        } as Item<K>);
-      }
+      const base = saved.current && version !== undefined ? { ...saved.current, version } : saved.current;
+      const item = (await saveContent(kind, base, fields as never, action)) as Item<K>;
+      upsert(item);
       toast(SUCCESS[action]);
       router.push(listHref);
     } catch (error) {

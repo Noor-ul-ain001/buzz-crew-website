@@ -151,6 +151,239 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "leads"
+        ],
+        "summary": "Update Status",
+        "operationId": "updateLeadStatus",
+        "parameters": [
+          {
+            "name": "lead_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Lead Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusChange"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "leads"
+        ],
+        "summary": "Delete Lead",
+        "operationId": "deleteLead",
+        "parameters": [
+          {
+            "name": "lead_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Lead Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/leads/{lead_id}/notes": {
+      "post": {
+        "tags": [
+          "leads"
+        ],
+        "summary": "Add Note",
+        "operationId": "addLeadNote",
+        "parameters": [
+          {
+            "name": "lead_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Lead Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewNote"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadNoteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/newsletter": {
+      "post": {
+        "tags": [
+          "newsletter"
+        ],
+        "summary": "Subscribe",
+        "operationId": "subscribe",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscribeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/subscribers": {
+      "get": {
+        "tags": [
+          "newsletter"
+        ],
+        "summary": "List Subscribers",
+        "operationId": "listSubscribers",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SubscriberOut"
+                  },
+                  "type": "array",
+                  "title": "Response Listsubscribers"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/subscribers/{subscriber_id}": {
+      "delete": {
+        "tags": [
+          "newsletter"
+        ],
+        "summary": "Delete Subscriber",
+        "operationId": "deleteSubscriber",
+        "parameters": [
+          {
+            "name": "subscriber_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Subscriber Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/auth/login": {
@@ -1900,6 +2133,742 @@
         }
       }
     },
+    "/api/v1/admin/content/faqs": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "List Items",
+        "operationId": "listFaqs",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/PublishStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FaqAdmin"
+                  },
+                  "title": "Response Listfaqs"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Item",
+        "operationId": "createFaqs",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaqFields"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaqAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/faqs/order": {
+      "put": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Reorder",
+        "operationId": "reorderFaqs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/faqs/{item_id}": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Item",
+        "operationId": "getFaqs",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaqAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update Item",
+        "operationId": "updateFaqs",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaqUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaqAdmin"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "version_conflict; `current` holds the latest item"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Delete Item",
+        "operationId": "deleteFaqs",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/faqs/{item_id}/publish": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Publish Item",
+        "operationId": "publishFaqs",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaqAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/faqs/{item_id}/unpublish": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Unpublish Item",
+        "operationId": "unpublishFaqs",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaqAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/faqs": {
+      "get": {
+        "tags": [
+          "public content"
+        ],
+        "summary": "Public Items",
+        "operationId": "publicFaqs",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PublicFaq"
+                  },
+                  "type": "array",
+                  "title": "Response Publicfaqs"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/posts": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "List Items",
+        "operationId": "listPosts",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/PublishStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PostAdmin"
+                  },
+                  "title": "Response Listposts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Create Item",
+        "operationId": "createPosts",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostFields"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/posts/order": {
+      "put": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Reorder",
+        "operationId": "reorderPosts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/posts/{item_id}": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Item",
+        "operationId": "getPosts",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Update Item",
+        "operationId": "updatePosts",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAdmin"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "version_conflict; `current` holds the latest item"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Delete Item",
+        "operationId": "deletePosts",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/posts/{item_id}/publish": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Publish Item",
+        "operationId": "publishPosts",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/content/posts/{item_id}/unpublish": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Unpublish Item",
+        "operationId": "unpublishPosts",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/posts": {
+      "get": {
+        "tags": [
+          "public content"
+        ],
+        "summary": "Public Items",
+        "operationId": "publicPosts",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PublicPost"
+                  },
+                  "type": "array",
+                  "title": "Response Publicposts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/content/case-studies": {
       "get": {
         "tags": [
@@ -3641,6 +4610,160 @@
         ],
         "title": "Facets"
       },
+      "FaqAdmin": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PublishStatus"
+          },
+          "sort_order": {
+            "type": "integer",
+            "title": "Sort Order"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "last_published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Published At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "updated_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By Name"
+          },
+          "thumbnail_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbnail Url"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "sort_order",
+          "version",
+          "published_at",
+          "last_published_at",
+          "updated_at",
+          "updated_by_name",
+          "thumbnail_url",
+          "group",
+          "question",
+          "answer"
+        ],
+        "title": "FaqAdmin"
+      },
+      "FaqFields": {
+        "properties": {
+          "group": {
+            "type": "string",
+            "maxLength": 60,
+            "title": "Group",
+            "default": ""
+          },
+          "question": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Question",
+            "default": ""
+          },
+          "answer": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Answer",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "FaqFields"
+      },
+      "FaqUpdate": {
+        "properties": {
+          "group": {
+            "type": "string",
+            "maxLength": 60,
+            "title": "Group",
+            "default": ""
+          },
+          "question": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Question",
+            "default": ""
+          },
+          "answer": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Answer",
+            "default": ""
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version"
+        ],
+        "title": "FaqUpdate"
+      },
       "FinalizeRequest": {
         "properties": {
           "public_id": {
@@ -3882,6 +5005,46 @@
         ],
         "title": "LeadCreated"
       },
+      "LeadEventOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "from_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LeadStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "to_status": {
+            "$ref": "#/components/schemas/LeadStatus"
+          },
+          "actor_name": {
+            "type": "string",
+            "title": "Actor Name"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "from_status",
+          "to_status",
+          "actor_name",
+          "created_at"
+        ],
+        "title": "LeadEventOut"
+      },
       "LeadList": {
         "properties": {
           "items": {
@@ -3897,6 +5060,36 @@
           "items"
         ],
         "title": "LeadList"
+      },
+      "LeadNoteOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "author_name": {
+            "type": "string",
+            "title": "Author Name"
+          },
+          "body": {
+            "type": "string",
+            "title": "Body"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "author_name",
+          "body",
+          "created_at"
+        ],
+        "title": "LeadNoteOut"
       },
       "LeadOut": {
         "properties": {
@@ -3963,6 +5156,20 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "notes": {
+            "items": {
+              "$ref": "#/components/schemas/LeadNoteOut"
+            },
+            "type": "array",
+            "title": "Notes"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/LeadEventOut"
+            },
+            "type": "array",
+            "title": "Events"
           }
         },
         "type": "object",
@@ -3978,7 +5185,9 @@
           "message",
           "status",
           "source_page",
-          "created_at"
+          "created_at",
+          "notes",
+          "events"
         ],
         "title": "LeadOut"
       },
@@ -4230,6 +5439,21 @@
         ],
         "title": "Metric"
       },
+      "NewNote": {
+        "properties": {
+          "body": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Body"
+          }
+        },
+        "type": "object",
+        "required": [
+          "body"
+        ],
+        "title": "NewNote"
+      },
       "NewPassword": {
         "properties": {
           "token": {
@@ -4274,6 +5498,361 @@
         ],
         "title": "PasswordChange"
       },
+      "PostAdmin": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PublishStatus"
+          },
+          "sort_order": {
+            "type": "integer",
+            "title": "Sort Order"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "last_published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Published At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "updated_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By Name"
+          },
+          "thumbnail_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbnail Url"
+          },
+          "slug": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slug"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "excerpt": {
+            "type": "string",
+            "title": "Excerpt"
+          },
+          "body_md": {
+            "type": "string",
+            "title": "Body Md"
+          },
+          "cover": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MediaOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "author_name": {
+            "type": "string",
+            "title": "Author Name"
+          },
+          "author_role": {
+            "type": "string",
+            "title": "Author Role"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          },
+          "reading_minutes": {
+            "type": "integer",
+            "title": "Reading Minutes"
+          },
+          "seo_title": {
+            "type": "string",
+            "title": "Seo Title"
+          },
+          "seo_description": {
+            "type": "string",
+            "title": "Seo Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "sort_order",
+          "version",
+          "published_at",
+          "last_published_at",
+          "updated_at",
+          "updated_by_name",
+          "thumbnail_url",
+          "slug",
+          "title",
+          "excerpt",
+          "body_md",
+          "cover",
+          "author_name",
+          "author_role",
+          "category",
+          "tags",
+          "reading_minutes",
+          "seo_title",
+          "seo_description"
+        ],
+        "title": "PostAdmin"
+      },
+      "PostFields": {
+        "properties": {
+          "slug": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slug"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 120,
+            "title": "Title",
+            "default": ""
+          },
+          "excerpt": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "Excerpt",
+            "default": ""
+          },
+          "body_md": {
+            "type": "string",
+            "maxLength": 50000,
+            "title": "Body Md",
+            "default": ""
+          },
+          "cover_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Id"
+          },
+          "author_name": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Author Name",
+            "default": ""
+          },
+          "author_role": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Author Role",
+            "default": ""
+          },
+          "category": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Category",
+            "default": ""
+          },
+          "tags": {
+            "items": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "type": "array",
+            "maxItems": 12,
+            "title": "Tags"
+          },
+          "reading_minutes": {
+            "type": "integer",
+            "maximum": 120.0,
+            "minimum": 1.0,
+            "title": "Reading Minutes",
+            "default": 1
+          },
+          "seo_title": {
+            "type": "string",
+            "maxLength": 60,
+            "title": "Seo Title",
+            "default": ""
+          },
+          "seo_description": {
+            "type": "string",
+            "maxLength": 160,
+            "title": "Seo Description",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "PostFields"
+      },
+      "PostUpdate": {
+        "properties": {
+          "slug": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slug"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 120,
+            "title": "Title",
+            "default": ""
+          },
+          "excerpt": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "Excerpt",
+            "default": ""
+          },
+          "body_md": {
+            "type": "string",
+            "maxLength": 50000,
+            "title": "Body Md",
+            "default": ""
+          },
+          "cover_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Id"
+          },
+          "author_name": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Author Name",
+            "default": ""
+          },
+          "author_role": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Author Role",
+            "default": ""
+          },
+          "category": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Category",
+            "default": ""
+          },
+          "tags": {
+            "items": {
+              "type": "string",
+              "maxLength": 40
+            },
+            "type": "array",
+            "maxItems": 12,
+            "title": "Tags"
+          },
+          "reading_minutes": {
+            "type": "integer",
+            "maximum": 120.0,
+            "minimum": 1.0,
+            "title": "Reading Minutes",
+            "default": 1
+          },
+          "seo_title": {
+            "type": "string",
+            "maxLength": 60,
+            "title": "Seo Title",
+            "default": ""
+          },
+          "seo_description": {
+            "type": "string",
+            "maxLength": 160,
+            "title": "Seo Description",
+            "default": ""
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version"
+        ],
+        "title": "PostUpdate"
+      },
       "PublicClientLogo": {
         "properties": {
           "id": {
@@ -4308,6 +5887,35 @@
           "website_url"
         ],
         "title": "PublicClientLogo"
+      },
+      "PublicFaq": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "group",
+          "question",
+          "answer"
+        ],
+        "title": "PublicFaq"
       },
       "PublicImage": {
         "properties": {
@@ -4376,6 +5984,108 @@
           "description"
         ],
         "title": "PublicMedia"
+      },
+      "PublicPost": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "excerpt": {
+            "type": "string",
+            "title": "Excerpt"
+          },
+          "body_md": {
+            "type": "string",
+            "title": "Body Md"
+          },
+          "cover": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PublicImage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "author_name": {
+            "type": "string",
+            "title": "Author Name"
+          },
+          "author_role": {
+            "type": "string",
+            "title": "Author Role"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          },
+          "reading_minutes": {
+            "type": "integer",
+            "title": "Reading Minutes"
+          },
+          "seo_title": {
+            "type": "string",
+            "title": "Seo Title"
+          },
+          "seo_description": {
+            "type": "string",
+            "title": "Seo Description"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "slug",
+          "title",
+          "excerpt",
+          "body_md",
+          "cover",
+          "author_name",
+          "author_role",
+          "category",
+          "tags",
+          "reading_minutes",
+          "seo_title",
+          "seo_description",
+          "published_at",
+          "updated_at"
+        ],
+        "title": "PublicPost"
       },
       "PublicQuote": {
         "properties": {
@@ -4653,13 +6363,19 @@
       "Service": {
         "type": "string",
         "enum": [
-          "social_media",
-          "seo",
+          "digital_marketing",
+          "creative_design",
           "web_software",
           "ui_ux_design",
-          "meta_ads"
+          "video_content",
+          "public_relations",
+          "branding",
+          "copywriting",
+          "ai_automation",
+          "iot_smart"
         ],
-        "title": "Service"
+        "title": "Service",
+        "description": "The agency's services, as listed in the brochure (ABOUT BUZZ CREW.pdf)."
       },
       "SignatureRequest": {
         "properties": {
@@ -4726,6 +6442,70 @@
           "updated_at"
         ],
         "title": "SlugEntry"
+      },
+      "StatusChange": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/LeadStatus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "StatusChange"
+      },
+      "SubscribeRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email",
+            "title": "Email"
+          },
+          "source_page": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^/",
+            "title": "Source Page",
+            "default": "/"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "SubscribeRequest"
+      },
+      "SubscriberOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "source_page": {
+            "type": "string",
+            "title": "Source Page"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "source_page",
+          "created_at"
+        ],
+        "title": "SubscriberOut"
       },
       "TeamMemberAdmin": {
         "properties": {

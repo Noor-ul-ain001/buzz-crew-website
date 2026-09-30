@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Figtree, Geist_Mono } from "next/font/google";
+import { Figtree, Geist_Mono, Playfair_Display } from "next/font/google";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -7,6 +7,13 @@ import "./globals.css";
 const body = Figtree({
   variable: "--font-figtree",
   subsets: ["latin"],
+});
+
+// The brochure's headings are set in a high-contrast Didone serif.
+const display = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 const geistMono = Geist_Mono({
@@ -35,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${body.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${body.variable} ${display.variable} ${geistMono.variable} h-full antialiased`}
     >
       {/* The public site chrome lives in app/(site)/layout.tsx; the admin shell in app/admin/layout.tsx. */}
       <body className="min-h-full flex flex-col">

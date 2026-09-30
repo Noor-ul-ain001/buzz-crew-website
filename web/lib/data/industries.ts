@@ -1,100 +1,150 @@
+import type { Industry as WorkIndustry } from "@/lib/content/work-labels";
 import type { LeadService } from "@/lib/leads/types";
 
-// Mock industry landing pages until the CMS exists. Case study figures are placeholders:
-// replace them with real, client-approved results before launch.
+// The industries from the brochure's "Where we've worked" page (ABOUT BUZZ CREW.pdf), each
+// with the brochure's own one-line description. Clients are only listed where the brochure
+// names one that clearly belongs to the industry; logos live in public/clients.
 
 export type Industry = {
   slug: string;
-  /** Short name for links and breadcrumbs, e.g. "Restaurants". */
+  /** Short name for links and breadcrumbs, e.g. "Farmhouses". */
   name: string;
+  /** The brochure's description, e.g. "Event & picnic venues". */
+  tagline: string;
   title: string;
   metaDescription: string;
   intro: string;
-  heroStat: { value: string; label: string };
-  painPoints: { title: string; body: string }[];
+  challenges: { title: string; body: string }[];
   services: { service: LeadService; why: string }[];
-  caseStudies: { client: string; title: string; metric: string; metricLabel: string; summary: string }[];
+  clients: { name: string; logo: string }[];
+  /** The matching filter on /work, when there is one. */
+  workFilter?: WorkIndustry;
   ctaHeading: string;
 };
 
 const INDUSTRIES: Industry[] = [
   {
-    slug: "restaurant-marketing-karachi",
-    name: "Restaurants",
-    title: "Restaurant marketing in Karachi",
+    slug: "food-and-beverages",
+    name: "Food & beverages",
+    tagline: "Restaurants, catering, cafés and home kitchens",
+    title: "Marketing for food and beverage brands",
     metaDescription:
-      "Instagram, Meta Ads and local SEO for Karachi restaurants and cafés. Fill more tables on quiet nights with The Buzz Crew.",
+      "Social media, content and campaigns for restaurants, caterers, cafés and home kitchens, from The Buzz Crew in Karachi.",
     intro:
-      "From home kitchens to multi-branch cafés, we help Karachi restaurants fill tables on quiet nights, sell out new dishes and get found on Google Maps.",
-    heroStat: { value: "2×", label: "more calls from Google Maps for Chai Khana Co. in four months" },
-    painPoints: [
-      { title: "Busy weekends, empty weekdays", body: "Friday and Saturday are packed, but Monday to Thursday barely cover costs." },
-      { title: "Lots of likes, few bookings", body: "Your food looks great on Instagram, but likes aren't turning into tables or orders." },
-      { title: "Invisible on Google Maps", body: "People searching 'restaurants near me' in DHA or Clifton see your competitors first." },
-      { title: "No time to post", body: "Running a kitchen leaves no time to plan content, shoot Reels and reply to messages." },
+      "From home kitchens to full restaurants and caterers, we create content people want to stop for, and campaigns that turn attention into orders and bookings.",
+    challenges: [
+      { title: "Great food, quiet feed", body: "The dishes are good, but the photos and videos don't do them justice." },
+      { title: "Busy weekends, slow weekdays", body: "Demand bunches up, and there's no plan to fill the quieter days." },
+      { title: "Orders scattered everywhere", body: "Enquiries arrive by DM, WhatsApp and phone with no clear way to order." },
     ],
     services: [
-      { service: "Social Media", why: "Weekly Reels and stories shot in your kitchen, with captions that give people a reason to visit this week." },
-      { service: "Meta Ads", why: "Targeted offers for quiet nights, shown to people within a few kilometres of each branch." },
-      { service: "SEO", why: "A complete Google Business Profile and review strategy so you appear in the map pack." },
+      { service: "Video & Content Production", why: "Reels and shoots that show your food, your kitchen and the people behind it." },
+      { service: "Digital Marketing", why: "A content calendar and local campaigns built around real goals, not vanity metrics." },
+      { service: "Creative & Graphic Design", why: "Menus, offers and social creatives that look unmistakably like your brand." },
     ],
-    caseStudies: [
-      { client: "Chai Khana Co.", title: "Launching a third café", metric: "140", metricLabel: "Google reviews in four months", summary: "A launch campaign on Instagram and Meta Ads, plus a review drive at the counter." },
-      { client: "Crumbs Bakery", title: "Bringing an inactive Instagram back to life", metric: "3×", metricLabel: "more custom cake orders by DM", summary: "Consistent Reels of cakes being made, and a clear order process in stories." },
+    clients: [
+      { name: "Farzana's Kitchen", logo: "/clients/farzanas-kitchen.webp" },
+      { name: "Halki Aanch by Ayesha", logo: "/clients/halki-aanch.webp" },
+      { name: "Mr. Bawarchi", logo: "/clients/mr-bawarchi.webp" },
+      { name: "Nawab's Dynasty", logo: "/clients/nawabs-dynasty.webp" },
     ],
-    ctaHeading: "Let's fill your tables on a Tuesday.",
+    workFilter: "food_beverages",
+    ctaHeading: "Let's tell your food's story.",
   },
   {
-    slug: "real-estate-marketing-dubai",
-    name: "Real estate",
-    title: "Real estate marketing in Dubai",
+    slug: "farmhouses",
+    name: "Farmhouses",
+    tagline: "Event and picnic venues",
+    title: "Marketing for farmhouses and event venues",
     metaDescription:
-      "Lead generation, landing pages and bilingual SEO for Dubai real estate agencies and developers. Serious buyers, not just clicks.",
+      "Content, social media and bookings for farmhouses, event and picnic venues, from The Buzz Crew in Karachi.",
     intro:
-      "We help Dubai agencies and developers generate qualified buyer leads for off-plan and ready properties, in English and Arabic.",
-    heroStat: { value: "AED 38", label: "average cost per qualified lead for Nuaimi Properties" },
-    painPoints: [
-      { title: "Cheap leads that never answer", body: "Lead ads bring in hundreds of form fills, but most never pick up the phone." },
-      { title: "One page for every project", body: "Each new launch needs its own landing page, and your website can't keep up." },
-      { title: "Missing Arabic searchers", body: "Your site only ranks in English, so Arabic-speaking buyers find other agencies." },
-      { title: "No idea which ads sell", body: "You can't tell which campaigns lead to viewings and which just use up budget." },
+      "We help farmhouses and event venues show the experience before guests arrive, and make booking the next event or picnic simple.",
+    challenges: [
+      { title: "Hard to picture the day", body: "Guests can't imagine their event from a few static photos." },
+      { title: "Seasonal bookings", body: "Weekends and holidays fill up, while the rest of the calendar sits empty." },
+      { title: "Bookings by phone only", body: "Every enquiry needs a call, and details get lost along the way." },
     ],
     services: [
-      { service: "Meta Ads", why: "Higher-intent lead forms with qualifying questions, so your agents call real buyers." },
-      { service: "Web & Software", why: "Fast landing pages for every launch, connected straight to your CRM." },
-      { service: "SEO", why: "Bilingual English and Arabic pages with proper hreflang and right-to-left layouts." },
+      { service: "Video & Content Production", why: "Cinematic reels and photos of the venue, the setup and real events." },
+      { service: "Digital Marketing", why: "Campaigns planned around the booking calendar, not just follower counts." },
+      { service: "Web / Software Development", why: "A clear website with availability and a simple way to enquire." },
     ],
-    caseStudies: [
-      { client: "Nuaimi Properties", title: "Off-plan launch landing pages", metric: "4.2%", metricLabel: "enquiry rate on project pages", summary: "A page per development with floor plans, payment plans and WhatsApp enquiries." },
-      { client: "Farouk Trading", title: "A bilingual corporate website", metric: "2×", metricLabel: "organic enquiries in six months", summary: "An English and Arabic website with a product catalogue and enquiry forms." },
+    clients: [
+      { name: "Black Gold Farm", logo: "/clients/black-gold-farm.webp" },
+      { name: "The Farm Villa", logo: "/clients/the-farm-villa.webp" },
     ],
-    ctaHeading: "Get buyers, not just form fills.",
+    workFilter: "farmhouses",
+    ctaHeading: "Let's fill your calendar.",
   },
   {
-    slug: "clinic-marketing-uk",
-    name: "Private clinics",
-    title: "Marketing for private clinics in the UK",
+    slug: "healthcare-and-dental",
+    name: "Healthcare & dental",
+    tagline: "Automation systems for clinics and hospitals",
+    title: "Automation and marketing for clinics and hospitals",
     metaDescription:
-      "Local SEO, websites and patient-friendly social media for UK physios, dentists and aesthetics clinics.",
+      "Automation systems, websites and patient-friendly content for clinics and hospitals, from The Buzz Crew.",
     intro:
-      "We help independent physios, dentists and aesthetics clinics across the UK get more bookings from Google, while staying within healthcare advertising rules.",
-    heroStat: { value: "65%", label: "of new Brooks Physio patients now find them on Google" },
-    painPoints: [
-      { title: "Losing patients to chains", body: "Bigger clinic groups outrank you on Google, even in your own town." },
-      { title: "A website that's hard to book from", body: "Patients have to call during opening hours because online booking is buried or missing." },
-      { title: "Worried about the rules", body: "You're not sure what you're allowed to say in ads, reviews and before-and-after photos." },
-      { title: "No time for social media", body: "Clinicians are busy with patients, so your social accounts go quiet for months." },
+      "We build automation systems that take routine work off your team, alongside websites and content that help patients find and trust you.",
+    challenges: [
+      { title: "Staff buried in admin", body: "Appointments, reminders and follow-ups eat time that should go to patients." },
+      { title: "Enquiries that slip through", body: "Calls and messages go unanswered after hours, and patients book elsewhere." },
+      { title: "Hard to stand out", body: "Patients compare clinics online, and yours doesn't show what makes it different." },
     ],
     services: [
-      { service: "SEO", why: "Local SEO and Google Business Profile management focused on your treatments and town." },
-      { service: "Web & Software", why: "A fast, accessible website with online booking on every page." },
-      { service: "Social Media", why: "Calm, reassuring content that introduces your team and explains treatments." },
+      { service: "AI & Automation", why: "Booking, reminder and follow-up flows that run without extra staff." },
+      { service: "Web / Software Development", why: "A fast, accessible website and patient systems built around your workflow." },
+      { service: "Digital Marketing", why: "Calm, trustworthy content that explains your services and introduces your team." },
     ],
-    caseStudies: [
-      { client: "Brooks Physio", title: "From page two to the map pack", metric: "65%", metricLabel: "of new patients from Google", summary: "A new mobile-friendly website and a steady review strategy." },
-      { client: "Saeed Dental Clinic", title: "Filling a new clinic's diary", metric: "3 months", metricLabel: "to a fully booked diary", summary: "A bilingual website with online booking and local SEO from day one." },
+    clients: [],
+    workFilter: "healthcare_dental",
+    ctaHeading: "Let's give your team time back.",
+  },
+  {
+    slug: "education",
+    name: "Education",
+    tagline: "Enrolment-focused marketing for schools and institutes",
+    title: "Enrolment marketing for schools and institutes",
+    metaDescription:
+      "Enrolment-focused marketing, content and websites for schools and institutes, from The Buzz Crew in Karachi.",
+    intro:
+      "We plan marketing around your admissions calendar, so the right families and students hear from you when they're choosing.",
+    challenges: [
+      { title: "Admissions come in waves", body: "Enquiries peak for a few weeks, and the rest of the year goes quiet." },
+      { title: "Every school looks the same", body: "Parents and students struggle to see what makes you different." },
+      { title: "Enquiries without follow-up", body: "Interested families don't hear back quickly enough to apply." },
     ],
-    ctaHeading: "More bookings, fewer empty appointment slots.",
+    services: [
+      { service: "Digital Marketing", why: "Campaigns timed to your admissions calendar, measured by enquiries and enrolments." },
+      { service: "Video & Content Production", why: "Real campus life, teachers and students, filmed in-house." },
+      { service: "Branding", why: "A clear identity that parents and students recognise and remember." },
+    ],
+    clients: [],
+    workFilter: "education",
+    ctaHeading: "Let's fill your next intake.",
+  },
+  {
+    slug: "e-commerce",
+    name: "E-commerce",
+    tagline: "Customised e-commerce brand development",
+    title: "E-commerce brand development",
+    metaDescription:
+      "Customised e-commerce brand development: branding, online stores and campaigns, from The Buzz Crew in Karachi.",
+    intro:
+      "We build e-commerce brands from the ground up: the identity, the store and the campaigns that bring customers back.",
+    challenges: [
+      { title: "A store without a brand", body: "Products are listed, but nothing makes customers remember you." },
+      { title: "Traffic that doesn't buy", body: "Visitors arrive from ads and social, then leave without ordering." },
+      { title: "One-time customers", body: "Buyers order once and never hear from you again." },
+    ],
+    services: [
+      { service: "Branding", why: "An identity and tone of voice that set your products apart." },
+      { service: "Web / Software Development", why: "A fast, customised online store that makes ordering easy." },
+      { service: "Digital Marketing", why: "Campaigns and content that bring the right customers back again." },
+    ],
+    clients: [],
+    workFilter: "ecommerce",
+    ctaHeading: "Let's build your brand online.",
   },
 ];
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useId, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
+import { useAdminUser } from "@/components/admin/AdminUserProvider";
 import ContentNotFound from "@/components/admin/content/ContentNotFound";
 import { useContent } from "@/components/admin/content/ContentProvider";
 import ImageField from "@/components/admin/content/ImageField";
@@ -16,7 +17,6 @@ import { countImagesMissingAlt, estimateReadingMinutes } from "@/lib/blog/markdo
 import { tagSlug } from "@/lib/blog/utils";
 import { BLOG_CATEGORIES, type BlogCategorySlug, type BlogPost } from "@/lib/content/types";
 import { altTextBlocker, postDraftSchema, postPublishSchema, type PostFormValues } from "@/lib/content/validation";
-import { CURRENT_ADMIN } from "@/lib/data/mock-leads";
 import { SITE_URL } from "@/lib/site";
 
 const LIST_HREF = "/admin/content/posts";
@@ -44,6 +44,7 @@ function Editor({ existing }: { existing: BlogPost | undefined }) {
   const fieldId = (name: string) => `${formId}-${name}`;
   const { items: posts } = useContent("posts");
   const { items: team } = useContent("team");
+  const { name: currentUser } = useAdminUser();
   const { pending, run } = usePublishFlow("posts", existing, LIST_HREF, () => {});
   // The slug follows the title until someone edits it by hand (always, for saved posts).
   const [slugEdited, setSlugEdited] = useState(Boolean(existing));
@@ -79,7 +80,7 @@ function Editor({ existing }: { existing: BlogPost | undefined }) {
           excerpt: "",
           category: "",
           tags: [],
-          authorName: CURRENT_ADMIN,
+          authorName: currentUser,
           cover: null,
           bodyMarkdown: "",
           metaTitle: "",
@@ -121,7 +122,7 @@ function Editor({ existing }: { existing: BlogPost | undefined }) {
       cover: data.cover,
       author: author
         ? { name: author.name, role: author.role, photo: author.photo }
-        : (existing?.author ?? { name: data.authorName || CURRENT_ADMIN, role: "", photo: null }),
+        : (existing?.author ?? { name: data.authorName || currentUser, role: "", photo: null }),
       category: data.category as BlogCategorySlug,
       tags: data.tags,
       // Keep the original date when republishing an edited post.

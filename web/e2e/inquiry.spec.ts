@@ -12,7 +12,7 @@ test("a visitor submits an inquiry from the home page on a phone", async ({ page
   await dialog.getByLabel(/^Email/).fill("visitor@example.com");
   await dialog.getByLabel(/^Country/).selectOption("UAE");
   await dialog.getByLabel(/^Monthly budget/).selectOption("Not sure yet");
-  await dialog.getByText("Meta Ads", { exact: true }).click();
+  await dialog.getByText("Digital Marketing", { exact: true }).click();
   await dialog.getByLabel(/^Tell us about your project/).fill("We are launching a new clinic in Dubai.");
 
   const send = dialog.getByRole("button", { name: "Send inquiry" });

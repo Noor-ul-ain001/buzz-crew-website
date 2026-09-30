@@ -67,12 +67,21 @@ export function PostsTable() {
 export function FaqsTable() {
   const { items } = useContent("faqs");
   return (
-    <Page title="FAQs" intro="Questions shown on the FAQ page, in their groups.">
+    <Page
+      title="FAQs"
+      intro="Questions shown on the FAQ page, in their groups."
+      action={
+        <Link href="/admin/content/faqs/new" className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground hover:brightness-95">
+          New FAQ
+        </Link>
+      }
+    >
       <AdminTable
         caption="Frequently asked questions"
         rows={items}
         titleHeader="Question"
         title={(item) => item.question}
+        href={(item) => `/admin/content/faqs/${item.id}`}
         columns={[
           { header: "Group", cell: (item) => item.group, className: "whitespace-nowrap" },
           { header: "Status", cell: (item) => <PublishBadge status={item.status} /> },

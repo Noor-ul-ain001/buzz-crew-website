@@ -15,7 +15,7 @@ async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
   await user.type(screen.getByLabelText(/^Email/), "ayesha@example.com");
   await user.selectOptions(screen.getByLabelText(/^Country/), "Pakistan");
   await user.selectOptions(screen.getByLabelText(/^Monthly budget/), "Not sure yet");
-  await user.click(screen.getByLabelText("SEO"));
+  await user.click(screen.getByLabelText("Branding"));
   await user.type(screen.getByLabelText(/^Tell us about your project/), "We need more patients from Google.");
 }
 
@@ -69,7 +69,7 @@ describe("InquiryForm", () => {
     await waitFor(() => expect(heading).toHaveFocus());
     expect(track).toHaveBeenCalledWith("inquiry_submitted", { source_page: "/contact" });
     const [data, context] = submitInquiry.mock.calls[0] as [Record<string, unknown>, Record<string, unknown>];
-    expect(data).toMatchObject({ name: "Ayesha Khan", services: ["SEO"], country: "Pakistan" });
+    expect(data).toMatchObject({ name: "Ayesha Khan", services: ["Branding"], country: "Pakistan" });
     expect(context).toMatchObject({ sourcePage: "/contact" });
     expect(typeof context.idempotencyKey).toBe("string");
   });

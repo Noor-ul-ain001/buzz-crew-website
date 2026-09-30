@@ -2,12 +2,18 @@ import { z } from "zod";
 
 export const COUNTRIES = ["Pakistan", "UAE", "UK", "Other"] as const;
 
+// The agency's services, exactly as the brochure (ABOUT BUZZ CREW.pdf) lists them.
 export const SERVICES = [
-  "Social Media",
-  "SEO",
-  "Web & Software",
+  "Digital Marketing",
+  "Creative & Graphic Design",
+  "Web / Software Development",
   "UI/UX Design",
-  "Meta Ads",
+  "Video & Content Production",
+  "Public Relations",
+  "Branding",
+  "Copywriting",
+  "AI & Automation",
+  "IoT & Smart Digital Solutions",
 ] as const;
 
 export const BUDGETS = [

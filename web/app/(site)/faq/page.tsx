@@ -1,7 +1,7 @@
 import CtaBand from "@/components/CtaBand";
 import FaqSearch from "@/components/faq/FaqSearch";
-import { getPublishedContent } from "@/lib/data/content";
-import { FAQ_GROUPS } from "@/lib/data/mock-faqs";
+import { FAQ_GROUPS } from "@/lib/content/types";
+import { getPublishedFaqs } from "@/lib/content/public";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -12,10 +12,11 @@ export const metadata = pageMetadata({
 });
 
 export default async function FaqPage() {
-  const faqs = await getPublishedContent("faqs");
-  const groups = FAQ_GROUPS.map((name) => ({ name, items: faqs.filter((item) => item.group === name) })).filter(
-    (group) => group.items.length > 0,
-  );
+  const faqs = await getPublishedFaqs();
+  const names = [...new Set<string>([...FAQ_GROUPS, ...faqs.map((item) => item.group)])];
+  const groups = names
+    .map((name) => ({ name, items: faqs.filter((item) => item.group === name) }))
+    .filter((group) => group.items.length > 0);
 
   const jsonLd = {
     "@context": "https://schema.org",

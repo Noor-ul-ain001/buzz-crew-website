@@ -59,5 +59,13 @@ def seed_case_studies() -> None:
     typer.echo(seed())
 
 
+@cli.command("seed-samples")
+def seed_samples() -> None:
+    """Load the earlier sample FAQs and blog posts as drafts (once)."""
+    from app.seed_samples import seed
+
+    typer.echo(seed())
+
+
 if __name__ == "__main__":
     cli()

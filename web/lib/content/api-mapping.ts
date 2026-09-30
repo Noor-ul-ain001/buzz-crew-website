@@ -1,5 +1,5 @@
 import type { Schemas } from "@/lib/api/client";
-import type { ClientLogo, ImageAsset, PublishStatus, TeamMember, Testimonial } from "@/lib/content/types";
+import type { BlogCategorySlug, BlogPost, ClientLogo, FaqItem, ImageAsset, PublishStatus, TeamMember, Testimonial } from "@/lib/content/types";
 import type { LeadCountry } from "@/lib/leads/types";
 import { COUNTRY_TO_API } from "@/lib/validation/enum-map";
 
@@ -38,7 +38,9 @@ export function publicImage(image: Schemas["PublicImage"] | null | undefined): I
   return { url: image.url, alt: image.alt, width: image.width, height: image.height };
 }
 
-function meta(item: Schemas["TestimonialAdmin"] | Schemas["ClientLogoAdmin"] | Schemas["TeamMemberAdmin"]) {
+type AdminItem = Schemas["TestimonialAdmin"] | Schemas["ClientLogoAdmin"] | Schemas["TeamMemberAdmin"] | Schemas["FaqAdmin"] | Schemas["PostAdmin"];
+
+function meta(item: AdminItem) {
   return {
     id: item.id,
     status: statusFromApi(item.status),
@@ -105,5 +107,50 @@ export function publicTeamMemberFromApi(item: Schemas["PublicTeamMember"]): Team
     role: item.role,
     bio: item.bio,
     photo: publicImage(item.photo),
+  };
+}
+
+export function faqFromApi(item: Schemas["FaqAdmin"]): FaqItem {
+  return { ...meta(item), group: item.group, question: item.question, answer: item.answer };
+}
+
+export function publicFaqFromApi(item: Schemas["PublicFaq"]): FaqItem {
+  return { id: item.id, status: "Published", updatedAt: "", group: item.group, question: item.question, answer: item.answer };
+}
+
+export function postFromApi(item: Schemas["PostAdmin"]): BlogPost {
+  return {
+    ...meta(item),
+    slug: item.slug ?? "",
+    title: item.title,
+    excerpt: item.excerpt,
+    bodyMarkdown: item.body_md,
+    cover: imageFromApi(item.cover),
+    author: { name: item.author_name, role: item.author_role, photo: null },
+    category: item.category as BlogCategorySlug,
+    tags: item.tags,
+    // Drafts have no publish date yet; the editor sets one when publishing.
+    publishedAt: item.published_at ?? item.updated_at,
+    readingMinutes: item.reading_minutes,
+    seo: { metaTitle: item.seo_title, metaDescription: item.seo_description },
+  };
+}
+
+export function publicPostFromApi(item: Schemas["PublicPost"]): BlogPost {
+  return {
+    id: item.id,
+    status: "Published",
+    updatedAt: item.updated_at,
+    slug: item.slug,
+    title: item.title,
+    excerpt: item.excerpt,
+    bodyMarkdown: item.body_md,
+    cover: publicImage(item.cover),
+    author: { name: item.author_name, role: item.author_role, photo: null },
+    category: item.category as BlogCategorySlug,
+    tags: item.tags,
+    publishedAt: item.published_at ?? item.updated_at,
+    readingMinutes: item.reading_minutes,
+    seo: { metaTitle: item.seo_title, metaDescription: item.seo_description },
   };
 }

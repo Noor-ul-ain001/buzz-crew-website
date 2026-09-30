@@ -22,7 +22,7 @@ type Status = "ready" | "thinking" | "streaming" | "unavailable" | "limit";
 
 const SUGGESTIONS = [
   "What services do you offer?",
-  "Do you work with restaurants?",
+  "Which industries do you work with?",
   "How much does it cost?",
   "How do we get started?",
 ];

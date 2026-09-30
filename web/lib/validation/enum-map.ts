@@ -14,11 +14,16 @@ export const COUNTRY_TO_API: Record<Country, ApiCountry> = {
 };
 
 export const SERVICE_TO_API: Record<ServiceLabel, ApiService> = {
-  "Social Media": "social_media",
-  SEO: "seo",
-  "Web & Software": "web_software",
+  "Digital Marketing": "digital_marketing",
+  "Creative & Graphic Design": "creative_design",
+  "Web / Software Development": "web_software",
   "UI/UX Design": "ui_ux_design",
-  "Meta Ads": "meta_ads",
+  "Video & Content Production": "video_content",
+  "Public Relations": "public_relations",
+  Branding: "branding",
+  Copywriting: "copywriting",
+  "AI & Automation": "ai_automation",
+  "IoT & Smart Digital Solutions": "iot_smart",
 };
 
 export const BUDGET_TO_API: Record<Budget, ApiBudgetRange> = {

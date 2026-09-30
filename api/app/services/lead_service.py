@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
-from app.models.lead import Lead, LeadCreate
+from app.models.lead import Lead, LeadCreate, LeadEvent
 
 
 @dataclass
@@ -50,6 +50,8 @@ def create_lead(
         post_process_token_hash=token_hash,
     )
     session.add(lead)
+    # The lead's history starts with its arrival (shown on the admin lead page).
+    session.add(LeadEvent(lead_id=lead.id, to_status=lead.status, actor_name="Website form"))
     try:
         session.commit()
     except IntegrityError:

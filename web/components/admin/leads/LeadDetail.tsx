@@ -19,7 +19,7 @@ const cardClass = "rounded-2xl border border-border p-5 sm:p-6";
 const cardHeadingClass = "text-lg font-semibold tracking-tight";
 
 export default function LeadDetail({ id }: { id: string }) {
-  const { leads } = useLeads();
+  const { leads, now } = useLeads();
   const lead = leads.find((item) => item.id === id);
   // Set while this lead is being deleted, so the page doesn't flash "not found" before
   // the redirect to the list.
@@ -49,7 +49,7 @@ export default function LeadDetail({ id }: { id: string }) {
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-3xl font-bold tracking-tight">{lead.name}</h1>
             <StatusBadge status={lead.status} />
-            <PriorityBadge score={scoreLead(lead)} />
+            <PriorityBadge score={scoreLead(lead, now)} />
           </div>
           <p className="mt-1 text-muted">
             {lead.business || "No business name"} · Received{" "}

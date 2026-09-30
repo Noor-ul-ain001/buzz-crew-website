@@ -7,37 +7,38 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* The brand deck's palette (deep violet, purple, yellow, orange) with the logo's teal and orchid. */
-  --background: #f7f5fa;
-  --foreground: #1b0a38;
-  --surface: #eee8f7;
-  --muted: #5f586d;
-  --border: #d9cfea;
-  --accent: #ffc93c;
-  --accent-foreground: #1b0a38;
-  /* Yellow is too light for text on the light theme; this darker gold is used instead. */
-  --accent-strong: #8a6400;
-  --flame: #c2410c;
+  /* The brochure's palette (ABOUT BUZZ CREW.pdf): deep navy, gold and warm paper, with the
+     logo's orchid and teal as supporting colours. This is the light theme. */
+  --background: #f8f5ec;
+  --foreground: #0b1739;
+  --surface: #efe9d8;
+  --muted: #56607a;
+  --border: #ddd3b8;
+  --accent: #d9c24a;
+  --accent-foreground: #0b1739;
+  /* Gold is too light for text on paper; this deeper gold is used instead. */
+  --accent-strong: #7a680c;
+  --flame: #a8641c;
   --danger: #b91c1c;
-  --ink: #1b0a38;
+  --ink: #0b1739;
   --brand-purple: #6d3fa0;
   --brand-teal: #237f96;
   color-scheme: light;
 }
 
-/* The default theme (see ThemeProvider): the deep violet of the brand deck. */
+/* The default theme (see ThemeProvider): the brochure's navy with gold. */
 .dark {
-  --background: #12072b;
-  --foreground: #f7f5fa;
-  --surface: #1b0a38;
-  --muted: #b8afcb;
-  --border: #3d1a73;
-  --accent: #ffc93c;
-  --accent-foreground: #1b0a38;
-  --accent-strong: #ffc93c;
-  --flame: #ff6f3c;
+  --background: #0a1535;
+  --foreground: #f5f2e8;
+  --surface: #0f1d45;
+  --muted: #b1b8cf;
+  --border: #243463;
+  --accent: #d9c24a;
+  --accent-foreground: #0a1535;
+  --accent-strong: #e2cc5c;
+  --flame: #e0a24e;
   --danger: #fb7185;
-  --ink: #1b0a38;
+  --ink: #0a1535;
   --brand-purple: #a77bd6;
   --brand-teal: #66c2d4;
   color-scheme: dark;
@@ -58,7 +59,8 @@
   --color-brand-purple: var(--brand-purple);
   --color-brand-teal: var(--brand-teal);
   --font-sans: var(--font-figtree);
-  --font-display: var(--font-figtree);
+  /* Headings in the brochure's high-contrast serif; body text stays in Figtree. */
+  --font-display: var(--font-playfair);
   --font-mono: var(--font-geist-mono);
 
   /* Client logo marquee. Only applied with motion-safe:, so reduced-motion users get a
@@ -80,13 +82,14 @@ body {
 /* Keep typography consistent across the public site and admin workspace. */
 @layer base {
   h1,
-  h2 {
-    font-family: var(--font-figtree), Arial, Helvetica, sans-serif;
+  h2,
+  h3 {
+    font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
     letter-spacing: -0.01em;
   }
 
   /* Small uppercase labels retain the same family while allowing their declared weights. */
-  :is(h1, h2).uppercase {
+  :is(h1, h2, h3).uppercase {
     font-family: var(--font-figtree), sans-serif;
   }
 }

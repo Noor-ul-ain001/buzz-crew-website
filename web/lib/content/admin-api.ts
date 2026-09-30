@@ -1,14 +1,13 @@
 import type { Schemas } from "@/lib/api/client";
 import { apiRequest } from "@/lib/api/request";
 import { errorMessage } from "@/lib/auth/errors";
-import { clientLogoFromApi, countryToApi, teamMemberFromApi, testimonialFromApi } from "@/lib/content/api-mapping";
-import type { ClientLogo, ContentCollections, ImageAsset, TeamMember, Testimonial } from "@/lib/content/types";
+import { clientLogoFromApi, countryToApi, faqFromApi, postFromApi, teamMemberFromApi, testimonialFromApi } from "@/lib/content/api-mapping";
+import type { BlogPost, ClientLogo, ContentCollections, FaqItem, ImageAsset, TeamMember, Testimonial } from "@/lib/content/types";
 
-// Client-side calls to the 004 content API. Posts and FAQs stay on mock data until
-// features 006 and 007 give them endpoints.
+// Client-side calls to the content API: every admin content collection is stored there.
 
-export type ApiKind = "testimonials" | "logos" | "team";
-export const API_KINDS: readonly ApiKind[] = ["testimonials", "logos", "team"];
+export type ApiKind = "testimonials" | "logos" | "team" | "posts" | "faqs";
+export const API_KINDS: readonly ApiKind[] = ["testimonials", "logos", "team", "posts", "faqs"];
 
 export function isApiKind(kind: string): kind is ApiKind {
   return (API_KINDS as readonly string[]).includes(kind);
@@ -18,6 +17,8 @@ export const API_SLUG: Record<ApiKind, string> = {
   testimonials: "testimonials",
   logos: "client-logos",
   team: "team-members",
+  posts: "posts",
+  faqs: "faqs",
 };
 
 type Item<K extends ApiKind> = ContentCollections[K];
@@ -49,6 +50,8 @@ const FROM_API = {
   testimonials: (item: unknown) => testimonialFromApi(item as Schemas["TestimonialAdmin"]),
   logos: (item: unknown) => clientLogoFromApi(item as Schemas["ClientLogoAdmin"]),
   team: (item: unknown) => teamMemberFromApi(item as Schemas["TeamMemberAdmin"]),
+  posts: (item: unknown) => postFromApi(item as Schemas["PostAdmin"]),
+  faqs: (item: unknown) => faqFromApi(item as Schemas["FaqAdmin"]),
 } as const;
 
 export function fromApi<K extends ApiKind>(kind: K, item: unknown): Item<K> {
@@ -74,6 +77,27 @@ function toBody(kind: ApiKind, fields: Fields<ApiKind>): Record<string, unknown>
     const l = fields as Fields<"logos"> & Partial<ClientLogo>;
     return { name: l.name, logo_id: mediaId(l.logo), website_url: l.websiteUrl || null };
   }
+  if (kind === "posts") {
+    const p = fields as Fields<"posts"> & Partial<BlogPost>;
+    return {
+      slug: p.slug || null,
+      title: p.title,
+      excerpt: p.excerpt,
+      body_md: p.bodyMarkdown,
+      cover_id: mediaId(p.cover),
+      author_name: p.author.name,
+      author_role: p.author.role,
+      category: p.category,
+      tags: p.tags,
+      reading_minutes: p.readingMinutes,
+      seo_title: p.seo.metaTitle,
+      seo_description: p.seo.metaDescription,
+    };
+  }
+  if (kind === "faqs") {
+    const f = fields as Fields<"faqs"> & Partial<FaqItem>;
+    return { group: f.group, question: f.question, answer: f.answer };
+  }
   const m = fields as Fields<"team"> & Partial<TeamMember>;
   return { name: m.name, role: m.role, bio: m.bio, photo_id: mediaId(m.photo) };
 }
@@ -83,6 +107,11 @@ const FIELD_NAMES: Record<string, string> = {
   website_url: "websiteUrl",
   photo_id: "photo",
   logo_id: "logo",
+  cover_id: "cover",
+  body_md: "bodyMarkdown",
+  author_name: "authorName",
+  seo_title: "metaTitle",
+  seo_description: "metaDescription",
 };
 
 /** "photo.alt_text" → "photo", "video_url" → "videoUrl". */
@@ -124,7 +153,7 @@ export async function syncAltText(images: (ImageAsset | null)[]) {
 }
 
 function imagesOf(fields: Fields<ApiKind>): (ImageAsset | null)[] {
-  return ["photo", "logo"].map((key) => (fields as unknown as Record<string, ImageAsset | null | undefined>)[key] ?? null);
+  return ["photo", "logo", "cover"].map((key) => (fields as unknown as Record<string, ImageAsset | null | undefined>)[key] ?? null);
 }
 
 type Existing = { id: string; version?: number; status: "Draft" | "Published" };

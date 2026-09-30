@@ -154,7 +154,7 @@ def seed() -> str:
                 summary=project.summary,
                 industry=project.industry,
                 country=Country.PAKISTAN,
-                services=[Service.SOCIAL_MEDIA],
+                services=[Service.DIGITAL_MARKETING],
                 cover_id=cover.id,
                 sort_order=order,
                 status=PublishStatus.PUBLISHED,

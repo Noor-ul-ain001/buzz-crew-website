@@ -18,14 +18,14 @@ export const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-// Brand colours from the logo, shared with contexts that can't read CSS variables
+// Brand colours from the brochure and logo, shared with contexts that can't read CSS variables
 // (Open Graph images). Keep in sync with the tokens in app/globals.css.
 export const BRAND_COLORS = {
-  yellow: "#f5cb42",
-  ink: "#0b0c1e",
-  paper: "#ffffff",
-  purple: "#b58ae6",
-  teal: "#6cc4d8",
+  yellow: "#d9c24a",
+  ink: "#0a1535",
+  paper: "#f5f2e8",
+  purple: "#a77bd6",
+  teal: "#66c2d4",
 } as const;
 
 // From the agency brochure (ABOUT BUZZ CREW.pdf).

@@ -5,80 +5,30 @@ import type { ReactNode } from "react";
 import CtaBand from "@/components/CtaBand";
 import StartProjectButton from "@/components/inquiry/StartProjectButton";
 import { pageMetadata } from "@/lib/metadata";
-import type { SERVICES as INQUIRY_SERVICES } from "@/lib/validation/inquiry";
+import { SERVICE_DETAILS } from "@/lib/services";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Digital marketing services",
+  title: "What we do",
   description:
-    "Social media, SEO, web and software development, UI/UX design and Meta Ads from The Buzz Crew, a full-service agency in Karachi working worldwide.",
+    "Digital marketing, creative and graphic design, web and software development, UI/UX, video, PR, branding, copywriting, AI and automation, and IoT, from The Buzz Crew in Karachi.",
   path: "/services",
 });
 
-type Service = {
-  id: string;
-  number: string;
-  // Matches the inquiry form's options, so each service can pre-select itself there.
-  name: (typeof INQUIRY_SERVICES)[number];
-  image: string;
-  alt: string;
-  summary: string;
-  outcomes: string[];
-};
-
-const SERVICES: Service[] = [
-  {
-    id: "social-media",
-    number: "01",
-    name: "Social Media",
-    image: "/home/camera.webp",
-    alt: "Filming a band on a camera monitor",
-    summary: "Make your brand part of the conversation, with content people want to stop for and a plan that turns attention into action.",
-    outcomes: ["Channel and content strategy", "Creative direction and production", "Community management", "Monthly reporting and optimisation"],
-  },
-  {
-    id: "seo",
-    number: "02",
-    name: "SEO",
-    image: "/home/automation.webp",
-    alt: "Diagram of an automated process",
-    summary: "Get found by the people already looking for you. We turn technical foundations, useful content and local relevance into lasting visibility.",
-    outcomes: ["Technical and content audits", "Keyword and competitor research", "On-page and local SEO", "Search performance reporting"],
-  },
-  {
-    id: "web-and-software",
-    number: "03",
-    name: "Web & Software",
-    image: "/home/code.webp",
-    alt: "Code on a laptop beside a mug",
-    summary: "Websites and custom tools that work as hard as your business: fast, considered, easy to use and built to keep up.",
-    outcomes: ["Marketing websites", "E-commerce experiences", "Custom platforms and portals", "Ongoing maintenance and support"],
-  },
-  {
-    id: "ui-ux-design",
-    number: "04",
-    name: "UI/UX Design",
-    image: "/home/tablet.webp",
-    alt: "Designer sketching screens on a tablet",
-    summary: "Turn complex journeys into clear, confident experiences that give people a reason to stay, explore and convert.",
-    outcomes: ["User journeys and information architecture", "Wireframes and prototypes", "Visual systems", "Usability-led iteration"],
-  },
-  {
-    id: "meta-ads",
-    number: "05",
-    name: "Meta Ads",
-    image: "/home/magazines.webp",
-    alt: "Hands leafing through magazines on a desk",
-    summary: "Put the right message in front of the right audience, then keep learning until budget is working harder for your business.",
-    outcomes: ["Campaign and funnel strategy", "Audience targeting", "Creative and copy testing", "Performance measurement"],
-  },
+// The photo strip from the brochure's "What we do" page.
+const STRIP = [
+  { src: "/home/tablet.webp", alt: "Designer sketching app screens on a tablet" },
+  { src: "/home/code.webp", alt: "Code on a laptop screen" },
+  { src: "/home/magazines.webp", alt: "Hands leafing through magazines on a desk" },
+  { src: "/home/automation.webp", alt: "Diagram of an automated process" },
+  { src: "/home/camera.webp", alt: "Filming a band on a camera monitor" },
 ];
 
-const EXTRAS = ["Branding", "Copywriting", "Video and content production", "Public relations", "AI and automation", "IoT and smart digital solutions"];
+// The brochure's "How we work" page, word for word.
 const PROCESS = [
-  ["Discover", "We get close to your goals, audience, market and existing activity."],
-  ["Define", "Together, we shape a focused plan with priorities, milestones and measures."],
-  ["Create", "Our crew makes, launches and manages the work across the right channels."],
-  ["Improve", "We report clearly, learn quickly and build on the moves that make an impact."],
+  ["Discovery & Audit", "We map the brand, the competition, and every gap in the current marketing."],
+  ["Strategy", "A content and channel plan built around real goals, not vanity metrics."],
+  ["Execution & Creative", "Scripting, shooting, designing, and building, in-house, on schedule."],
+  ["Reporting & Growth", "Clear numbers each cycle, and a plan for what scales next."],
 ] as const;
 
 function Eyebrow({ children }: { children: ReactNode }) {
@@ -89,28 +39,28 @@ export default function ServicesPage() {
   return (
     <>
       <main className="flex-1">
-        <section className="relative isolate overflow-hidden border-b border-border bg-surface">
-          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_10%_0%,color-mix(in_oklab,var(--brand-purple)_22%,transparent),transparent_30rem)]" />
-          <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
-              <div className="rise">
-                <Eyebrow>Services</Eyebrow>
-              </div>
-              <h1 className="rise mt-5 max-w-4xl text-6xl leading-[0.95] tracking-tight text-balance [--d:1] sm:text-8xl">
-                The right specialists, moving in the <em className="text-accent-strong">same</em> direction.
-              </h1>
-              <p className="rise mt-7 max-w-xl text-lg leading-8 text-pretty text-muted [--d:2]">
-                One team for the strategy, creative, technology and media your brand needs to move from busy to genuinely growing.
-              </p>
+        <section className="relative isolate overflow-hidden border-b border-border">
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_85%_0%,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_30rem)]" />
+          <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+            <div className="rise">
+              <Eyebrow>What we do</Eyebrow>
             </div>
+            <h1 className="rise mt-5 max-w-4xl text-6xl leading-[0.95] tracking-tight text-balance [--d:1] sm:text-8xl">
+              Ten disciplines, <em className="text-accent-strong">one</em> crew.
+            </h1>
+            <p className="rise mt-7 max-w-2xl text-lg leading-8 text-pretty text-muted [--d:2]">
+              Strategy-led digital marketing, design, technology and content for local and international brands, all under one roof.
+            </p>
             {/* A jump index to each service further down the page. */}
-            <nav aria-label="Services on this page" className="rise [--d:3] lg:col-span-4">
-              <ol className="border-t border-border">
-                {SERVICES.map((service) => (
+            <nav aria-label="Services on this page" className="rise mt-12 [--d:3]">
+              <ol className="grid border-t border-border sm:grid-cols-2 sm:gap-x-10">
+                {SERVICE_DETAILS.map((service, index) => (
                   <li key={service.id} className="border-b border-border">
                     <a href={`#${service.id}`} className="group flex items-center justify-between gap-4 py-3.5 font-medium">
                       <span className="flex items-baseline gap-4">
-                        <span className="text-xs font-semibold tracking-[0.2em] text-accent-strong tabular-nums">{service.number}</span>
+                        <span className="text-xs font-semibold tracking-[0.2em] text-accent-strong tabular-nums">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
                         <span className="transition-transform duration-300 group-hover:translate-x-1">{service.name}</span>
                       </span>
                       <span aria-hidden="true" className="text-muted transition-all duration-300 group-hover:translate-y-0.5 group-hover:text-accent-strong">
@@ -124,86 +74,67 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section aria-labelledby="services-heading" className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:py-32">
-          <div className="reveal flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <Eyebrow>Core capabilities</Eyebrow>
-              <h2 id="services-heading" className="mt-4 text-5xl leading-[1.03] tracking-tight sm:text-6xl">
-                Built around the whole journey.
+        {/* The brochure's photo strip, scrolling sideways on phones. */}
+        <section aria-label="Our work in pictures" className="py-16">
+          <ul className="reveal-stagger mx-auto flex max-w-6xl snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:px-6 lg:grid lg:grid-cols-5 lg:overflow-visible">
+            {STRIP.map((photo) => (
+              <li key={photo.src} className="group relative aspect-square w-56 shrink-0 snap-start overflow-hidden rounded-2xl border border-accent/40 lg:w-auto">
+                <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 1024px) 220px, 224px" className="object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-105" />
+              </li>
+            ))}
+          </ul>
+          <p className="reveal mx-auto mt-8 max-w-2xl px-4 text-center font-display text-xl text-pretty italic text-muted sm:text-2xl">
+            Our work focuses on genuine moments, warm tones, and storytelling compositions inspired by everyday life.
+          </p>
+        </section>
+
+        <section aria-labelledby="services-heading" className="border-y border-border bg-surface">
+          <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:py-28">
+            <div className="reveal flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+              <h2 id="services-heading" className="text-5xl leading-[1.03] tracking-tight sm:text-6xl">
+                Our services
               </h2>
+              <p className="max-w-md text-pretty text-muted">Choose one focused service or bring us in as an extension of your team.</p>
             </div>
-            <p className="max-w-md text-pretty text-muted">Choose one focused service or bring us in as an integrated extension of your team.</p>
-          </div>
-          {/* Alternating photo and text, so the page reads as a sequence rather than a grid of cards. */}
-          <ol className="mt-20 flex flex-col gap-24 lg:gap-32">
-            {SERVICES.map((service, index) => (
-              <li key={service.id} id={service.id} className="group grid scroll-mt-28 items-center gap-10 lg:grid-cols-2 lg:gap-16">
-                <div className={`reveal relative ${index % 2 === 1 ? "lg:order-last" : ""}`}>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-surface">
-                    <Image
-                      src={service.image}
-                      alt={service.alt}
-                      fill
-                      sizes="(min-width: 1024px) 540px, 100vw"
-                      className="object-cover transition-transform duration-1000 ease-out motion-safe:group-hover:scale-105"
-                    />
-                  </div>
-                  <span
-                    aria-hidden="true"
-                    className={`text-outline absolute -top-12 font-display text-8xl font-bold sm:-top-14 sm:text-9xl ${index % 2 === 1 ? "right-4" : "left-4"}`}
-                  >
-                    {service.number}
+            <ol className="mt-14 grid gap-4 md:grid-cols-2">
+              {SERVICE_DETAILS.map((service, index) => (
+                <li
+                  key={service.id}
+                  id={service.id}
+                  className="reveal group flex scroll-mt-28 flex-col rounded-3xl border border-border bg-background p-7 transition-colors duration-300 hover:border-accent/60 sm:p-9"
+                >
+                  <span aria-hidden="true" className="text-outline font-display text-6xl leading-none font-bold transition-colors duration-500 group-hover:text-accent">
+                    {String(index + 1).padStart(2, "0")}
                   </span>
-                </div>
-                <div className="reveal">
-                  <h3 className="text-5xl leading-none font-semibold tracking-tight">{service.name}</h3>
-                  <p className="mt-5 max-w-xl text-lg leading-8 text-pretty text-muted">{service.summary}</p>
-                  <ul className="mt-8 grid gap-x-6 border-t border-border text-sm sm:grid-cols-2">
-                    {service.outcomes.map((outcome) => (
-                      <li key={outcome} className="flex items-center gap-3 border-b border-border py-3">
-                        <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-flame" />
-                        {outcome}
+                  <h3 className="mt-6 font-display text-3xl leading-tight">{service.name}</h3>
+                  <p className="mt-3 text-pretty text-muted">{service.summary}</p>
+                  <ul className="mt-6 flex flex-wrap gap-2">
+                    {service.deliverables.map((item) => (
+                      <li key={item} className="rounded-full border border-border px-3 py-1 text-sm">
+                        {item}
                       </li>
                     ))}
                   </ul>
                   <StartProjectButton
                     services={[service.name]}
-                    className="group/cta mt-8 inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 font-semibold hover:border-accent hover:text-accent-strong"
+                    className="group/cta mt-8 inline-flex items-center gap-2 self-start font-semibold text-accent-strong"
                   >
                     Start a {service.name} project
                     <span aria-hidden="true" className="transition-transform duration-300 group-hover/cta:translate-x-1">
                       →
                     </span>
                   </StartProjectButton>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section aria-labelledby="extras-heading" className="border-y border-border bg-ink text-white">
-          <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
-            <div className="reveal">
-              <Eyebrow>More ways we help</Eyebrow>
-              <h2 id="extras-heading" className="mt-4 text-5xl leading-[1.03] tracking-tight text-balance sm:text-6xl">
-                Extra firepower when the brief calls for it.
-              </h2>
-            </div>
-            <ul className="reveal-stagger flex flex-wrap content-start gap-3 lg:pt-3">
-              {EXTRAS.map((extra) => (
-                <li key={extra} className="rounded-full border border-white/25 px-5 py-3 text-sm font-medium text-white/90 transition-colors duration-300 hover:border-accent hover:text-accent">
-                  {extra}
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
         </section>
 
         <section aria-labelledby="process-heading" className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:py-32">
           <div className="reveal">
-            <Eyebrow>How engagement works</Eyebrow>
+            <Eyebrow>How we work</Eyebrow>
             <h2 id="process-heading" className="mt-4 max-w-3xl text-5xl leading-[1.03] tracking-tight text-balance sm:text-6xl">
-              A simple process that keeps good work moving.
+              A repeatable process behind every account.
             </h2>
           </div>
           <ol className="reveal-stagger relative mt-16 grid gap-10 md:grid-cols-4 md:gap-8">
@@ -212,7 +143,7 @@ export default function ServicesPage() {
               <li key={title} className="relative border-t border-border pt-6 md:border-t-0">
                 <span aria-hidden="true" className="absolute -top-1 left-0 hidden size-2 rounded-full bg-accent md:block" />
                 <p className="text-sm font-semibold tracking-[0.2em] text-accent-strong tabular-nums">0{index + 1}</p>
-                <h3 className="mt-6 text-3xl font-semibold tracking-tight">{title}</h3>
+                <h3 className="mt-6 font-display text-3xl">{title}</h3>
                 <p className="mt-3 leading-7 text-muted">{body}</p>
               </li>
             ))}
@@ -231,7 +162,7 @@ export default function ServicesPage() {
           </div>
         </section>
       </main>
-      <CtaBand heading="Let's put the right work in motion." body="Tell us what you are building, fixing or growing. We will bring the people and plan to match." />
+      <CtaBand heading="Let's create stories worth remembering." body="Available for worldwide collaborations. Tell us about your brand and the crew will reply within 24 hours." />
     </>
   );
 }

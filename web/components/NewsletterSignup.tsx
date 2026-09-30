@@ -1,13 +1,14 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useId, useRef, useState, type FormEvent } from "react";
 import { subscribeToNewsletter } from "@/lib/data/newsletter";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Double opt-in: after signing up, the visitor confirms from their inbox.
 export default function NewsletterSignup() {
   const id = useId();
+  const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -24,7 +25,7 @@ export default function NewsletterSignup() {
     setError("");
     setStatus("sending");
     try {
-      await subscribeToNewsletter(value);
+      await subscribeToNewsletter(value, pathname || "/");
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -40,10 +41,9 @@ export default function NewsletterSignup() {
       <div role="status">
         {status === "sent" && (
           <div className="mt-3 rounded-xl border border-border bg-background p-4">
-            <p className="font-semibold">Check your inbox to confirm</p>
+            <p className="font-semibold">You&apos;re on the list</p>
             <p className="mt-1 text-sm text-muted">
-              We&apos;ve sent a link to <span className="font-medium text-foreground">{email.trim()}</span>. Click it to
-              start getting our monthly tips.
+              We&apos;ll send monthly tips to <span className="font-medium text-foreground">{email.trim()}</span>.
             </p>
           </div>
         )}

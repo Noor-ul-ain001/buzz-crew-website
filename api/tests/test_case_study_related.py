@@ -16,24 +16,24 @@ def test_ranking_and_exclusions(
         media_store,
         slug="me",
         industry="food_beverages",
-        services=["seo", "social_media"],
+        services=["branding", "digital_marketing"],
     )
     published(
-        editor_client, media_store, slug="one-service", industry="education", services=["seo"]
+        editor_client, media_store, slug="one-service", industry="education", services=["branding"]
     )
     published(
         editor_client,
         media_store,
         slug="same-industry",
         industry="food_beverages",
-        services=["meta_ads"],
+        services=["copywriting"],
     )
     published(
         editor_client,
         media_store,
         slug="two-services",
         industry="ecommerce",
-        services=["seo", "social_media"],
+        services=["branding", "digital_marketing"],
     )
     published(
         editor_client,
@@ -53,5 +53,5 @@ def test_empty_when_nothing_matches(
     published(
         editor_client, media_store, slug="alone", industry="farmhouses", services=["web_software"]
     )
-    published(editor_client, media_store, slug="other", industry="education", services=["seo"])
+    published(editor_client, media_store, slug="other", industry="education", services=["branding"])
     assert related(client, "alone") == []

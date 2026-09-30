@@ -77,6 +77,20 @@ export const teamPublishSchema = teamDraftSchema.extend({
 
 export type TeamFormValues = z.input<typeof teamDraftSchema>;
 
+// FAQs: drafts only need the question.
+export const faqDraftSchema = z.object({
+  group: text("group", 60),
+  question: z.string().trim().min(1, "Write the question.").max(200, "Keep the question under 200 characters."),
+  answer: text("answer", 2000),
+});
+
+export const faqPublishSchema = faqDraftSchema.extend({
+  group: required("group", 60),
+  answer: required("answer", 2000).min(10, "Answer must be at least 10 characters."),
+});
+
+export type FaqFormValues = z.input<typeof faqDraftSchema>;
+
 export const clientLogoSchema = z.object({
   name,
   logo: imageSchema,

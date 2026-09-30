@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useLeads } from "@/components/admin/LeadsProvider";
 import LeadsPerMonthChart from "@/components/admin/overview/LeadsPerMonthChart";
-import { MOCK_NOW } from "@/lib/data/mock-leads";
 import { computeLeadStats, type Breakdown } from "@/lib/leads/stats";
 
 const percent = new Intl.NumberFormat("en-GB", { style: "percent", maximumFractionDigits: 0 });
@@ -16,9 +15,8 @@ function comparison(current: number, previous: number, previousMonth: string) {
 }
 
 export default function Overview() {
-  const { leads } = useLeads();
-  // Mock data is anchored to MOCK_NOW; switch to `new Date()` with the real API.
-  const stats = computeLeadStats(leads, MOCK_NOW);
+  const { leads, now } = useLeads();
+  const stats = computeLeadStats(leads, now);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">

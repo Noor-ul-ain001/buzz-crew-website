@@ -34,7 +34,7 @@ def body(client: Any, store: FakeMediaStore, **overrides: Any) -> dict[str, Any]
         "summary": "Reels and local SEO that filled a new café in its first month.",
         "industry": "food_beverages",
         "country": "pakistan",
-        "services": ["social_media", "seo"],
+        "services": ["digital_marketing", "branding"],
         "challenge_md": "A new café with **no** audience.",
         "strategy_md": "Reels, local SEO and a launch offer.",
         "execution_md": "- 12 reels\n- Google Business Profile",

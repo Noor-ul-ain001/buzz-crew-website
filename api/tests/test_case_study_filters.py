@@ -5,12 +5,16 @@ from tests.conftest import FakeMediaStore
 
 
 def seed(client: Any, store: FakeMediaStore) -> None:
-    published(client, store, slug="cafe", industry="food_beverages", services=["social_media"])
-    published(client, store, slug="bakery", industry="food_beverages", services=["seo"])
+    published(client, store, slug="cafe", industry="food_beverages", services=["digital_marketing"])
+    published(client, store, slug="bakery", industry="food_beverages", services=["branding"])
     published(
-        client, store, slug="clinic", industry="healthcare_dental", services=["seo", "meta_ads"]
+        client,
+        store,
+        slug="clinic",
+        industry="healthcare_dental",
+        services=["branding", "copywriting"],
     )
-    create(client, body(client, store, slug="draft", industry="education", services=["seo"]))
+    create(client, body(client, store, slug="draft", industry="education", services=["branding"]))
 
 
 def slugs(response: Any) -> list[str]:
@@ -20,8 +24,8 @@ def slugs(response: Any) -> list[str]:
 def test_filters(editor_client: Any, client: Any, media_store: FakeMediaStore) -> None:
     seed(editor_client, media_store)
     assert slugs(client.get(PUBLIC, params={"industry": "food_beverages"})) == ["cafe", "bakery"]
-    assert slugs(client.get(PUBLIC, params={"service": "seo"})) == ["bakery", "clinic"]
-    both = client.get(PUBLIC, params={"industry": "food_beverages", "service": "seo"})
+    assert slugs(client.get(PUBLIC, params={"service": "branding"})) == ["bakery", "clinic"]
+    both = client.get(PUBLIC, params={"industry": "food_beverages", "service": "branding"})
     assert slugs(both) == ["bakery"]
     assert both.json()["total"] == 1
 
@@ -36,9 +40,9 @@ def test_facets_count_only_published(
         {"value": "healthcare_dental", "count": 1},
     ]
     assert {f["value"]: f["count"] for f in facets["services"]} == {
-        "social_media": 1,
-        "seo": 2,
-        "meta_ads": 1,
+        "digital_marketing": 1,
+        "branding": 2,
+        "copywriting": 1,
     }
 
 

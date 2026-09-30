@@ -23,7 +23,7 @@ def lead_count(db: Any) -> int:
         ({"phone": "abc"}, "phone"),
         ({"business": "b" * 151}, "business"),
         ({"services": []}, "services"),
-        ({"services": ["seo", "seo"]}, "services"),
+        ({"services": ["branding", "branding"]}, "services"),
         ({"services": ["banana"]}, "services"),
         ({"country": "france"}, "country"),
         ({"budget_range": "millions"}, "budget_range"),

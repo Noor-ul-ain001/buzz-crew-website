@@ -31,7 +31,7 @@ const labelClass = "mb-1 block text-xs font-semibold uppercase tracking-wide tex
 // passes them in, and every change here is written back with router.replace.
 export default function LeadsTable({ filters }: { filters: LeadFilters }) {
   const router = useRouter();
-  const { leads } = useLeads();
+  const { leads, now } = useLeads();
   const [isPending, startTransition] = useTransition();
   const ids = { search: useId(), status: useId(), service: useId(), country: useId(), from: useId(), to: useId() };
 
@@ -238,7 +238,7 @@ export default function LeadsTable({ filters }: { filters: LeadFilters }) {
                     <th scope="col" className="px-4 py-3 font-semibold">Budget</th>
                     <th scope="col" className="px-4 py-3 font-semibold">Status</th>
                     <th scope="col" className="px-4 py-3 font-semibold">
-                      Priority <span className="font-normal normal-case">(AI)</span>
+                      Priority
                     </th>
                     <th scope="col" className="px-4 py-3 font-semibold">Received</th>
                   </tr>
@@ -265,7 +265,7 @@ export default function LeadsTable({ filters }: { filters: LeadFilters }) {
                         <StatusBadge status={lead.status} />
                       </td>
                       <td className="px-4 py-3">
-                        <PriorityBadge score={scoreLead(lead)} />
+                        <PriorityBadge score={scoreLead(lead, now)} />
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-muted">
                         <time dateTime={lead.createdAt}>{formatDate(lead.createdAt)}</time>
@@ -295,7 +295,7 @@ export default function LeadsTable({ filters }: { filters: LeadFilters }) {
                       <ServiceChips services={lead.services} />
                     </div>
                     <div className="mt-3">
-                      <PriorityBadge score={scoreLead(lead)} variant="static" />
+                      <PriorityBadge score={scoreLead(lead, now)} variant="static" />
                     </div>
                     <p className="mt-3 text-sm text-muted">
                       {lead.country} · {lead.budget} ·{" "}

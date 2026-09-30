@@ -3,14 +3,17 @@
 See specs/004-content-publishing/contracts/content.openapi.yaml.
 """
 
+import re
 import uuid
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Any
 from urllib.parse import urlparse
 
-from pydantic import BaseModel, StringConstraints, field_validator
+from fastapi import HTTPException, status
+from pydantic import BaseModel, Field, StringConstraints, field_validator
+from sqlmodel import Session, col, select
 
-from app.models.content import ClientLogo, TeamMember, Testimonial
+from app.models.content import ClientLogo, Faq, Post, TeamMember, Testimonial
 from app.models.lead import Country
 from app.models.media import Media
 from app.models.publishable import PublishStatus
@@ -20,6 +23,12 @@ from app.services.publishing import ContentType, MediaMap, media_for
 Text100 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=100)]
 Text300 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=300)]
 Text400 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=400)]
+Text40 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=40)]
+Text60 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=60)]
+Text120 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=120)]
+Text160 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=160)]
+Text200 = Annotated[str, StringConstraints(strip_whitespace=True, max_length=200)]
+LongText = Annotated[str, StringConstraints(strip_whitespace=True, max_length=50_000)]
 
 
 VIDEO_HOSTS = {"youtube.com", "youtu.be", "vimeo.com", "instagram.com"}
@@ -317,4 +326,197 @@ TEAM_MEMBERS = ContentType(
     tags=("team-members",),
 )
 
-CONTENT_TYPES = (TESTIMONIALS, CLIENT_LOGOS, TEAM_MEMBERS)
+# --- FAQs ------------------------------------------------------------------------------------
+
+
+class FaqFields(BaseModel):
+    group: Text60 = ""
+    question: Text200 = ""
+    answer: Annotated[str, StringConstraints(strip_whitespace=True, max_length=2000)] = ""
+
+
+class FaqUpdate(FaqFields):
+    version: int
+
+
+class FaqAdmin(AdminMeta):
+    group: str
+    question: str
+    answer: str
+
+
+class PublicFaq(BaseModel):
+    id: uuid.UUID
+    group: str
+    question: str
+    answer: str
+
+
+def faq_rules(item: Faq, media: MediaMap) -> dict[str, str]:
+    errors: dict[str, str] = {}
+    required(errors, "group", item.group, "Choose a group.")
+    required(errors, "question", item.question, "Write the question.")
+    if len(item.answer.strip()) < 10:
+        errors["answer"] = "Answer must be at least 10 characters."
+    return errors
+
+
+def faq_public(item: Faq, media: MediaMap) -> PublicFaq:
+    return PublicFaq(id=item.id, group=item.group, question=item.question, answer=item.answer)
+
+
+FAQS = ContentType(
+    slug="faqs",
+    activity_name="faq",
+    label="FAQ",
+    model=Faq,
+    create_schema=FaqFields,
+    update_schema=FaqUpdate,
+    admin_schema=FaqAdmin,
+    public_schema=PublicFaq,
+    media_fields=(),
+    rules=faq_rules,
+    to_public=faq_public,
+    tags=("faqs",),
+)
+
+
+# --- blog posts ------------------------------------------------------------------------------
+
+SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+class PostFields(BaseModel):
+    slug: Annotated[str, StringConstraints(strip_whitespace=True, max_length=80)] | None = None
+    title: Text120 = ""
+    excerpt: Text300 = ""
+    body_md: LongText = ""
+    cover_id: uuid.UUID | None = None
+    author_name: Text100 = ""
+    author_role: Text100 = ""
+    category: Text40 = ""
+    tags: list[Text40] = Field(default_factory=lambda: list[str](), max_length=12)
+    reading_minutes: int = Field(default=1, ge=1, le=120)
+    seo_title: Text60 = ""
+    seo_description: Text160 = ""
+
+    @field_validator("slug")
+    @classmethod
+    def clean_slug(cls, value: str | None) -> str | None:
+        if not value:
+            return None
+        if not SLUG_PATTERN.match(value):
+            raise ValueError("Use lowercase letters, numbers and hyphens only.")
+        return value
+
+
+class PostUpdate(PostFields):
+    version: int
+
+
+class PostAdmin(AdminMeta):
+    slug: str | None
+    title: str
+    excerpt: str
+    body_md: str
+    cover: MediaOut | None
+    author_name: str
+    author_role: str
+    category: str
+    tags: list[str]
+    reading_minutes: int
+    seo_title: str
+    seo_description: str
+
+
+class PublicPost(BaseModel):
+    id: uuid.UUID
+    slug: str
+    title: str
+    excerpt: str
+    body_md: str
+    cover: PublicImage | None
+    author_name: str
+    author_role: str
+    category: str
+    tags: list[str]
+    reading_minutes: int
+    seo_title: str
+    seo_description: str
+    published_at: datetime | None
+    updated_at: datetime
+
+
+def post_rules(item: Post, media: MediaMap) -> dict[str, str]:
+    errors: dict[str, str] = {}
+    required(errors, "slug", item.slug, "Give the post an address.")
+    required(errors, "title", item.title, "Write a title.")
+    required(errors, "excerpt", item.excerpt, "Write a short excerpt.")
+    required(errors, "category", item.category, "Choose a category.")
+    required(errors, "author_name", item.author_name, "Add the author's name.")
+    if len(item.body_md.strip()) < 50:
+        errors["body_md"] = "The post needs at least 50 characters of body text."
+    image_rule(errors, "cover", media_for(item, "cover_id", media), needed=False)
+    return errors
+
+
+def post_public(item: Post, media: MediaMap) -> PublicPost | None:
+    if not item.slug:  # required to publish
+        return None
+    return PublicPost(
+        id=item.id,
+        slug=item.slug,
+        title=item.title,
+        excerpt=item.excerpt,
+        body_md=item.body_md,
+        cover=public_image(media_for(item, "cover_id", media)),
+        author_name=item.author_name,
+        author_role=item.author_role,
+        category=item.category,
+        tags=list(item.tags),
+        reading_minutes=item.reading_minutes,
+        seo_title=item.seo_title,
+        seo_description=item.seo_description,
+        published_at=item.published_at,
+        updated_at=item.updated_at,
+    )
+
+
+def post_before_save(session: Session, item: Post | None, values: dict[str, Any]) -> list[str]:
+    """Two posts can't share an address."""
+    slug = values.get("slug")
+    if not slug or (item is not None and slug == item.slug):
+        return []
+    taken = session.exec(
+        select(Post.id).where(Post.slug == slug, col(Post.deleted_at).is_(None))
+    ).first()
+    if taken is not None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={
+                "code": "slug_taken",
+                "message": "Another post already uses this address. Choose a different one.",
+                "fields": {"slug": "This address is already in use."},
+            },
+        )
+    return [f"post:{item.slug}"] if item is not None and item.slug else []
+
+
+POSTS = ContentType(
+    slug="posts",
+    activity_name="post",
+    label="post",
+    model=Post,
+    create_schema=PostFields,
+    update_schema=PostUpdate,
+    admin_schema=PostAdmin,
+    public_schema=PublicPost,
+    media_fields=("cover_id",),
+    rules=post_rules,
+    to_public=post_public,
+    tags=("posts",),
+    before_save=post_before_save,
+    item_tags=lambda item: [f"post:{item.slug}"] if item.slug else [],
+)
+
+CONTENT_TYPES = (TESTIMONIALS, CLIENT_LOGOS, TEAM_MEMBERS, FAQS, POSTS)

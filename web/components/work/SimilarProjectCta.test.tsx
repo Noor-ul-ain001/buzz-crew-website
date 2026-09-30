@@ -17,14 +17,14 @@ describe("SimilarProjectCta", () => {
   beforeEach(() => openInquiry.mockReset());
 
   it("opens the inquiry with the case study's services ticked", () => {
-    render(<SimilarProjectCta services={["seo", "meta_ads"]} slug="sample" />);
+    render(<SimilarProjectCta services={["branding", "copywriting"]} slug="sample" />);
     fireEvent.click(screen.getByRole("button", { name: "Start a similar project" }));
-    expect(openInquiry).toHaveBeenCalledWith({ services: ["SEO", "Meta Ads"] });
+    expect(openInquiry).toHaveBeenCalledWith({ services: ["Branding", "Copywriting"] });
   });
 
   it("shows the sticky bar only after 40% of the page", () => {
     setScroll(0);
-    render(<SimilarProjectCta services={["seo"]} slug="sample" variant="sticky" />);
+    render(<SimilarProjectCta services={["branding"]} slug="sample" variant="sticky" />);
     expect(screen.queryByTestId("sticky-cta")).toBeNull();
 
     act(() => {

@@ -1,15 +1,14 @@
-import { MOCK_NOW } from "@/lib/data/mock-leads";
 import type { Lead } from "@/lib/leads/types";
 
-// Mock "AI" lead priority: a transparent points score standing in for a model's
-// suggestion. The reason names the strongest factors, so the team can judge it.
+// Lead priority: a transparent points score. The reason names the strongest factors, so
+// the team can judge it.
 
 export type Priority = "Hot" | "Warm" | "Cold";
 export type LeadScore = { priority: Priority; reason: string };
 
 const DAY = 24 * 60 * 60 * 1000;
 
-export function scoreLead(lead: Lead, now = MOCK_NOW): LeadScore {
+export function scoreLead(lead: Lead, now: Date): LeadScore {
   if (lead.status === "Won") return { priority: "Cold", reason: "Already won, so no follow-up needed." };
   if (lead.status === "Lost") return { priority: "Cold", reason: "Marked as lost." };
 

@@ -17,8 +17,8 @@ def test_confirmation_restates_the_request(client: Any, fake_resend: FakeResend)
     email = confirmation(fake_resend)
     body = email["text"]
     for expected in [
-        "SEO",
-        "Social Media",
+        "Branding",
+        "Digital Marketing",
         "PKR 50k–150k",
         "Pakistan",
         "We need more patients from Google in Karachi.",

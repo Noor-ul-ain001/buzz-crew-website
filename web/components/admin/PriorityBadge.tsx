@@ -32,7 +32,7 @@ export default function PriorityBadge({ score, variant = "tooltip" }: { score: L
           <span className="sr-only"> priority</span>
         </span>
         <span className="text-xs text-muted">
-          <span className="font-semibold">AI suggestion:</span> {score.reason}
+          <span className="font-semibold">Why:</span> {score.reason}
         </span>
       </span>
     );
@@ -40,7 +40,7 @@ export default function PriorityBadge({ score, variant = "tooltip" }: { score: L
 
   return (
     // z-10 lifts it above the table row's full-row link so it can be hovered and focused.
-    <Tooltip content={`AI suggestion: ${score.reason}`} className="z-10">
+    <Tooltip content={`Why: ${score.reason}`} className="z-10">
       {(describedBy) => (
         <button type="button" aria-describedby={describedBy} className={`${badgeClass} cursor-help`}>
           {badge}
