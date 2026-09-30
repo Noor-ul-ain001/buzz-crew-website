@@ -18,7 +18,8 @@ export default async function SiteFooter() {
   const industries = await getIndustries();
 
   return (
-    <footer className="relative mt-auto overflow-hidden bg-surface pb-10">
+    // Bottom padding keeps the fixed chat button clear of the footer text.
+    <footer className="relative mt-auto overflow-hidden bg-surface pb-24">
       <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-accent via-brand-teal to-brand-purple" />
 
       {/* Contact strip: the two ways to reach the crew, as large links. */}

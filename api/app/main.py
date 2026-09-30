@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from app.core.config import get_settings
 from app.core.logging import RequestIdMiddleware, configure_logging
 from app.routers import (
+    admin_activity,
     admin_leads,
     auth,
     health,
@@ -51,6 +52,7 @@ def create_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(leads.router)
     app.include_router(admin_leads.router)
+    app.include_router(admin_activity.router)
     app.include_router(newsletter.public)
     app.include_router(newsletter.admin)
     app.include_router(auth.router)

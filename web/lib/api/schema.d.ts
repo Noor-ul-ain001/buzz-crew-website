@@ -92,6 +92,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/activity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Activity Summary */
+        get: operations["getActivitySummary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/newsletter": {
         parameters: {
             query?: never;
@@ -1089,6 +1106,31 @@ export interface components {
             /** Message */
             message: string;
         };
+        /** ActivityDay */
+        ActivityDay: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Inquiries */
+            inquiries: number;
+            /** Subscribers */
+            subscribers: number;
+            /** Content */
+            content: number;
+            /** Lead Updates */
+            lead_updates: number;
+        };
+        /** ActivitySummary */
+        ActivitySummary: {
+            /** Days */
+            days: components["schemas"]["ActivityDay"][];
+            /** Pipeline */
+            pipeline: components["schemas"]["PipelineStage"][];
+            /** Recent */
+            recent: components["schemas"]["FeedItem"][];
+        };
         /** AltTextUpdate */
         AltTextUpdate: {
             /** Alt Text */
@@ -1534,6 +1576,23 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** FeedItem */
+        FeedItem: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "inquiry" | "lead_update" | "note" | "subscriber" | "content";
+            /** Text */
+            text: string;
+            /**
+             * At
+             * Format: date-time
+             */
+            at: string;
+            /** Lead Id */
+            lead_id?: string | null;
+        };
         /** FinalizeRequest */
         FinalizeRequest: {
             /** Public Id */
@@ -1822,6 +1881,12 @@ export interface components {
             current_password: string;
             /** New Password */
             new_password: string;
+        };
+        /** PipelineStage */
+        PipelineStage: {
+            status: components["schemas"]["LeadStatus"];
+            /** Count */
+            count: number;
         };
         /** PostAdmin */
         PostAdmin: {
@@ -2682,6 +2747,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LeadNoteOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    getActivitySummary: {
+        parameters: {
+            query?: {
+                days?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivitySummary"];
                 };
             };
             /** @description Validation Error */

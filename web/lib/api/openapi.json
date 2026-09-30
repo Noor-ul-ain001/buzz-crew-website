@@ -291,6 +291,51 @@
         }
       }
     },
+    "/api/v1/admin/activity": {
+      "get": {
+        "tags": [
+          "activity"
+        ],
+        "summary": "Activity Summary",
+        "operationId": "getActivitySummary",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 90,
+              "minimum": 7,
+              "default": 30,
+              "title": "Days"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivitySummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/newsletter": {
       "post": {
         "tags": [
@@ -3396,6 +3441,72 @@
         ],
         "title": "Accepted"
       },
+      "ActivityDay": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "inquiries": {
+            "type": "integer",
+            "title": "Inquiries"
+          },
+          "subscribers": {
+            "type": "integer",
+            "title": "Subscribers"
+          },
+          "content": {
+            "type": "integer",
+            "title": "Content"
+          },
+          "lead_updates": {
+            "type": "integer",
+            "title": "Lead Updates"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "inquiries",
+          "subscribers",
+          "content",
+          "lead_updates"
+        ],
+        "title": "ActivityDay"
+      },
+      "ActivitySummary": {
+        "properties": {
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/ActivityDay"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "pipeline": {
+            "items": {
+              "$ref": "#/components/schemas/PipelineStage"
+            },
+            "type": "array",
+            "title": "Pipeline"
+          },
+          "recent": {
+            "items": {
+              "$ref": "#/components/schemas/FeedItem"
+            },
+            "type": "array",
+            "title": "Recent"
+          }
+        },
+        "type": "object",
+        "required": [
+          "days",
+          "pipeline",
+          "recent"
+        ],
+        "title": "ActivitySummary"
+      },
       "AltTextUpdate": {
         "properties": {
           "alt_text": {
@@ -4764,6 +4875,49 @@
         ],
         "title": "FaqUpdate"
       },
+      "FeedItem": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "inquiry",
+              "lead_update",
+              "note",
+              "subscriber",
+              "content"
+            ],
+            "title": "Kind"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          },
+          "lead_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lead Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "text",
+          "at"
+        ],
+        "title": "FeedItem"
+      },
       "FinalizeRequest": {
         "properties": {
           "public_id": {
@@ -5497,6 +5651,23 @@
           "new_password"
         ],
         "title": "PasswordChange"
+      },
+      "PipelineStage": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/LeadStatus"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "count"
+        ],
+        "title": "PipelineStage"
       },
       "PostAdmin": {
         "properties": {

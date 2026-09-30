@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useLeads } from "@/components/admin/LeadsProvider";
+import { ActivityCharts, PipelineCard, RecentActivity, type ActivitySummary } from "@/components/admin/overview/ActivityCharts";
 import LeadsPerMonthChart from "@/components/admin/overview/LeadsPerMonthChart";
 import { computeLeadStats, type Breakdown } from "@/lib/leads/stats";
 
@@ -14,7 +15,7 @@ function comparison(current: number, previous: number, previousMonth: string) {
   return `${difference > 0 ? "+" : "−"}${Math.abs(difference)} vs ${previousMonth}`;
 }
 
-export default function Overview() {
+export default function Overview({ activity }: { activity: ActivitySummary | null }) {
   const { leads, now } = useLeads();
   const stats = computeLeadStats(leads, now);
 
@@ -59,6 +60,16 @@ export default function Overview() {
           />
         </ul>
       </section>
+
+      {activity && (
+        <>
+          <ActivityCharts summary={activity} />
+          <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+            <PipelineCard pipeline={activity.pipeline} />
+            <RecentActivity items={activity.recent} />
+          </div>
+        </>
+      )}
 
       <section aria-labelledby="per-month-heading" className="mt-6 rounded-2xl border border-border p-5 sm:p-6">
         <h2 id="per-month-heading" className="text-lg font-semibold tracking-tight">
