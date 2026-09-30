@@ -11,7 +11,7 @@ Country: {{ country }}
 Your message:
 {{ lead.message }}
 
-Prefer to chat sooner? Message us on WhatsApp: {{ whatsapp_url }}
+Anything to add? Email us at {{ contact_email }}.
 
 — The Buzz Crew
 We tell your stories.

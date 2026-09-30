@@ -4,7 +4,6 @@ import { track as vercelTrack } from "@vercel/analytics";
 // personal data (names, emails, phones, messages) can't be sent by accident (constitution V).
 type EventProps = {
   inquiry_submitted: { source_page: string };
-  whatsapp_clicked: { source_page: string };
   // Case studies (005): slugs and filter names only, never visitor data.
   case_study_viewed: { case_study: string };
   work_filter_used: { filter: "industry" | "service" };

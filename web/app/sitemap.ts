@@ -14,8 +14,6 @@ const STATIC_ROUTES: { path: string; changeFrequency: Entry["changeFrequency"]; 
   { path: "/contact", changeFrequency: "monthly", priority: 0.8 },
   { path: "/work", changeFrequency: "weekly", priority: 0.8 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/tools/seo-audit", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/tools/captions", changeFrequency: "monthly", priority: 0.6 },
   { path: "/faq", changeFrequency: "monthly", priority: 0.6 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },

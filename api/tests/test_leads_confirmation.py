@@ -23,7 +23,7 @@ def test_confirmation_restates_the_request(client: Any, fake_resend: FakeResend)
         "Pakistan",
         "We need more patients from Google in Karachi.",
         "within 24 hours",
-        "https://wa.me/",
+        "team@example.com",
     ]:
         assert expected in body, expected
     assert "reply_to" not in email

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useInquiry } from "@/components/inquiry/InquiryModalProvider";
 import { track } from "@/lib/analytics";
 import { SERVICE_LABELS, type ApiService } from "@/lib/content/work-labels";
-import { WHATSAPP_URL } from "@/lib/site";
 
 const SCROLL_THRESHOLD = 0.4;
 
@@ -61,9 +60,6 @@ export default function SimilarProjectCta({
         <button type="button" onClick={start} className="rounded-full bg-accent px-6 py-3 font-semibold text-accent-foreground hover:brightness-95">
           Start a similar project
         </button>
-        <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border px-6 py-3 font-medium hover:bg-background">
-          Message us on WhatsApp<span className="sr-only"> (opens in a new tab)</span>
-        </a>
       </div>
     </section>
   );

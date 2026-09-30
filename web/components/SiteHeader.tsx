@@ -3,7 +3,6 @@ import Logo from "@/components/Logo";
 import MobileMenu from "@/components/nav/MobileMenu";
 import NavLinks from "@/components/nav/NavLinks";
 import StartProjectButton from "@/components/inquiry/StartProjectButton";
-import ThemeToggle from "@/components/theme/ThemeToggle";
 
 export default function SiteHeader() {
   return (
@@ -23,7 +22,6 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <ThemeToggle />
           {/* Very narrow phones get this button inside the menu instead, so nothing overflows. */}
           <StartProjectButton className="rounded-full bg-accent px-5 py-2 text-sm font-semibold whitespace-nowrap text-accent-foreground hover:brightness-95 max-[399px]:hidden" />
           <div className="md:hidden">

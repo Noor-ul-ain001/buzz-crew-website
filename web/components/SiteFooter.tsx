@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
-import CookieSettingsButton from "@/components/consent/CookieSettingsButton";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import { getIndustries } from "@/lib/data/industries";
 import { CONTACT_EMAIL, INSTAGRAM_URL, NAV_LINKS, SITE_NAME, SITE_TAGLINE } from "@/lib/site";
@@ -10,9 +9,8 @@ const headingClass = "text-xs font-semibold uppercase tracking-[0.2em] text-acce
 // Muted links brighten and draw an underline on hover (see .link-sweep in globals.css).
 const linkClass = "link-sweep pb-0.5 text-muted transition-colors duration-200 hover:text-foreground";
 
-const TOOLS = [
-  { href: "/tools/seo-audit", label: "Free SEO audit" },
-  { href: "/tools/captions", label: "Caption ideas" },
+const RESOURCES = [
+  { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
 ];
 
@@ -20,8 +18,7 @@ export default async function SiteFooter() {
   const industries = await getIndustries();
 
   return (
-    // Bottom padding keeps the fixed chat and WhatsApp buttons clear of the footer text.
-    <footer className="relative mt-auto overflow-hidden bg-surface pb-36 sm:pb-32">
+    <footer className="relative mt-auto overflow-hidden bg-surface pb-10">
       <span aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-accent via-brand-teal to-brand-purple" />
 
       {/* Contact strip: the two ways to reach the crew, as large links. */}
@@ -95,10 +92,10 @@ export default async function SiteFooter() {
             Resources
           </h2>
           <ul className="mt-4 flex flex-col gap-2.5">
-            {TOOLS.map((tool) => (
-              <li key={tool.href}>
-                <Link href={tool.href} className={linkClass}>
-                  {tool.label}
+            {RESOURCES.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className={linkClass}>
+                  {link.label}
                 </Link>
               </li>
             ))}
@@ -135,9 +132,6 @@ export default async function SiteFooter() {
             <Link href="/terms" className={linkClass}>
               Terms of Service
             </Link>
-          </li>
-          <li>
-            <CookieSettingsButton className={linkClass} />
           </li>
           <li>
             <a href="#" className="group inline-flex items-center gap-1.5 font-medium text-foreground">

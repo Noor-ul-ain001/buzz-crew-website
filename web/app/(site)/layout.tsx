@@ -1,13 +1,9 @@
-import ChatLauncher from "@/components/chat/ChatLauncher";
-import CookieBanner from "@/components/consent/CookieBanner";
 import InquiryModalProvider from "@/components/inquiry/InquiryModalProvider";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import SmoothScroll from "@/components/SmoothScroll";
-import WhatsAppButton from "@/components/WhatsAppButton";
 
-// Public site chrome. The Meta Pixel, once added, belongs here and must be gated on
-// `useMarketingConsent()` from lib/consent.ts.
+// Public site chrome: header, smooth scrolling, footer and the shared inquiry dialog.
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <InquiryModalProvider>
@@ -15,9 +11,6 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <SiteHeader />
       {children}
       <SiteFooter />
-      <WhatsAppButton />
-      <ChatLauncher />
-      <CookieBanner />
     </InquiryModalProvider>
   );
 }

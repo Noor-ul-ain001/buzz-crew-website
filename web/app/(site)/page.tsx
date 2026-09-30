@@ -63,11 +63,6 @@ const JOURNEY = [
   { year: "2026", title: "Full-service crew", body: "Ten disciplines, one integrated agency." },
 ];
 
-const TOOLS = [
-  { href: "/tools/seo-audit", title: "Free SEO audit" },
-  { href: "/tools/captions", title: "Caption ideas" },
-];
-
 // Spaced capitals, as in the brochure's headings.
 function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="text-xs font-semibold tracking-[0.32em] text-accent-strong uppercase">{children}</p>;
@@ -419,14 +414,14 @@ export default async function Home() {
           </section>
         )}
 
-        <section aria-labelledby="tools-heading" className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
+        <section aria-labelledby="hello-heading" className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
           <div className="reveal flex flex-col gap-6 rounded-3xl border border-border p-8 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 id="tools-heading" className="text-3xl">
-                Not ready to talk yet? Try a free tool.
+              <h2 id="hello-heading" className="text-3xl">
+                Not ready to start a project yet?
               </h2>
               <p className="mt-1 text-muted">
-                Or say hello on Instagram{" "}
+                Say hello on Instagram{" "}
                 <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="font-medium text-foreground underline underline-offset-4">
                   @itsbuzzcrew<span className="sr-only"> (opens in a new tab)</span>
                 </a>{" "}
@@ -437,15 +432,9 @@ export default async function Home() {
                 .
               </p>
             </div>
-            <ul className="flex flex-wrap gap-2">
-              {TOOLS.map((tool) => (
-                <li key={tool.href}>
-                  <Link href={tool.href} className="press block rounded-full border border-border px-4 py-2 text-sm font-medium hover:border-accent hover:text-accent-strong">
-                    {tool.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <Link href="/faq" className="press shrink-0 rounded-full border border-border px-5 py-2.5 text-sm font-medium hover:border-accent hover:text-accent-strong">
+              Read the FAQ
+            </Link>
           </div>
         </section>
       </main>

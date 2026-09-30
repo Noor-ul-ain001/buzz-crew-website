@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import CopyButton from "@/components/ui/CopyButton";
 import InquiryForm from "@/components/inquiry/InquiryForm";
 import { pageMetadata } from "@/lib/metadata";
-import { CONTACT_EMAIL, INSTAGRAM_URL, WHATSAPP_URL } from "@/lib/site";
+import { CONTACT_EMAIL, INSTAGRAM_URL } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Contact",
@@ -78,7 +78,6 @@ export default function ContactPage() {
                   <CopyButton value={CONTACT_EMAIL} label="email address" />
                 </span>
               </Channel>
-              <Channel label="WhatsApp" href={WHATSAPP_URL} value="Message us on WhatsApp" external />
               <Channel label="Instagram" href={INSTAGRAM_URL} value="@itsbuzzcrew" external />
             </ul>
           </div>

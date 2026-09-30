@@ -67,9 +67,8 @@ const sections: LegalSection[] = [
     title: "Cookies and tracking",
     body: (
       <p>
-        We use analytics and advertising tools to measure how our website and campaigns
-        perform. Where the law requires it, for example for visitors in the United Kingdom,
-        these tools load only after you give consent.
+        This website doesn&apos;t use advertising or tracking cookies. The only cookie is the
+        sign-in cookie for our team&apos;s admin area.
       </p>
     ),
   },

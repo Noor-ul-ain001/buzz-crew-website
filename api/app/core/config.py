@@ -23,8 +23,6 @@ class Settings(BaseSettings):
     email_timeout_seconds: float = 5.0
     # "fake" skips the provider entirely (local development and end-to-end tests).
     email_provider: Literal["resend", "fake"] = "resend"
-    # International format, digits only, as wa.me requires.
-    whatsapp_number: str = "923147971082"
 
     ip_hash_salt: str = Field(min_length=8)
     cron_secret: str | None = None
@@ -49,10 +47,6 @@ class Settings(BaseSettings):
     # Shared with the web app's /api/revalidate route (HMAC-SHA256 over the body).
     revalidate_secret: str | None = None
     revalidate_timeout_seconds: float = 3.0
-
-    @property
-    def whatsapp_url(self) -> str:
-        return f"https://wa.me/{self.whatsapp_number}"
 
     @property
     def client_origins(self) -> list[str]:

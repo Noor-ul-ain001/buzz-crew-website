@@ -5,7 +5,6 @@ import IdleTimeoutWarning from "@/components/admin/IdleTimeoutWarning";
 import { LeadsProvider } from "@/components/admin/LeadsProvider";
 import SignOutButton from "@/components/admin/SignOutButton";
 import Logo from "@/components/Logo";
-import ThemeToggle from "@/components/theme/ThemeToggle";
 import { getCurrentUser } from "@/lib/auth/session";
 import { loadLeads } from "@/lib/leads/server";
 
@@ -22,7 +21,6 @@ export default async function PanelLayout({ children }: { children: React.ReactN
             <Logo wordmarkClassName="whitespace-nowrap" />
             <span className="sr-only"> admin</span>
           </Link>
-          <ThemeToggle />
         </div>
         <nav aria-label="Admin" className="overflow-x-auto px-2 pb-2 lg:overflow-visible lg:px-3 lg:pb-0">
           <AdminNav

@@ -57,7 +57,7 @@ def _context(lead: Lead) -> dict[str, Any]:
         "services": ", ".join(SERVICE_LABELS[s] for s in lead.services),
         "budget": BUDGET_LABELS[lead.budget_range],
         "received": lead.created_at.astimezone(UTC).strftime("%d %b %Y, %H:%M UTC"),
-        "whatsapp_url": get_settings().whatsapp_url,
+        "contact_email": get_settings().team_notification_email,
     }
 
 
@@ -145,7 +145,10 @@ def _error_code(exc: Exception) -> str:
 
 def send_message(to: str, subject: str, template: str, context: dict[str, Any]) -> bool:
     """Send a non-lead email (sign-in, invitations, notices). Never raises; logs no addresses."""
-    base = {"web_url": get_settings().web_url, "whatsapp_url": get_settings().whatsapp_url}
+    base = {
+        "web_url": get_settings().web_url,
+        "contact_email": get_settings().team_notification_email,
+    }
     merged = {**base, **context}
     params: dict[str, Any] = {
         "from": get_settings().email_from,

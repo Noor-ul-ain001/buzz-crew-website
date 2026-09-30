@@ -35,7 +35,7 @@ const INDUSTRIES: Industry[] = [
     challenges: [
       { title: "Great food, quiet feed", body: "The dishes are good, but the photos and videos don't do them justice." },
       { title: "Busy weekends, slow weekdays", body: "Demand bunches up, and there's no plan to fill the quieter days." },
-      { title: "Orders scattered everywhere", body: "Enquiries arrive by DM, WhatsApp and phone with no clear way to order." },
+      { title: "Orders scattered everywhere", body: "Enquiries arrive by DMs, calls and messages with no clear way to order." },
     ],
     services: [
       { service: "Video & Content Production", why: "Reels and shoots that show your food, your kitchen and the people behind it." },

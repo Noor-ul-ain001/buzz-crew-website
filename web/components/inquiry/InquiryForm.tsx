@@ -6,7 +6,7 @@ import { useForm, type FieldError, type FieldPath } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { currentSourcePage, track } from "@/lib/analytics";
 import { submitInquiry } from "@/lib/leads/submit";
-import { CONTACT_EMAIL, WHATSAPP_URL } from "@/lib/site";
+import { CONTACT_EMAIL } from "@/lib/site";
 import {
   BUDGETS,
   COUNTRIES,
@@ -113,8 +113,11 @@ export default function InquiryForm({ initialValues, onDraftChange, onSubmitted 
           Thanks! The crew will get back to you within 24 hours.
         </h2>
         <p className="text-muted">
-          We&apos;ve emailed you a copy of your request. Prefer to chat now?{" "}
-          <WhatsAppLink>Message us on WhatsApp</WhatsAppLink>.
+          We&apos;ve emailed you a copy of your request. Anything to add? Email{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium underline">
+            {CONTACT_EMAIL}
+          </a>
+          .
         </p>
         <button
           type="button"
@@ -282,8 +285,7 @@ export default function InquiryForm({ initialValues, onDraftChange, onSubmitted 
               </button>
             }
           >
-            Sorry, we couldn&apos;t send your message. Please try again,{" "}
-            <WhatsAppLink>message us on WhatsApp</WhatsAppLink> or email{" "}
+            Sorry, we couldn&apos;t send your message. Please try again or email{" "}
             <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium underline">
               {CONTACT_EMAIL}
             </a>
@@ -292,8 +294,7 @@ export default function InquiryForm({ initialValues, onDraftChange, onSubmitted 
         )}
         {status.kind === "rate_limited" && (
           <Alert>
-            {status.message} You can also <WhatsAppLink>message us on WhatsApp</WhatsAppLink> or
-            email{" "}
+            {status.message} You can also email{" "}
             <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium underline">
               {CONTACT_EMAIL}
             </a>
@@ -329,20 +330,6 @@ export default function InquiryForm({ initialValues, onDraftChange, onSubmitted 
   );
 }
 
-function WhatsAppLink({ children }: { children: ReactNode }) {
-  return (
-    <a
-      href={WHATSAPP_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="font-medium underline"
-      onClick={() => track("whatsapp_clicked", { source_page: currentSourcePage() })}
-    >
-      {children}
-      <span className="sr-only"> (opens in a new tab)</span>
-    </a>
-  );
-}
 
 function Alert({ children, action }: { children: ReactNode; action?: ReactNode }) {
   return (

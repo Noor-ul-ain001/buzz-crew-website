@@ -83,6 +83,6 @@ describe("InquiryForm", () => {
 
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent("Too many attempts, please try again later.");
-    expect(alert).toHaveTextContent("WhatsApp");
+    expect(alert).toHaveTextContent("buzzcrewofficial@gmail.com");
   });
 });
