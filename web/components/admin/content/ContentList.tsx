@@ -121,17 +121,17 @@ function Row({ item, href, handle }: { item: Testimonial | TeamMember; href: str
   const missingAlt = item.photo !== null && !item.photo.alt.trim();
   const thumbnail = item.thumbnailUrl ?? item.photo?.url;
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 sm:gap-4 sm:p-4">
+    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-background p-3 sm:flex-nowrap sm:gap-4 sm:p-4">
       {handle}
       {thumbnail ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={thumbnail} alt="" className="size-12 shrink-0 rounded-full bg-white object-cover" />
+        <img src={thumbnail} alt="" className="size-12 shrink-0 rounded-full bg-white object-cover max-[359px]:hidden" />
       ) : (
-        <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-surface text-sm font-bold">
+        <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-surface text-sm font-bold max-[359px]:hidden">
           {initials(item.name)}
         </span>
       )}
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 basis-32">
         <p className="truncate font-semibold">{item.name}</p>
         <p className="truncate text-sm text-muted">{secondary || "No details yet"}</p>
         {item.updatedAt && (

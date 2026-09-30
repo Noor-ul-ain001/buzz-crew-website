@@ -123,7 +123,7 @@ export default function ClientLogosManager() {
                     )}
                   </div>
                 </div>
-                <div className="mt-auto flex items-center justify-between gap-3">
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-3">
                   <Tooltip content={blocker}>
                     {(describedBy) => (
                       <button

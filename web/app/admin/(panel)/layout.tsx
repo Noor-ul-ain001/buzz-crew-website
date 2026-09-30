@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AdminMobileMenu from "@/components/admin/AdminMobileMenu";
 import AdminNav from "@/components/admin/AdminNav";
 import { AdminUserProvider } from "@/components/admin/AdminUserProvider";
 import IdleTimeoutWarning from "@/components/admin/IdleTimeoutWarning";
@@ -15,26 +16,30 @@ export default async function PanelLayout({ children }: { children: React.ReactN
 
   const shell = (
     <div className="flex min-h-dvh flex-1 flex-col lg:flex-row">
-      <header className="border-b border-border bg-surface lg:sticky lg:top-0 lg:flex lg:h-dvh lg:w-60 lg:shrink-0 lg:flex-col lg:border-r lg:border-b-0">
-        <div className="flex items-center justify-between gap-3 px-4 py-3 lg:px-5 lg:py-6">
+      {/* Phones and tablets: a sticky top bar with a Menu drawer. Desktop: a full-height sidebar. */}
+      <header className="sticky top-0 z-30 border-b border-border bg-surface lg:flex lg:h-dvh lg:w-60 lg:shrink-0 lg:flex-col lg:border-r lg:border-b-0">
+        <div className="flex items-center justify-between gap-3 px-3 py-3 sm:px-4 lg:px-5 lg:py-6">
           <Link href="/admin" className="rounded-md">
-            <Logo wordmarkClassName="whitespace-nowrap" />
+            <Logo wordmarkClassName="whitespace-nowrap max-[399px]:sr-only" />
             <span className="sr-only"> admin</span>
           </Link>
+          <div className="lg:hidden">
+            <AdminMobileMenu name={user.name} role={user.role} />
+          </div>
         </div>
-        <nav aria-label="Admin" className="overflow-x-auto px-2 pb-2 lg:overflow-visible lg:px-3 lg:pb-0">
+        <nav aria-label="Admin" className="hidden px-3 lg:block">
           <AdminNav
             role={user.role}
-            className="flex w-max gap-1 lg:w-auto lg:flex-col"
+            className="flex flex-col gap-1"
             linkClassName="block rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap hover:bg-background aria-[current=page]:bg-background aria-[current=page]:font-semibold aria-[current=page]:shadow-sm"
           />
         </nav>
-        <div className="flex items-center justify-between gap-3 border-t border-border px-4 py-3 text-sm lg:mt-auto lg:block lg:px-5 lg:py-4">
+        <div className="mt-auto hidden border-t border-border px-5 py-4 text-sm lg:block">
           <p className="flex items-center gap-2 font-medium">
             {user.name}
             <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-accent-foreground capitalize">{user.role}</span>
           </p>
-          <div className="flex items-center gap-3 lg:mt-1">
+          <div className="mt-1 flex items-center gap-3">
             <Link href="/" className="text-muted hover:text-foreground">
               View public site
             </Link>

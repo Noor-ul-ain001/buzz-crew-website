@@ -95,10 +95,10 @@ export default function ImageField({
   const altId = `${id}-alt`;
   const altHintId = `${id}-alt-hint`;
   const altWarningId = `${id}-alt-warning`;
-  const frame = previewShape === "wide" ? "h-20 w-40" : "size-20";
+  const frame = previewShape === "wide" ? "h-20 w-40 max-w-full" : "size-20";
 
   return (
-    <fieldset className="flex flex-col gap-3" aria-busy={uploading || undefined}>
+    <fieldset className="flex min-w-0 flex-col gap-3" aria-busy={uploading || undefined}>
       <legend className="mb-1.5 text-sm font-medium">
         {label} <span className="font-normal text-muted">(JPEG, PNG or WebP, up to 5 MB)</span>
       </legend>

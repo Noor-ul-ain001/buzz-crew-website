@@ -17,10 +17,13 @@ export default function AdminNav({
   role,
   className,
   linkClassName,
+  onNavigate,
 }: {
   role: Role;
   className?: string;
   linkClassName?: string;
+  /** Called when a link is chosen, e.g. to close the mobile menu. */
+  onNavigate?: () => void;
 }) {
   const pathname = usePathname();
 
@@ -34,7 +37,7 @@ export default function AdminNav({
             : pathname === link.href || pathname.startsWith(`${link.href}/`);
         return (
           <li key={link.href}>
-            <Link href={link.href} aria-current={current ? "page" : undefined} className={linkClassName}>
+            <Link href={link.href} aria-current={current ? "page" : undefined} className={linkClassName} onClick={onNavigate}>
               {link.label}
             </Link>
           </li>

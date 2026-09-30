@@ -51,15 +51,15 @@ export default function CaseStudyList({ initial }: { initial: CaseStudyAdmin[] }
           onReorder={handleReorder}
           className="mt-8 flex flex-col gap-2"
           renderItem={(item, handle) => (
-            <div className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3 sm:gap-4 sm:p-4">
+            <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-background p-3 sm:flex-nowrap sm:gap-4 sm:p-4">
               {handle}
               {item.thumbnail_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={item.thumbnail_url} alt="" className="h-12 w-16 shrink-0 rounded-lg object-cover" />
+                <img src={item.thumbnail_url} alt="" className="h-12 w-16 shrink-0 rounded-lg object-cover max-[359px]:hidden" />
               ) : (
-                <span aria-hidden="true" className="h-12 w-16 shrink-0 rounded-lg bg-surface" />
+                <span aria-hidden="true" className="h-12 w-16 shrink-0 rounded-lg bg-surface max-[359px]:hidden" />
               )}
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 basis-32">
                 <p className="truncate font-semibold">{item.client_name || "Untitled"}</p>
                 <p className="truncate text-sm text-muted">{item.title || "No title yet"}</p>
                 <p className="truncate text-xs text-muted">
